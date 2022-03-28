@@ -42,7 +42,7 @@ func main() {
 	// 加载路由
 	r := routers.Init(config.Conf.Mode)
 
-	// 6. 启动服务（优雅关机）
+	// 启动服务（优雅关机）
 	srv := &http.Server{
 		Addr: fmt.Sprintf("%s%s",
 			config.Conf.Host,
