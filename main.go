@@ -11,6 +11,7 @@ import (
 	"time"
 	"ziweiShop/config"
 	"ziweiShop/dao/mysql"
+	"ziweiShop/dao/redis"
 	"ziweiShop/logger"
 	"ziweiShop/routers"
 
@@ -36,6 +37,12 @@ func main() {
 	// 初始化mysql
 	if err := mysql.Init(config.Conf.MySQLConfig); err != nil {
 		fmt.Printf("[pkg: main] [func: main] [mysql.Init(config.Conf.MySQLConfig)] failed, err:%v\n", err)
+		return
+	}
+
+	// 初始化redis
+	if err := redis.Init(config.Conf.RedisConfig); err != nil {
+		fmt.Printf("[pkg: main] [func: main] [redis.Init(config.Conf.RedisConfig)] failed, err:%v\n", err)
 		return
 	}
 

@@ -16,6 +16,8 @@ func adminRoutersInit(r *gin.Engine) {
 
 		// 后台管理登录页面
 		adminRouters.GET("/login", admin.LoginController{}.Index)
+		// 生成验证码
+		adminRouters.GET("/captcha", admin.LoginController{}.Captcha)
 		// 后台管理登录
 		adminRouters.POST("/login", admin.LoginController{}.DoLogin)
 
