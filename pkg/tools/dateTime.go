@@ -22,3 +22,7 @@ func DateToUnix(date string) int64 {
 func GetDate() string {
 	return time.Now().Format(dateKey)
 }
+
+func GetUnix() int64 {
+	return time.Now().Unix()
+}

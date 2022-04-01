@@ -1,5 +1,7 @@
 package admin
 
+import "errors"
+
 type ResCode int
 
 const (
@@ -13,6 +15,14 @@ const (
 	CodeLogoutError
 	CodeGenCaptchaError
 	CodeNeedToLogin
+	CodeEmptyTitle
+	CodeEmptyDecription
+	CodeRoleExist
+	CodeAddRoleErr
+)
+
+var (
+	ErrEmptyTitle = errors.New("Title can not empty")
 )
 
 var CodeMsgMap = map[ResCode]string{
@@ -25,6 +35,10 @@ var CodeMsgMap = map[ResCode]string{
 	CodeLogoutError:        "Logout error",
 	CodeGenCaptchaError:    "Gen captcha failed",
 	CodeNeedToLogin:        "Please login in",
+	CodeEmptyTitle:         "Title can not empty",
+	CodeEmptyDecription:    "Decription can not empty",
+	CodeRoleExist:          "Role exist",
+	CodeAddRoleErr:         "Add role err",
 }
 
 func (code ResCode) Msg() string {
