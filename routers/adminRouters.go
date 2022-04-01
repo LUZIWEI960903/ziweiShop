@@ -2,24 +2,25 @@ package routers
 
 import (
 	"ziweiShop/controllers/admin"
+	"ziweiShop/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
 
 func adminRoutersInit(r *gin.Engine) {
-	adminRouters := r.Group("/admin")
+	adminRouters := r.Group("/admin", middlewares.InitAdminAuthMiddleware)
 	{
-		// 后台主页面
-		adminRouters.GET("/", admin.MainPageController{}.Index)
-		// 后台欢迎页面
-		adminRouters.GET("/welcome", admin.MainPageController{}.Welcome)
-
 		// 后台管理登录页面
-		adminRouters.GET("/login", admin.LoginController{}.Index)
+		adminRouters.GET("/login", admin.LoginController{}.Login)
 		// 生成验证码
 		adminRouters.GET("/captcha", admin.LoginController{}.Captcha)
 		// 后台管理登录
 		adminRouters.POST("/login", admin.LoginController{}.DoLogin)
+		// 后台管理登出
+		adminRouters.GET("/logout", admin.LoginController{}.Logout)
+
+		// 后台主页面
+		adminRouters.GET("/", admin.MainPageController{}.Index)
 
 		// 管理员页面
 		adminRouters.GET("/manager", admin.ManagerController{}.Index)

@@ -4,12 +4,16 @@ import (
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/captcha"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/gin-contrib/sessions"
 )
 
 type LoginLogic struct {
 }
 
-func (LoginLogic) DoLogin(p *models.LoginParams) (err error) {
+func (LoginLogic) DoLogin(c *gin.Context, p *models.LoginParams) (err error) {
 	// 校验管理员是否存在
 	err = mysql.IsManagerExist(p.Username)
 	if err != nil {
@@ -24,5 +28,25 @@ func (LoginLogic) DoLogin(p *models.LoginParams) (err error) {
 	if ok := captcha.VerifyCaptcha(p.CaptchaId, p.CaptchaValue); !ok {
 		return ErrorInValidCaptcha
 	}
+	// 设置sessions、cookie
+	session := sessions.Default(c)
+	session.Set("username", p.Username)
+	err = session.Save()
 	return
+}
+
+func (LoginLogic) Logout(c *gin.Context) (err error) {
+	// 删除sessions
+	session := sessions.Default(c)
+	session.Delete("username")
+	return session.Save()
+}
+
+func (LoginLogic) GenCaptcha() (map[string]string, error) {
+	id, b64s, err := captcha.GenCaptcha()
+	data := map[string]string{
+		"captcha_id":  id,
+		"captcha_url": b64s,
+	}
+	return data, err
 }

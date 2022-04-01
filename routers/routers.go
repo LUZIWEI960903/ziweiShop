@@ -4,8 +4,13 @@ import (
 	"ziweiShop/logger"
 	"ziweiShop/middlewares"
 
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
+
 	"github.com/gin-gonic/gin"
 )
+
+const cookieSecret = "github.com/LUZIWEI960903/ziweiShop"
 
 func Init(cfgMode string) *gin.Engine {
 	if cfgMode == gin.ReleaseMode {
@@ -17,6 +22,10 @@ func Init(cfgMode string) *gin.Engine {
 
 	// swagger
 	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// 配置cookie、sessions
+	store := cookie.NewStore([]byte(cookieSecret))
+	r.Use(sessions.Sessions("mysession", store))
 
 	// 后台管理相关路由
 	adminRoutersInit(r)
