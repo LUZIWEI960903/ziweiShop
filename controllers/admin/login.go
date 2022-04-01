@@ -1,8 +1,9 @@
 package admin
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
+	"ziweiShop/logic"
 	"ziweiShop/models"
 	"ziweiShop/pkg/captcha"
 
@@ -20,19 +21,38 @@ func (con LoginController) Index(c *gin.Context) {
 }
 
 func (con LoginController) DoLogin(c *gin.Context) {
+	// 获取登录表单信息
 	p := new(models.LoginParams)
 	if err := c.ShouldBindJSON(p); err != nil {
 		zap.L().Error("[pkg: admin] [func: (con LoginController) DoLogin(c *gin.Context)] [c.ShouldBindJSON(p)] failed, err:", zap.Error(err))
-		con.error(c, "Login failed~~")
+		con.error(c, InValidParams)
 		return
 	}
-	if ok := captcha.VerifyCaptcha(p.CaptchaId, p.CaptchaValue); !ok {
-		zap.L().Error("[pkg: admin] [func: (con LoginController) DoLogin(c *gin.Context)] [captcha.VerifyCaptcha(p.CaptchaId,p.CaptchaValue)] failed")
-		con.error(c, "Captcha failed~~")
+	// 登录业务逻辑
+	err := logic.LoginLogic{}.DoLogin(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con LoginController) DoLogin(c *gin.Context)] [logicAdmin.LoginService{}.DoLogin(p)] failed, err:", zap.Error(err))
+		// 用户不存在
+		if errors.Is(err, logic.ErrorManagerNotExist) {
+			con.error(c, ManagerNotExist)
+			return
+		}
+		// 用户+密码错误
+		if errors.Is(err, logic.ErrorManagerPassword) {
+			con.error(c, ManagerPassword)
+			return
+		}
+		// 验证码错误
+		if errors.Is(err, logic.ErrorInValidCaptcha) {
+			con.error(c, InValidCaptcha)
+			return
+		}
+		// 其余错误
+		con.error(c, ServiceBusy)
 		return
 	}
-	fmt.Println(p)
-	con.success(c, "Login success~~")
+	// 登录成功
+	con.success(c, LoginSuccess)
 }
 
 // 获取验证码接口
