@@ -19,6 +19,7 @@ const (
 	CodeEmptyDecription
 	CodeRoleExist
 	CodeAddRoleErr
+	CodeGetRoleListErr
 )
 
 var (
@@ -39,6 +40,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeEmptyDecription:    "Decription can not empty",
 	CodeRoleExist:          "Role exist",
 	CodeAddRoleErr:         "Add role err",
+	CodeGetRoleListErr:     "Get roleList err",
 }
 
 func (code ResCode) Msg() string {

@@ -21,3 +21,7 @@ func (RoleLogic) DoAdd(p *models.AddRoleParams) (err error) {
 	}
 	return nil
 }
+
+func (RoleLogic) GetRoleList() (roleList []*models.Role, err error) {
+	return mysql.GetRoleList()
+}

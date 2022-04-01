@@ -25,3 +25,13 @@ func AddRole(p *models.AddRoleParams) (err error) {
 	}
 	return db.Create(&role).Error
 }
+
+// GetRoleList 获取roleList
+func GetRoleList() (roleList []*models.Role, err error) {
+	roleList = []*models.Role{}
+	db.Find(&roleList)
+	if len(roleList) < 1 {
+		return nil, ErrNoRole
+	}
+	return roleList, nil
+}

@@ -16,7 +16,14 @@ type RoleController struct {
 
 // Index 显示管理员角色页面的接口
 func (con RoleController) Index(c *gin.Context) {
-
+	var roleService = logic.RoleLogic{}
+	roleList, err := roleService.GetRoleList()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) Index(c *gin.Context)] [roleService.GetRoleList()] failed, err:", zap.Error(err))
+		con.error(c, CodeGetRoleListErr)
+		return
+	}
+	con.success(c, roleList)
 }
 
 // Add 给管理员增加角色页面的接口

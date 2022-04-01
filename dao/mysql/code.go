@@ -7,4 +7,5 @@ var (
 	ErrManagerPassword = errors.New("Manager username or password failed~~")
 
 	ErrRoleExist = errors.New("Role is not exist~~")
+	ErrNoRole    = errors.New("No role exist~~")
 )
