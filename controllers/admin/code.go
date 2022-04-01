@@ -1,16 +1,36 @@
 package admin
 
+type ResCode int
+
 const (
-	ServiceBusy       = "Sercice busy~~"
-	InValidParams     = "Invalid params~~"
-	NeedToLogin       = "Please login in~~"
-	LoginSuccess      = "Login success~~"
-	LogoutSuccess     = "Logout success~~"
-	LogoutError       = "Logout error~~"
-	InValidCaptcha    = "Captcha failed~~"
-	GenCaptchaError   = "Gen captcha failed~~"
-	GenCaptchaSuccess = "Gen captcha success~~"
-	ManagerNotExist   = "Manager is not exist~~"
-	ManagerPassword   = "Manager username or password failed~~"
-	AdminIndex        = "Welcome to admin index~~"
+	CodeSuccess ResCode = iota
+	CodeServerBusy
+
+	CodeInValidParams = 1000 + iota
+	CodeManagerNotExist
+	CodeManagerPasswordErr
+	CodeInValidCaptcha
+	CodeLogoutError
+	CodeGenCaptchaError
+	CodeNeedToLogin
 )
+
+var CodeMsgMap = map[ResCode]string{
+	CodeSuccess:            "",
+	CodeServerBusy:         "Server busy",
+	CodeInValidParams:      "Invalid params",
+	CodeManagerNotExist:    "Manager is not exist",
+	CodeManagerPasswordErr: "Manager username or password error",
+	CodeInValidCaptcha:     "Captcha verify failed",
+	CodeLogoutError:        "Logout error",
+	CodeGenCaptchaError:    "Gen captcha failed",
+	CodeNeedToLogin:        "Please login in",
+}
+
+func (code ResCode) Msg() string {
+	msg, ok := CodeMsgMap[code]
+	if !ok {
+		msg = CodeMsgMap[CodeServerBusy]
+	}
+	return msg
+}

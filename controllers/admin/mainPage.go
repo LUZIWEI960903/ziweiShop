@@ -9,5 +9,5 @@ type MainPageController struct {
 }
 
 func (con MainPageController) Index(c *gin.Context) {
-	con.success(c, AdminIndex)
+	con.success(c, true)
 }

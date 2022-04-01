@@ -1,6 +1,10 @@
 package admin
 
-import "github.com/gin-gonic/gin"
+import (
+	"ziweiShop/models"
+
+	"github.com/gin-gonic/gin"
+)
 
 type RoleController struct {
 	BaseController
@@ -18,7 +22,12 @@ func (con RoleController) Add(c *gin.Context) {
 
 // DoAdd 给管理员增加角色的接口
 func (con RoleController) DoAdd(c *gin.Context) {
+	// 解析参数
+	p := new(models.AddRoleParams)
+	if err := c.ShouldBindJSON(p); err != nil {
 
+		return
+	}
 }
 
 // Edit 给管理员编辑角色页面的接口

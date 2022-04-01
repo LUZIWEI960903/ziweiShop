@@ -9,22 +9,17 @@ import (
 type BaseController struct {
 }
 
-func (con BaseController) success(c *gin.Context, msg string, data ...interface{}) {
-	if data != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg":  msg,
-			"data": data,
-		})
-	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": msg,
-		})
-	}
-
+func (con BaseController) success(c *gin.Context, data interface{}) {
+	c.JSON(http.StatusOK, gin.H{
+		"errcode": CodeSuccess,
+		"errmsg":  CodeSuccess.Msg(),
+		"data":    data,
+	})
 }
 
-func (con BaseController) error(c *gin.Context, msg string) {
+func (con BaseController) error(c *gin.Context, code ResCode) {
 	c.JSON(http.StatusOK, gin.H{
-		"msg": msg,
+		"errcode": code,
+		"errmsg":  code.Msg(),
 	})
 }

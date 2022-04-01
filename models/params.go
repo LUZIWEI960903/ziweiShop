@@ -6,3 +6,8 @@ type LoginParams struct {
 	CaptchaId    string `json:"captcha_id"`    // 验证码id
 	CaptchaValue string `json:"captcha_value"` // 验证码的值
 }
+
+type AddRoleParams struct {
+	Title       string `json:"title"`       // 角色名
+	Description string `json:"description"` // 角色详情
+}
