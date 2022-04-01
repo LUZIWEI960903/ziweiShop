@@ -9,10 +9,14 @@ import (
 type BaseController struct {
 }
 
-func (con BaseController) success(c *gin.Context) {
-	c.String(http.StatusOK, "Success~~")
+func (con BaseController) success(c *gin.Context, msg string) {
+	c.JSON(http.StatusOK, gin.H{
+		"msg": msg,
+	})
 }
 
-func (con BaseController) error(c *gin.Context) {
-	c.String(http.StatusOK, "Failed~~")
+func (con BaseController) error(c *gin.Context, msg string) {
+	c.JSON(http.StatusOK, gin.H{
+		"msg": msg,
+	})
 }

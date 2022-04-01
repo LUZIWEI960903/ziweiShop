@@ -23,16 +23,16 @@ func (con LoginController) DoLogin(c *gin.Context) {
 	p := new(models.LoginParams)
 	if err := c.ShouldBindJSON(p); err != nil {
 		zap.L().Error("[pkg: admin] [func: (con LoginController) DoLogin(c *gin.Context)] [c.ShouldBindJSON(p)] failed, err:", zap.Error(err))
-		c.String(http.StatusOK, "Login failed~~")
+		con.error(c, "Login failed~~")
 		return
 	}
 	if ok := captcha.VerifyCaptcha(p.CaptchaId, p.CaptchaValue); !ok {
 		zap.L().Error("[pkg: admin] [func: (con LoginController) DoLogin(c *gin.Context)] [captcha.VerifyCaptcha(p.CaptchaId,p.CaptchaValue)] failed")
-		c.String(http.StatusOK, "Captcha failed~~")
+		con.error(c, "Captcha failed~~")
 		return
 	}
 	fmt.Println(p)
-	c.JSON(http.StatusOK, "Login success~~")
+	con.success(c, "Login success~~")
 }
 
 // 获取验证码接口
