@@ -14,7 +14,8 @@ type LoginController struct {
 	BaseController
 }
 
-func (con LoginController) Login(c *gin.Context) {
+// Index 管理员登录页面的接口
+func (con LoginController) Index(c *gin.Context) {
 	con.success(c, NeedToLogin)
 }
 

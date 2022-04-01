@@ -11,7 +11,7 @@ func adminRoutersInit(r *gin.Engine) {
 	adminRouters := r.Group("/admin", middlewares.InitAdminAuthMiddleware)
 	{
 		// 后台管理登录页面
-		adminRouters.GET("/login", admin.LoginController{}.Login)
+		adminRouters.GET("/login", admin.LoginController{}.Index)
 		// 生成验证码
 		adminRouters.GET("/captcha", admin.LoginController{}.Captcha)
 		// 后台管理登录
@@ -39,6 +39,19 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/focus/edit", admin.FocusController{}.Edit)
 		// 删除轮播图页面
 		adminRouters.GET("/focus/delete", admin.FocusController{}.Delete)
+
+		// 角色页面
+		adminRouters.GET("/role", admin.RoleController{}.Index)
+		// 添加轮播图页面
+		adminRouters.GET("/role/add", admin.RoleController{}.Add)
+		// 添加轮播图
+		adminRouters.POST("/role/add", admin.RoleController{}.DoAdd)
+		// 编辑轮播图页面
+		adminRouters.GET("/role/edit", admin.RoleController{}.Edit)
+		// 编辑轮播图
+		adminRouters.PUT("/role/edit", admin.RoleController{}.DoEdit)
+		// 删除轮播图
+		adminRouters.DELETE("/role/delete", admin.RoleController{}.Delete)
 
 	}
 }

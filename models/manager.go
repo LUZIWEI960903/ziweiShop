@@ -3,7 +3,7 @@ package models
 type Manager struct {
 	Id       int    // 管理员id
 	Status   int    // 管理员状态
-	RoleId   int    //
+	RoleId   int    // 管理员所属角色（部门）
 	AddTime  int    // 管理员创建时间
 	IsSupper int    // 是否超级管理员
 	Username string // 管理员姓名
