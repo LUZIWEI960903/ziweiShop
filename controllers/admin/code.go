@@ -24,7 +24,9 @@ const (
 	CodeEditRoleErr
 	CodeDeleteRoleErr
 	CodeManagerExistErr
+	CodeRoleNotExistErr
 	CodeAddManagerErr
+	CodeGetIndexManagerListErr
 )
 
 var (
@@ -32,25 +34,27 @@ var (
 )
 
 var CodeMsgMap = map[ResCode]string{
-	CodeSuccess:            "",
-	CodeServerBusy:         "Server busy",
-	CodeInValidParams:      "Invalid params",
-	CodeManagerNotExist:    "Manager is not exist",
-	CodeManagerPasswordErr: "Manager username or password error",
-	CodeInValidCaptcha:     "Captcha verify error",
-	CodeLogoutError:        "Logout error",
-	CodeGenCaptchaError:    "Gen captcha error",
-	CodeNeedToLogin:        "Please login in",
-	CodeEmptyTitle:         "Title can not empty",
-	CodeEmptyDecription:    "Decription can not empty",
-	CodeRoleExist:          "Role exist",
-	CodeAddRoleErr:         "Add role error",
-	CodeGetRoleListErr:     "Get roleList error",
-	CodeGetRoleErr:         "Get role info error",
-	CodeEditRoleErr:        "Edit role error",
-	CodeDeleteRoleErr:      "Delete role error",
-	CodeManagerExistErr:    "Manager is exist",
-	CodeAddManagerErr:      "Add manager error",
+	CodeSuccess:                "",
+	CodeServerBusy:             "Server busy",
+	CodeInValidParams:          "Invalid params",
+	CodeManagerNotExist:        "Manager is not exist",
+	CodeManagerPasswordErr:     "Manager username or password error",
+	CodeInValidCaptcha:         "Captcha verify error",
+	CodeLogoutError:            "Logout error",
+	CodeGenCaptchaError:        "Gen captcha error",
+	CodeNeedToLogin:            "Please login in",
+	CodeEmptyTitle:             "Title can not empty",
+	CodeEmptyDecription:        "Decription can not empty",
+	CodeRoleExist:              "Role exist",
+	CodeAddRoleErr:             "Add role error",
+	CodeGetRoleListErr:         "Get roleList error",
+	CodeGetRoleErr:             "Get role info error",
+	CodeEditRoleErr:            "Edit role error",
+	CodeDeleteRoleErr:          "Delete role error",
+	CodeManagerExistErr:        "Manager is exist",
+	CodeRoleNotExistErr:        "Role not exist",
+	CodeAddManagerErr:          "Add manager error",
+	CodeGetIndexManagerListErr: "Get index manager list error",
 }
 
 func (code ResCode) Msg() string {

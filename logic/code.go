@@ -8,8 +8,9 @@ var (
 	ErrorManagerPassword = errors.New("Manager username or password failed~~")
 	ErrorInValidCaptcha  = errors.New("Invaild captcha~~")
 
-	ErrorRoleExist = errors.New("Role exist~~")
-	ErrorAddRole   = errors.New("Add Role failed~~")
-	ErrGetRole     = errors.New("Get Role info failed~~")
-	ErrorEditRole  = errors.New("Edit Role failed~~")
+	ErrorRoleExist    = errors.New("Role is exist~~")
+	ErrorRoleNotExist = errors.New("Role is not exist~~")
+	ErrorAddRole      = errors.New("Add Role failed~~")
+	ErrorGetRole      = errors.New("Get Role info failed~~")
+	ErrorEditRole     = errors.New("Edit Role failed~~")
 )

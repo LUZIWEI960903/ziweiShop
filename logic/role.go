@@ -32,7 +32,7 @@ func (RoleLogic) GetRoleById(roleId int) (data interface{}, err error) {
 	// 根据id去查询role信息
 	roleInfo, err := mysql.GetRoleById(roleId)
 	if err != nil {
-		return nil, ErrGetRole
+		return nil, ErrorGetRole
 	}
 	return gin.H{
 		"title":       roleInfo.Title,

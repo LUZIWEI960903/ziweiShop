@@ -10,6 +10,8 @@ type Manager struct {
 	Password string // 管理员密码
 	Mobile   string // 管理员手机
 	Email    string // 管理员邮箱
+
+	Role Role `gorm:"foreignKey:RoleId;references:Id"`
 }
 
 func (Manager) TableName() string {

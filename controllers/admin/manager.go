@@ -16,7 +16,14 @@ type ManagerController struct {
 }
 
 func (con ManagerController) Index(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
+	// 业务逻辑
+	indexManagerList, err := logic.ManagerLogic{}.GetIndexManagerList()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con ManagerController) Index(c *gin.Context)] [logic.ManagerLogic{}.GetIndexManagerList()] failed, err:", zap.Error(err))
+		con.error(c, CodeGetIndexManagerListErr)
+		return
+	}
+	con.success(c, indexManagerList)
 }
 
 func (con ManagerController) Add(c *gin.Context) {
@@ -45,6 +52,10 @@ func (con ManagerController) DoAdd(c *gin.Context) {
 		zap.L().Error("[pkg: admin] [func: (con ManagerController) DoAdd(c *gin.Context)] [logic.ManagerLogic{}.DoAdd(p)] failed, err:", zap.Error(err))
 		if errors.Is(err, logic.ErrorManagerExist) {
 			con.error(c, CodeManagerExistErr)
+			return
+		}
+		if errors.Is(err, logic.ErrorRoleNotExist) {
+			con.error(c, CodeRoleNotExistErr)
 			return
 		}
 		con.error(c, CodeAddManagerErr)
