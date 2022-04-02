@@ -12,3 +12,11 @@ func verifyAddRoleParams(p *models.AddRoleParams) (err error) {
 	}
 	return nil
 }
+
+func verifyEditRoleParams(p *models.EditRoleParams) (err error) {
+	title := strings.Trim(p.Title, " ")
+	if title == "" {
+		return ErrEmptyTitle
+	}
+	return nil
+}

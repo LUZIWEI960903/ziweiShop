@@ -53,3 +53,14 @@ func GetRoleById(roleId int) (roleInfo *models.Role, err error) {
 	}
 	return roleInfo, nil
 }
+
+// EditRole 修改role信息
+func EditRole(p *models.EditRoleParams) (err error) {
+	role := models.Role{Id: p.Id}
+	if RowsAffected := db.Find(&role).RowsAffected; RowsAffected != 1 {
+		return ErrNoRole
+	}
+	role.Title = p.Title
+	role.Description = p.Description
+	return db.Save(&role).Error
+}

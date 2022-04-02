@@ -39,3 +39,17 @@ func (RoleLogic) GetRoleById(roleId int) (data interface{}, err error) {
 		"description": roleInfo.Description,
 	}, nil
 }
+
+func (RoleLogic) DoEdit(p *models.EditRoleParams) (err error) {
+	// 判断是否已存在该role类型
+	err = mysql.IsRoleExist(p.Title)
+	if err != nil {
+		return ErrorRoleExist
+	}
+	// 修改role title，description
+	err = mysql.EditRole(p)
+	if err != nil {
+		return ErrorEditRole
+	}
+	return nil
+}

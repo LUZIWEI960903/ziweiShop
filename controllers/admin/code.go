@@ -21,6 +21,7 @@ const (
 	CodeAddRoleErr
 	CodeGetRoleListErr
 	CodeGetRoleErr
+	CodeEditRoleErr
 )
 
 var (
@@ -33,16 +34,17 @@ var CodeMsgMap = map[ResCode]string{
 	CodeInValidParams:      "Invalid params",
 	CodeManagerNotExist:    "Manager is not exist",
 	CodeManagerPasswordErr: "Manager username or password error",
-	CodeInValidCaptcha:     "Captcha verify failed",
+	CodeInValidCaptcha:     "Captcha verify error",
 	CodeLogoutError:        "Logout error",
-	CodeGenCaptchaError:    "Gen captcha failed",
+	CodeGenCaptchaError:    "Gen captcha error",
 	CodeNeedToLogin:        "Please login in",
 	CodeEmptyTitle:         "Title can not empty",
 	CodeEmptyDecription:    "Decription can not empty",
 	CodeRoleExist:          "Role exist",
-	CodeAddRoleErr:         "Add role err",
-	CodeGetRoleListErr:     "Get roleList err",
-	CodeGetRoleErr:         "Get role info failed",
+	CodeAddRoleErr:         "Add role error",
+	CodeGetRoleListErr:     "Get roleList error",
+	CodeGetRoleErr:         "Get role info error",
+	CodeEditRoleErr:        "Edit role error",
 }
 
 func (code ResCode) Msg() string {

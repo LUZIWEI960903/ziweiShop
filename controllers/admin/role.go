@@ -87,7 +87,33 @@ func (con RoleController) Edit(c *gin.Context) {
 
 // DoEdit 给管理员编辑角色的接口
 func (con RoleController) DoEdit(c *gin.Context) {
-
+	// 解析参数
+	p := new(models.EditRoleParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 参数校验
+	if err := verifyEditRoleParams(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) DoEdit(c *gin.Context)] [verifyAddRoleParams(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeEmptyTitle)
+		return
+	}
+	// 业务逻辑
+	err := logic.RoleLogic{}.DoEdit(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) DoEdit(c *gin.Context)] [logic.RoleLogic{}.DoEdit(p)] failed, err:", zap.Error(err))
+		if errors.Is(err, logic.ErrorRoleExist) {
+			con.error(c, CodeRoleExist)
+			return
+		}
+		if errors.Is(err, logic.ErrorEditRole) {
+			con.error(c, CodeEditRoleErr)
+			return
+		}
+	}
+	con.success(c, true)
 }
 
 // Delete 给管理员删除角色的接口

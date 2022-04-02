@@ -11,3 +11,9 @@ type AddRoleParams struct {
 	Title       string `json:"title"`       // 角色名
 	Description string `json:"description"` // 角色详情
 }
+
+type EditRoleParams struct {
+	Id          int    `json:"id"`          // role的id
+	Title       string `json:"title"`       // 角色名
+	Description string `json:"description"` // 角色详情
+}
