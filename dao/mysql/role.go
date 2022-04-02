@@ -10,12 +10,12 @@ func IsRoleExist(params interface{}) (err error) {
 	role := models.Role{}
 	switch params.(type) {
 	case string: // 根据title查询role是否存在
-		RowsAffected := db.Where("title=?", params).First(&role).RowsAffected
+		RowsAffected := db.Where("title=? AND is_deleted=0", params).First(&role).RowsAffected
 		if RowsAffected == 1 {
 			return ErrRoleExist
 		}
 	case int: // 根据id查询role是否存在
-		RowsAffected := db.Where("id=?", params).First(&role).RowsAffected
+		RowsAffected := db.Where("id=? AND is_deleted=0", params).First(&role).RowsAffected
 		if RowsAffected == 1 {
 			return ErrRoleExist
 		}
@@ -30,6 +30,7 @@ func AddRole(p *models.AddRoleParams) (err error) {
 		AddTime:     int(tools.GetUnix()),
 		Title:       p.Title,
 		Description: p.Description,
+		IsDeleted:   0,
 	}
 	return db.Create(&role).Error
 }
@@ -37,7 +38,7 @@ func AddRole(p *models.AddRoleParams) (err error) {
 // GetRoleList 获取roleList
 func GetRoleList() (roleList []*models.Role, err error) {
 	roleList = []*models.Role{}
-	db.Find(&roleList)
+	db.Where("is_deleted=0").Find(&roleList)
 	if len(roleList) < 1 {
 		return nil, ErrNoRole
 	}
@@ -47,7 +48,7 @@ func GetRoleList() (roleList []*models.Role, err error) {
 // GetRoleById 根据id获取role信息
 func GetRoleById(roleId int) (roleInfo *models.Role, err error) {
 	roleInfo = new(models.Role)
-	err = db.Where("id=?", roleId).First(&roleInfo).Error
+	err = db.Where("id=? AND is_deleted=0", roleId).First(&roleInfo).Error
 	if err != nil || roleInfo.Title == "" {
 		return nil, err
 	}
@@ -57,10 +58,20 @@ func GetRoleById(roleId int) (roleInfo *models.Role, err error) {
 // EditRole 修改role信息
 func EditRole(p *models.EditRoleParams) (err error) {
 	role := models.Role{Id: p.Id}
-	if RowsAffected := db.Find(&role).RowsAffected; RowsAffected != 1 {
+	if RowsAffected := db.Where("is_deleted=0").Find(&role).RowsAffected; RowsAffected != 1 {
 		return ErrNoRole
 	}
 	role.Title = p.Title
 	role.Description = p.Description
+	return db.Save(&role).Error
+}
+
+// DeleteRoleById 根据role id逻辑删除role
+func DeleteRoleById(roleId int) (err error) {
+	role := models.Role{Id: roleId}
+	if RowsAffected := db.Where("is_deleted=0").First(&role).RowsAffected; RowsAffected != 1 {
+		return ErrNoRole
+	}
+	role.IsDeleted = 1
 	return db.Save(&role).Error
 }

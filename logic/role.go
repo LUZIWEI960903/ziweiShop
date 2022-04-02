@@ -53,3 +53,7 @@ func (RoleLogic) DoEdit(p *models.EditRoleParams) (err error) {
 	}
 	return nil
 }
+
+func (RoleLogic) DeleteRoleById(roleId int) (err error) {
+	return mysql.DeleteRoleById(roleId)
+}

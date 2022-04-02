@@ -118,5 +118,21 @@ func (con RoleController) DoEdit(c *gin.Context) {
 
 // Delete 给管理员删除角色的接口
 func (con RoleController) Delete(c *gin.Context) {
-
+	// 解析参数
+	roleIdStr := c.Query("id")
+	// 校验参数
+	roleId, err := strconv.Atoi(roleIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) Delete(c *gin.Context)] [strconv.Atoi(roleIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	err = logic.RoleLogic{}.DeleteRoleById(roleId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) Delete(c *gin.Context)] [logic.RoleLogic{}.DeleteRoleById(roleId)] failed, err:", zap.Error(err))
+		con.error(c, CodeDeleteRoleErr)
+		return
+	}
+	con.success(c, true)
 }

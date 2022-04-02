@@ -22,6 +22,7 @@ const (
 	CodeGetRoleListErr
 	CodeGetRoleErr
 	CodeEditRoleErr
+	CodeDeleteRoleErr
 )
 
 var (
@@ -45,6 +46,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeGetRoleListErr:     "Get roleList error",
 	CodeGetRoleErr:         "Get role info error",
 	CodeEditRoleErr:        "Edit role error",
+	CodeDeleteRoleErr:      "Delete role error",
 }
 
 func (code ResCode) Msg() string {
