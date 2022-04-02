@@ -11,7 +11,7 @@ func IsManagerExist(username string) (err error) {
 	u := []models.Manager{}
 	db.Where("username=?", username).Find(&u)
 	if len(u) < 1 {
-		return ErrManagerExist
+		return ErrManagerNotExist
 	}
 	return nil
 }

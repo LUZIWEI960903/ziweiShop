@@ -39,6 +39,8 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/manager", admin.ManagerController{}.Index)
 		// 添加管理员页面
 		adminRouters.GET("/manager/add", admin.ManagerController{}.Add)
+		// 添加管理员
+		adminRouters.POST("/manager/add", admin.ManagerController{}.DoAdd)
 		// 编辑管理员页面
 		adminRouters.GET("/manager/edit", admin.ManagerController{}.Edit)
 		// 删除管理员
