@@ -9,4 +9,5 @@ var (
 
 	ErrorRoleExist = errors.New("Role exist~~")
 	ErrorAddRole   = errors.New("Add Role failed~~")
+	ErrGetRole     = errors.New("Get Role info failed~~")
 )

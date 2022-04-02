@@ -22,6 +22,19 @@ func adminRoutersInit(r *gin.Engine) {
 		// 后台主页面
 		adminRouters.GET("/", admin.MainPageController{}.Index)
 
+		// 角色页面
+		adminRouters.GET("/role", admin.RoleController{}.Index)
+		// 添加角色页面
+		adminRouters.GET("/role/add", admin.RoleController{}.Add)
+		// 添加角色
+		adminRouters.POST("/role/add", admin.RoleController{}.DoAdd)
+		// 编辑角色页面
+		adminRouters.GET("/role/edit", admin.RoleController{}.Edit)
+		// 编辑角色
+		adminRouters.PUT("/role/edit", admin.RoleController{}.DoEdit)
+		// 删除角色
+		adminRouters.DELETE("/role/delete", admin.RoleController{}.Delete)
+
 		// 管理员页面
 		adminRouters.GET("/manager", admin.ManagerController{}.Index)
 		// 添加管理员页面
@@ -39,19 +52,6 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/focus/edit", admin.FocusController{}.Edit)
 		// 删除轮播图页面
 		adminRouters.GET("/focus/delete", admin.FocusController{}.Delete)
-
-		// 角色页面
-		adminRouters.GET("/role", admin.RoleController{}.Index)
-		// 添加轮播图页面
-		adminRouters.GET("/role/add", admin.RoleController{}.Add)
-		// 添加轮播图
-		adminRouters.POST("/role/add", admin.RoleController{}.DoAdd)
-		// 编辑轮播图页面
-		adminRouters.GET("/role/edit", admin.RoleController{}.Edit)
-		// 编辑轮播图
-		adminRouters.PUT("/role/edit", admin.RoleController{}.DoEdit)
-		// 删除轮播图
-		adminRouters.DELETE("/role/delete", admin.RoleController{}.Delete)
 
 	}
 }

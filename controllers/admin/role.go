@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
 
@@ -64,7 +65,24 @@ func (con RoleController) DoAdd(c *gin.Context) {
 
 // Edit 给管理员编辑角色页面的接口
 func (con RoleController) Edit(c *gin.Context) {
-
+	// 解析参数
+	roleIdStr := c.Query("id")
+	// 校验参数
+	roleId, err := strconv.Atoi(roleIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) Edit(c *gin.Context)] [strconv.Atoi(roleIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	var roleService = logic.RoleLogic{}
+	data, err := roleService.GetRoleById(roleId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) Edit(c *gin.Context)] [roleService.GetRoleById(roleId)] failed, err:", zap.Error(err))
+		con.error(c, CodeGetRoleErr)
+		return
+	}
+	con.success(c, data)
 }
 
 // DoEdit 给管理员编辑角色的接口
