@@ -25,3 +25,11 @@ type AddManagerParams struct {
 	Mobile   string `json:"mobile"`   // 管理员手机
 	Email    string `json:"email"`    // 管理员邮箱
 }
+
+type EditManagerParams struct {
+	Id       int    `json:"id"`       // 管路员id
+	RoleId   int    `json:"role_id"`  // 管理员所属角色（部门）
+	Password string `json:"password"` // 管理员密码
+	Mobile   string `json:"mobile"`   // 管理员手机
+	Email    string `json:"email"`    // 管理员邮箱
+}

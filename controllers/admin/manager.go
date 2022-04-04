@@ -3,6 +3,7 @@ package admin
 import (
 	"errors"
 	"net/http"
+	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
 
@@ -15,6 +16,7 @@ type ManagerController struct {
 	BaseController
 }
 
+// Index 显示管理员列表页面的接口
 func (con ManagerController) Index(c *gin.Context) {
 	// 业务逻辑
 	indexManagerList, err := logic.ManagerLogic{}.GetIndexManagerList()
@@ -26,6 +28,7 @@ func (con ManagerController) Index(c *gin.Context) {
 	con.success(c, indexManagerList)
 }
 
+// Add 显示增加管理员页面的接口
 func (con ManagerController) Add(c *gin.Context) {
 	// 返回roleList
 	var managerService = logic.ManagerLogic{}
@@ -38,6 +41,7 @@ func (con ManagerController) Add(c *gin.Context) {
 	con.success(c, roleList)
 }
 
+// DoAdd 执行增加管理员的接口
 func (con ManagerController) DoAdd(c *gin.Context) {
 	// 解析参数
 	p := new(models.AddManagerParams)
@@ -64,8 +68,54 @@ func (con ManagerController) DoAdd(c *gin.Context) {
 	con.success(c, true)
 }
 
+// Edit 显示修改管理员页面的接口
 func (con ManagerController) Edit(c *gin.Context) {
+	// 解析参数
+	managerIdStr := c.Query("id")
+	managerId, err := strconv.Atoi(managerIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con ManagerController) Edit(c *gin.Context)] [strconv.Atoi(managerIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	var editManagerService = logic.ManagerLogic{}
+	editManagerInfo, err := editManagerService.GetEditManagerInfo(managerId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con ManagerController) Edit(c *gin.Context)] [editManagerService.GetEditManagerList(managerId)] failed, err:", zap.Error(err))
+		con.error(c, CodeGetEditManagerErr)
+		return
+	}
+	con.success(c, editManagerInfo)
+}
 
+// DoEdit 显示修改管理员信息的接口
+func (con ManagerController) DoEdit(c *gin.Context) {
+	// 解析参数
+	p := new(models.EditManagerParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con ManagerController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	err := logic.ManagerLogic{}.DoEdit(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con ManagerController) DoEdit(c *gin.Context)] [logic.ManagerLogic{}.DoEdit(p) ] failed, err:", zap.Error(err))
+		if errors.Is(err, logic.ErrorManagerNotExist) {
+			// 输入的id不存在
+			con.error(c, CodeManagerNotExist)
+			return
+		}
+		if errors.Is(err, logic.ErrorManagerExist) {
+			// 输入的roleId不存在
+			con.error(c, CodeRoleNotExistErr)
+			return
+		}
+		con.error(c, CodeManagerDoEditErr)
+		return
+	}
+	con.success(c, true)
 }
 
 func (con ManagerController) Delete(c *gin.Context) {

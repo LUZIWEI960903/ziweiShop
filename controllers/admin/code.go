@@ -27,6 +27,8 @@ const (
 	CodeRoleNotExistErr
 	CodeAddManagerErr
 	CodeGetIndexManagerListErr
+	CodeGetEditManagerErr
+	CodeManagerDoEditErr
 )
 
 var (
@@ -55,6 +57,8 @@ var CodeMsgMap = map[ResCode]string{
 	CodeRoleNotExistErr:        "Role not exist",
 	CodeAddManagerErr:          "Add manager error",
 	CodeGetIndexManagerListErr: "Get index manager list error",
+	CodeGetEditManagerErr:      "Get edit manager info error",
+	CodeManagerDoEditErr:       "Manager do edit error",
 }
 
 func (code ResCode) Msg() string {
