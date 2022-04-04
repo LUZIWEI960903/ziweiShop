@@ -123,3 +123,7 @@ func (ManagerLogic) DoEdit(p *models.EditManagerParams) (err error) {
 	// 执行修改manager信息操作
 	return mysql.EditManager(p)
 }
+
+func (ManagerLogic) DeleteManager(managerId int) (err error) {
+	return mysql.DeleteManagerById(managerId)
+}

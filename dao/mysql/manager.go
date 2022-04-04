@@ -11,12 +11,12 @@ func GetManagerByIdOrUsername(params interface{}) (err error) {
 	u := models.Manager{}
 	switch params.(type) {
 	case string:
-		RowsAffected := db.Where("username=?", params).Find(&u).RowsAffected
+		RowsAffected := db.Where("username=? AND is_deleted=0", params).Find(&u).RowsAffected
 		if RowsAffected == 1 {
 			return ErrManagerExist
 		}
 	case int:
-		RowsAffected := db.Where("id=?", params).Find(&u).RowsAffected
+		RowsAffected := db.Where("id=? AND is_deleted=0", params).Find(&u).RowsAffected
 		if RowsAffected == 1 {
 			return ErrManagerExist
 		}
@@ -42,7 +42,7 @@ func AddManager(p *models.AddManagerParams) (err error) {
 // GetManagerList 获取完整的managerList
 func GetManagerList() (managerList []*models.Manager, err error) {
 	managerList = []*models.Manager{}
-	db.Preload("Role").Find(&managerList)
+	db.Preload("Role").Where("is_deleted=0").Find(&managerList)
 	if len(managerList) > 0 {
 		return managerList, nil
 	}
@@ -52,7 +52,7 @@ func GetManagerList() (managerList []*models.Manager, err error) {
 // GetManagerInfoById 根据managerId获取信息
 func GetManagerInfoById(managerId int) (managerInfo *models.Manager, err error) {
 	managerInfo = &models.Manager{}
-	err = db.Where("id=?", managerId).First(&managerInfo).Error
+	err = db.Where("id=? AND is_deleted=0", managerId).First(&managerInfo).Error
 	if err != nil {
 		return nil, ErrManagerNotExist
 	}
@@ -62,7 +62,7 @@ func GetManagerInfoById(managerId int) (managerInfo *models.Manager, err error) 
 // EditManager 修改manager信息
 func EditManager(p *models.EditManagerParams) (err error) {
 	oldManagerInfo := models.Manager{}
-	db.Where("id=?", p.Id).First(&oldManagerInfo)
+	db.Where("id=? AND is_deleted=0", p.Id).First(&oldManagerInfo)
 	if password := strings.Trim(p.Password, " "); password != "" {
 		// password非空，代表修改了密码
 		oldManagerInfo.Password = tools.MD5(p.Password)
@@ -71,4 +71,14 @@ func EditManager(p *models.EditManagerParams) (err error) {
 	oldManagerInfo.Mobile = p.Mobile
 	oldManagerInfo.Email = p.Email
 	return db.Save(&oldManagerInfo).Error
+}
+
+// DeleteManagerById 根据managerId 逻辑删除
+func DeleteManagerById(managerId int) (err error) {
+	manager := models.Manager{}
+	if RowsAffected := db.Where("id=? AND is_deleted=0", managerId).First(&manager).RowsAffected; RowsAffected != 1 {
+		return ErrManagerNotExist
+	}
+	manager.IsDeleted = 1
+	return db.Save(&manager).Error
 }

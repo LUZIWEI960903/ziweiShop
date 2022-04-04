@@ -2,7 +2,6 @@ package admin
 
 import (
 	"errors"
-	"net/http"
 	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
@@ -119,5 +118,20 @@ func (con ManagerController) DoEdit(c *gin.Context) {
 }
 
 func (con ManagerController) Delete(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
+	// 解析参数
+	managerIdStr := c.Query("id")
+	managerId, err := strconv.Atoi(managerIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con ManagerController) Delete(c *gin.Context)] [strconv.Atoi(managerIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	err1 := logic.ManagerLogic{}.DeleteManager(managerId)
+	if err1 != nil {
+		zap.L().Error("[pkg: admin] [func: (con ManagerController) Delete(c *gin.Context)] [logic.ManagerLogic{}.DeleteManager(managerId)] failed, err:", zap.Error(err))
+		con.error(c, CodeDeleteManagerErr)
+		return
+	}
+	con.success(c, true)
 }
