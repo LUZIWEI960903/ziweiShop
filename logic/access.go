@@ -109,7 +109,6 @@ func (AccessLogic) GetAccessById(accessId int) (editAccessInfo *models.EditAcces
 	}
 	newTopAccessList = append(newTopAccessList1, newTopAccessList2...)
 	// 构造 newType
-
 	newType := make([]models.AccessType, 0)
 	newType1 := make([]models.AccessType, 0)
 	newType2 := make([]models.AccessType, 0)
@@ -139,4 +138,8 @@ func (AccessLogic) GetAccessById(accessId int) (editAccessInfo *models.EditAcces
 		NewTopAccessList: newTopAccessList,
 	}
 	return editAccessInfo, nil
+}
+
+func (AccessLogic) DoEdit(p *models.EditAccessParams) (err error) {
+	return mysql.EditAccess(p)
 }

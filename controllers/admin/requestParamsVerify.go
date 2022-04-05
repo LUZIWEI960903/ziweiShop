@@ -28,3 +28,11 @@ func verifyAddAccessParams(p *models.AddAccessParams) (err error) {
 	}
 	return nil
 }
+
+func verifyEditAccessParams(p *models.EditAccessParams) (err error) {
+	moduleName := strings.Trim(p.ModuleName, " ")
+	if moduleName == "" {
+		return ErrEmptyModuleName
+	}
+	return nil
+}

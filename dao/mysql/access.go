@@ -1,6 +1,8 @@
 package mysql
 
-import "ziweiShop/models"
+import (
+	"ziweiShop/models"
+)
 
 // GetTopAccessList 获取顶级模块列表
 func GetTopAccessList() (topAccessList []models.Access, err error) {
@@ -35,4 +37,23 @@ func GetAccessById(accessId int) (accessInfo *models.Access, err error) {
 		return nil, ErrGetAccess
 	}
 	return accessInfo, nil
+}
+
+// EditAccess 修改 access 信息
+func EditAccess(p *models.EditAccessParams) (err error) {
+	// 查询access 是否存在
+	access := models.Access{}
+	if RowsAffected := db.Where("is_deleted=0 AND id=?", p.Id).Find(&access).RowsAffected; RowsAffected != 1 {
+		return ErrGetAccess
+	}
+	// 修改 信息
+	access.Type = p.Type
+	access.ModuleId = p.ModuleId
+	access.Sort = p.Sort
+	access.Status = p.Status
+	access.ActionName = p.ActionName
+	access.ModuleName = p.ModuleName
+	access.Url = p.Url
+	access.Description = p.Description
+	return db.Save(&access).Error
 }

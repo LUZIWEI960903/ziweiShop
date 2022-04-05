@@ -85,7 +85,26 @@ func (con AccessController) Edit(c *gin.Context) {
 
 // DoEdit 编辑权限的接口
 func (con AccessController) DoEdit(c *gin.Context) {
-
+	// 解析参数
+	p := new(models.EditAccessParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 参数校验
+	if err := verifyEditAccessParams(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) DoEdit(c *gin.Context)] [verifyEditAccessParams(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeEmptyModuleName)
+		return
+	}
+	// 业务逻辑
+	err := logic.AccessLogic{}.DoEdit(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) DoEdit(c *gin.Context)] [logic.AccessLogic{}.DoEdit(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeEditAccessErr)
+		return
+	}
 	con.success(c, true)
 }
 
