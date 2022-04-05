@@ -13,4 +13,6 @@ var (
 	ErrorAddRole      = errors.New("Add Role failed~~")
 	ErrorGetRole      = errors.New("Get Role info failed~~")
 	ErrorEditRole     = errors.New("Edit Role failed~~")
+
+	ErrorGetTopAccessList = errors.New("Get top access list error~~")
 )

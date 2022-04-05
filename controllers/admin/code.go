@@ -30,6 +30,7 @@ const (
 	CodeGetEditManagerErr
 	CodeManagerDoEditErr
 	CodeDeleteManagerErr
+	CodeGetTopAccessListErr
 )
 
 var (
@@ -61,6 +62,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeGetEditManagerErr:      "Get edit manager info error",
 	CodeManagerDoEditErr:       "Manager do edit error",
 	CodeDeleteManagerErr:       "Delete manager error",
+	CodeGetTopAccessListErr:    "Get top access list error",
 }
 
 func (code ResCode) Msg() string {

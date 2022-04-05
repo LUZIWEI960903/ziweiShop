@@ -48,6 +48,13 @@ func adminRoutersInit(r *gin.Engine) {
 		// 删除管理员
 		adminRouters.DELETE("/manager/delete", admin.ManagerController{}.Delete)
 
+		// 权限列表页面
+		adminRouters.GET("/access", admin.AccessController{}.Index)
+		// 添加权限页面
+		adminRouters.GET("/access/add", admin.AccessController{}.Add)
+		// 添加权限
+		adminRouters.POST("/access/add", admin.AccessController{}.DoAdd)
+
 		// 轮播图页面
 		adminRouters.GET("/focus", admin.FocusController{}.Index)
 		// 添加轮播图页面

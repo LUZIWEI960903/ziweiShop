@@ -10,4 +10,6 @@ var (
 
 	ErrRoleExist = errors.New("Role is not exist~~")
 	ErrNoRole    = errors.New("No role exist~~")
+
+	ErrGetTopAccessList = errors.New("Get top access list error~~")
 )

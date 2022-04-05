@@ -117,6 +117,7 @@ func (con ManagerController) DoEdit(c *gin.Context) {
 	con.success(c, true)
 }
 
+// Delete 删除管理员的接口
 func (con ManagerController) Delete(c *gin.Context) {
 	// 解析参数
 	managerIdStr := c.Query("id")

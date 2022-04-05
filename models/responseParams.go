@@ -27,3 +27,8 @@ type EditManagerList struct {
 	Email    string        `json:"email"`     // manager的邮箱
 	RoleList []NewRoleList `json:"role_list"` // 所有role的信息
 }
+
+type NewTopAccess struct {
+	Id         int    // 权限id
+	ModuleName string // 模块名称
+}
