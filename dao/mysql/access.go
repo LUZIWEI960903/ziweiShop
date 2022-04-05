@@ -57,3 +57,33 @@ func EditAccess(p *models.EditAccessParams) (err error) {
 	access.Description = p.Description
 	return db.Save(&access).Error
 }
+
+// IsTopAccess 根据accessId 判断是否为顶级模块
+func IsTopAccess(accessId int) bool {
+	access := models.Access{}
+	if RowsAffected := db.Where("id=? AND is_deleted=0 AND module_id=0", accessId).First(&access).RowsAffected; RowsAffected != 1 {
+		return false
+	}
+	return true
+}
+
+// GetSonAccessList 查询 module_id = accessId
+func GetSonAccessList(accessId int) bool {
+	access := []models.Access{}
+	db.Where("module_id=? AND is_deleted=0", accessId).Find(&access)
+	if len(access) > 0 {
+		// 存在子模块
+		return true
+	}
+	return false
+}
+
+// DeleteAccessById 根据 accessId 逻辑删除 access
+func DeleteAccessById(accessId int) (err error) {
+	access := models.Access{}
+	if RowsAffected := db.Where("id=? AND is_deleted=0", accessId).First(&access).RowsAffected; RowsAffected != 1 {
+		return ErrGetAccess
+	}
+	access.IsDeleted = 1
+	return db.Save(&access).Error
+}

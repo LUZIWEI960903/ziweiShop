@@ -110,6 +110,20 @@ func (con AccessController) DoEdit(c *gin.Context) {
 
 // Delete 删除权限的接口
 func (con AccessController) Delete(c *gin.Context) {
-
+	// 解析参数
+	accessIdStr := c.Query("id")
+	accessId, err := strconv.Atoi(accessIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) Delete(c *gin.Context)] [strconv.Atoi(accessIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	err = logic.AccessLogic{}.Delete(accessId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) Delete(c *gin.Context)] [logic.AccessLogic{}.Delete(accessId))] failed, err:", zap.Error(err))
+		con.error(c, CodeDeleteAccessErr)
+		return
+	}
 	con.success(c, true)
 }

@@ -36,6 +36,7 @@ const (
 	CodeTopAccessListWithAccessListErr
 	CodeGetAccessErr
 	CodeEditAccessErr
+	CodeDeleteAccessErr
 )
 
 var (
@@ -74,6 +75,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeTopAccessListWithAccessListErr: "Get top access list with access list error",
 	CodeGetAccessErr:                   "Get access error",
 	CodeEditAccessErr:                  "Edit access error",
+	CodeDeleteAccessErr:                "Delete access error",
 }
 
 func (code ResCode) Msg() string {

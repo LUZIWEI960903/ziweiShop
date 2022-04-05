@@ -143,3 +143,16 @@ func (AccessLogic) GetAccessById(accessId int) (editAccessInfo *models.EditAcces
 func (AccessLogic) DoEdit(p *models.EditAccessParams) (err error) {
 	return mysql.EditAccess(p)
 }
+
+func (AccessLogic) Delete(accessId int) (err error) {
+	// 判断是否为 顶级模块
+	if ok := mysql.IsTopAccess(accessId); ok {
+		// 查看该 顶级模块下是否有子模块
+		if ok1 := mysql.GetSonAccessList(accessId); !ok1 {
+			return mysql.DeleteAccessById(accessId)
+		}
+		return ErrorDeleteAccess
+	}
+	// 逻辑删除 access
+	return mysql.DeleteAccessById(accessId)
+}
