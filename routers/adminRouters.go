@@ -54,6 +54,12 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/access/add", admin.AccessController{}.Add)
 		// 添加权限
 		adminRouters.POST("/access/add", admin.AccessController{}.DoAdd)
+		// 编辑权限页面
+		adminRouters.GET("/access/edit", admin.AccessController{}.Edit)
+		// 编辑权限
+		adminRouters.PUT("/access/edit", admin.AccessController{}.DoEdit)
+		// 删除权限
+		adminRouters.DELETE("/access/delete", admin.AccessController{}.Delete)
 
 		// 轮播图页面
 		adminRouters.GET("/focus", admin.FocusController{}.Index)

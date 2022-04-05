@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
 
@@ -59,5 +60,37 @@ func (con AccessController) DoAdd(c *gin.Context) {
 		con.error(c, CodeAddAccessErr)
 		return
 	}
+	con.success(c, true)
+}
+
+// Edit 编辑权限页面的接口
+func (con AccessController) Edit(c *gin.Context) {
+	// 解析参数
+	accessIdStr := c.Query("id")
+	accessId, err := strconv.Atoi(accessIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) Edit(c *gin.Context)] [strconv.Atoi(accessIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	editAccess, err := logic.AccessLogic{}.GetAccessById(accessId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) Edit(c *gin.Context)] [logic.AccessLogic{}.GetAccessById(accessId)] failed, err:", zap.Error(err))
+		con.error(c, CodeGetAccessErr)
+		return
+	}
+	con.success(c, editAccess)
+}
+
+// DoEdit 编辑权限的接口
+func (con AccessController) DoEdit(c *gin.Context) {
+
+	con.success(c, true)
+}
+
+// Delete 删除权限的接口
+func (con AccessController) Delete(c *gin.Context) {
+
 	con.success(c, true)
 }

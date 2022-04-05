@@ -34,6 +34,7 @@ const (
 	CodeEmptyModuleName
 	CodeAddAccessErr
 	CodeTopAccessListWithAccessListErr
+	CodeGetAccessErr
 )
 
 var (
@@ -70,6 +71,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeEmptyModuleName:                "Empty module name",
 	CodeAddAccessErr:                   "Add access error",
 	CodeTopAccessListWithAccessListErr: "Get top access list with access list error",
+	CodeGetAccessErr:                   "Get access error",
 }
 
 func (code ResCode) Msg() string {

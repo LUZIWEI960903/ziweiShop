@@ -26,3 +26,13 @@ func GetTopAccessListWithAccessList() (topAccessListWithAccessList []models.Acce
 	}
 	return topAccessListWithAccessList, nil
 }
+
+// GetAccessById 根据accessId 获取 access 信息
+func GetAccessById(accessId int) (accessInfo *models.Access, err error) {
+	accessInfo = &models.Access{}
+	err = db.Where("id=? AND is_deleted=0", accessId).First(&accessInfo).Error
+	if err != nil {
+		return nil, ErrGetAccess
+	}
+	return accessInfo, nil
+}
