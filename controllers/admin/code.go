@@ -31,10 +31,13 @@ const (
 	CodeManagerDoEditErr
 	CodeDeleteManagerErr
 	CodeGetTopAccessListErr
+	CodeEmptyModuleName
+	CodeAddAccessErr
 )
 
 var (
-	ErrEmptyTitle = errors.New("Title can not empty")
+	ErrEmptyTitle      = errors.New("Title can not empty")
+	ErrEmptyModuleName = errors.New("Empty module name")
 )
 
 var CodeMsgMap = map[ResCode]string{
@@ -63,6 +66,8 @@ var CodeMsgMap = map[ResCode]string{
 	CodeManagerDoEditErr:       "Manager do edit error",
 	CodeDeleteManagerErr:       "Delete manager error",
 	CodeGetTopAccessListErr:    "Get top access list error",
+	CodeEmptyModuleName:        "Empty module name",
+	CodeAddAccessErr:           "Add access error",
 }
 
 func (code ResCode) Msg() string {

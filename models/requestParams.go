@@ -33,3 +33,14 @@ type EditManagerParams struct {
 	Mobile   string `json:"mobile"`   // 管理员手机
 	Email    string `json:"email"`    // 管理员邮箱
 }
+
+type AddAccessParams struct {
+	Type        int    `json:"type"`        // 模块类型: 1.表示模块 2.表示菜单 3.表示操作
+	ModuleId    int    `json:"module_id"`   // 与当前Id自关联
+	Sort        int    `json:"sort"`        // 排序
+	Status      int    `json:"status"`      // 模块状态
+	ActionName  string `json:"action_name"` // 操作名称
+	ModuleName  string `json:"module_name"` // 模块名称
+	Url         string `json:"url"`         // 路由跳转地址
+	Description string `json:"description"` // 描述
+}

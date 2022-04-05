@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"time"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 )
@@ -23,4 +24,21 @@ func (AccessLogic) GetTopAccessList() (newTopAccessList []models.NewTopAccess, e
 		newTopAccessList = append(newTopAccessList, newTopAccess)
 	}
 	return newTopAccessList, nil
+}
+
+func (AccessLogic) DoAdd(p *models.AddAccessParams) (err error) {
+	// 构造module
+	access := &models.Access{
+		Type:        p.Type,
+		ModuleId:    p.ModuleId,
+		Sort:        p.Sort,
+		AddTime:     int(time.Now().Unix()),
+		Status:      p.Status,
+		IsDeleted:   0,
+		ActionName:  p.ActionName,
+		ModuleName:  p.ModuleName,
+		Url:         p.Url,
+		Description: p.Description,
+	}
+	return mysql.AddAccess(access)
 }

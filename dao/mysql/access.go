@@ -11,3 +11,8 @@ func GetTopAccessList() (topAccessList []models.Access, err error) {
 	}
 	return topAccessList, nil
 }
+
+// AddAccess 添加权限
+func AddAccess(access *models.Access) (err error) {
+	return db.Create(&access).Error
+}
