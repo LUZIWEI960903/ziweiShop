@@ -12,6 +12,8 @@ type Access struct {
 	ModuleName  string // 模块名称
 	Url         string // 路由跳转地址
 	Description string // 描述
+
+	AccessList []Access `gorm:"foreignKey:ModuleId;references:Id"` // 自关联
 }
 
 func (Access) TableName() string {

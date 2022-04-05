@@ -29,6 +29,30 @@ type EditManagerList struct {
 }
 
 type NewTopAccess struct {
-	Id         int    // 权限id
-	ModuleName string // 模块名称
+	Id         int    `json:"id"`          // 权限id
+	ModuleName string `json:"module_name"` // 模块名称
+}
+
+type NewAccessList struct {
+	Id          int    `json:"id"`          // 权限id
+	Type        int    `json:"type"`        // 模块类型: 1.表示模块 2.表示菜单 3.表示操作
+	ModuleId    int    `json:"module_id"`   // 与当前Id自关联
+	Sort        int    `json:"sort"`        // 排序
+	ActionName  string `json:"action_name"` // 操作名称
+	ModuleName  string `json:"module_name"` // 模块名称
+	Url         string `json:"url"`         // 路由跳转地址
+	Description string `json:"description"` // 描述
+}
+
+type NewTopAccessListWithAccessList struct {
+	Id          int    `json:"id"`          // 权限id
+	Type        int    `json:"type"`        // 模块类型: 1.表示模块 2.表示菜单 3.表示操作
+	ModuleId    int    `json:"module_id"`   // 与当前Id自关联
+	Sort        int    `json:"sort"`        // 排序
+	ActionName  string `json:"action_name"` // 操作名称
+	ModuleName  string `json:"module_name"` // 模块名称
+	Url         string `json:"url"`         // 路由跳转地址
+	Description string `json:"description"` // 描述
+
+	AccessList []NewAccessList `json:"access_list"` // 该权限下的模块
 }

@@ -14,5 +14,6 @@ var (
 	ErrorGetRole      = errors.New("Get Role info failed~~")
 	ErrorEditRole     = errors.New("Edit Role failed~~")
 
-	ErrorGetTopAccessList = errors.New("Get top access list error~~")
+	ErrorGetTopAccessList               = errors.New("Get top access list error~~")
+	ErrorGetTopAccessListWithAccessList = errors.New("Get top access list with access list error~~")
 )

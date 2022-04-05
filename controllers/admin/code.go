@@ -33,6 +33,7 @@ const (
 	CodeGetTopAccessListErr
 	CodeEmptyModuleName
 	CodeAddAccessErr
+	CodeTopAccessListWithAccessListErr
 )
 
 var (
@@ -41,33 +42,34 @@ var (
 )
 
 var CodeMsgMap = map[ResCode]string{
-	CodeSuccess:                "",
-	CodeServerBusy:             "Server busy",
-	CodeInValidParams:          "Invalid params",
-	CodeManagerNotExist:        "Manager is not exist",
-	CodeManagerPasswordErr:     "Manager username or password error",
-	CodeInValidCaptcha:         "Captcha verify error",
-	CodeLogoutError:            "Logout error",
-	CodeGenCaptchaError:        "Gen captcha error",
-	CodeNeedToLogin:            "Please login in",
-	CodeEmptyTitle:             "Title can not empty",
-	CodeEmptyDecription:        "Decription can not empty",
-	CodeRoleExist:              "Role exist",
-	CodeAddRoleErr:             "Add role error",
-	CodeGetRoleListErr:         "Get roleList error",
-	CodeGetRoleErr:             "Get role info error",
-	CodeEditRoleErr:            "Edit role error",
-	CodeDeleteRoleErr:          "Delete role error",
-	CodeManagerExistErr:        "Manager is exist",
-	CodeRoleNotExistErr:        "Role not exist",
-	CodeAddManagerErr:          "Add manager error",
-	CodeGetIndexManagerListErr: "Get index manager list error",
-	CodeGetEditManagerErr:      "Get edit manager info error",
-	CodeManagerDoEditErr:       "Manager do edit error",
-	CodeDeleteManagerErr:       "Delete manager error",
-	CodeGetTopAccessListErr:    "Get top access list error",
-	CodeEmptyModuleName:        "Empty module name",
-	CodeAddAccessErr:           "Add access error",
+	CodeSuccess:                        "",
+	CodeServerBusy:                     "Server busy",
+	CodeInValidParams:                  "Invalid params",
+	CodeManagerNotExist:                "Manager is not exist",
+	CodeManagerPasswordErr:             "Manager username or password error",
+	CodeInValidCaptcha:                 "Captcha verify error",
+	CodeLogoutError:                    "Logout error",
+	CodeGenCaptchaError:                "Gen captcha error",
+	CodeNeedToLogin:                    "Please login in",
+	CodeEmptyTitle:                     "Title can not empty",
+	CodeEmptyDecription:                "Decription can not empty",
+	CodeRoleExist:                      "Role exist",
+	CodeAddRoleErr:                     "Add role error",
+	CodeGetRoleListErr:                 "Get roleList error",
+	CodeGetRoleErr:                     "Get role info error",
+	CodeEditRoleErr:                    "Edit role error",
+	CodeDeleteRoleErr:                  "Delete role error",
+	CodeManagerExistErr:                "Manager is exist",
+	CodeRoleNotExistErr:                "Role not exist",
+	CodeAddManagerErr:                  "Add manager error",
+	CodeGetIndexManagerListErr:         "Get index manager list error",
+	CodeGetEditManagerErr:              "Get edit manager info error",
+	CodeManagerDoEditErr:               "Manager do edit error",
+	CodeDeleteManagerErr:               "Delete manager error",
+	CodeGetTopAccessListErr:            "Get top access list error",
+	CodeEmptyModuleName:                "Empty module name",
+	CodeAddAccessErr:                   "Add access error",
+	CodeTopAccessListWithAccessListErr: "Get top access list with access list error",
 }
 
 func (code ResCode) Msg() string {

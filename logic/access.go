@@ -42,3 +42,41 @@ func (AccessLogic) DoAdd(p *models.AddAccessParams) (err error) {
 	}
 	return mysql.AddAccess(access)
 }
+
+func (AccessLogic) GetTopAccessListWithAccessList() (newTopAccessListWithAccessList []models.NewTopAccessListWithAccessList, err error) {
+	// 查询出完整的 topAccessListWithAccessList
+	topAccessListWithAccessList, err := mysql.GetTopAccessListWithAccessList()
+	if err != nil {
+		return nil, ErrorGetTopAccessListWithAccessList
+	}
+	// 构造 newTopAccessListWithAccessList
+	for _, TopAccessList := range topAccessListWithAccessList {
+		newTopAccessList := models.NewTopAccessListWithAccessList{
+			Id:          TopAccessList.Id,
+			Type:        TopAccessList.Type,
+			ModuleId:    TopAccessList.ModuleId,
+			Sort:        TopAccessList.Sort,
+			ActionName:  TopAccessList.ActionName,
+			ModuleName:  TopAccessList.ModuleName,
+			Url:         TopAccessList.Url,
+			Description: TopAccessList.Description,
+		}
+		allAccessList := make([]models.NewAccessList, 0)
+		for _, accessList := range TopAccessList.AccessList {
+			newAccessList := models.NewAccessList{
+				Id:          accessList.Id,
+				Type:        accessList.Type,
+				ModuleId:    accessList.ModuleId,
+				Sort:        accessList.Sort,
+				ActionName:  accessList.ActionName,
+				ModuleName:  accessList.ModuleName,
+				Url:         accessList.Url,
+				Description: accessList.Description,
+			}
+			allAccessList = append(allAccessList, newAccessList)
+		}
+		newTopAccessList.AccessList = allAccessList
+		newTopAccessListWithAccessList = append(newTopAccessListWithAccessList, newTopAccessList)
+	}
+	return newTopAccessListWithAccessList, nil
+}

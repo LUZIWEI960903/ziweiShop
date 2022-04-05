@@ -15,7 +15,14 @@ type AccessController struct {
 
 // Index 显示权限列表页面的接口
 func (con AccessController) Index(c *gin.Context) {
-
+	// 业务逻辑
+	topAccessListWithAccessList, err := logic.AccessLogic{}.GetTopAccessListWithAccessList()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con AccessController) Index(c *gin.Context)] [logic.AccessLogic{}.GetTopAccessListWithAccessList()] failed, err:", zap.Error(err))
+		con.error(c, CodeTopAccessListWithAccessListErr)
+		return
+	}
+	con.success(c, topAccessListWithAccessList)
 }
 
 // Add 显示增加权限页面的接口
