@@ -22,7 +22,7 @@ func AddAccess(access *models.Access) (err error) {
 // GetTopAccessListWithAccessList 获取顶级模块及其子权限模块
 func GetTopAccessListWithAccessList() (topAccessListWithAccessList []models.Access, err error) {
 	topAccessListWithAccessList = []models.Access{}
-	err = db.Where("module_id=0 AND is_deleted=0").Preload("AccessList").Find(&topAccessListWithAccessList).Error
+	err = db.Where("module_id=0 AND is_deleted=0").Preload("AccessList", "is_deleted=0").Find(&topAccessListWithAccessList).Error
 	if err != nil {
 		return nil, ErrGetTopAccessListWithAccessList
 	}

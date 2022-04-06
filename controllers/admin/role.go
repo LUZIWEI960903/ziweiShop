@@ -136,3 +136,28 @@ func (con RoleController) Delete(c *gin.Context) {
 	}
 	con.success(c, true)
 }
+
+// Auth 给角色授权页面的接口
+func (con RoleController) Auth(c *gin.Context) {
+	// 解析参数
+	roleIdStr := c.Query("id")
+	roleId, err := strconv.Atoi(roleIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) Auth(c *gin.Context)] [strconv.Atoi(roleIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	data, err := logic.RoleLogic{}.Auth(roleId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) Auth(c *gin.Context)] [logic.RoleLogic{}.Auth(roleId)] failed, err:", zap.Error(err))
+		con.error(c, CodeRoleAuthAccessErr)
+		return
+	}
+	con.success(c, data)
+}
+
+// DoAuth 给角色授权的接口
+func (con RoleController) DoAuth(c *gin.Context) {
+
+}

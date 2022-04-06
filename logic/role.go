@@ -57,3 +57,60 @@ func (RoleLogic) DoEdit(p *models.EditRoleParams) (err error) {
 func (RoleLogic) DeleteRoleById(roleId int) (err error) {
 	return mysql.DeleteRoleById(roleId)
 }
+
+func (RoleLogic) Auth(roleId int) (data []models.ResponseTopAccessItemAuth, err error) {
+	// 查询该roleId是否存在
+	_, err = mysql.GetRoleById(roleId)
+	if err != nil {
+		return nil, ErrorRoleNotExist
+	}
+
+	// 获取所有的access (所有的 顶级模块+其子模块)
+	TopAccessListWithAccessList, err := mysql.GetTopAccessListWithAccessList()
+	if err != nil {
+		return nil, ErrorGetTopAccessListWithAccessList
+	}
+
+	// 根据roleId 查询其所有access
+	accessList, err := mysql.GetAccessListByRoleId(roleId)
+	if err != nil {
+		return nil, ErrorGetAccessByRoleId
+	}
+	accessListMap := make(map[int]int, len(accessList))
+	for _, access := range accessList {
+		// 1:1
+		// 2:2
+		accessListMap[access.AccessId] = access.AccessId
+	}
+	// fmt.Println(accessList)
+
+	// 构造返回数据结构
+	for _, topAccess := range TopAccessListWithAccessList {
+		newTopAccess := models.ResponseTopAccessItemAuth{
+			AccessId:   topAccess.Id,
+			ModuleName: topAccess.ModuleName,
+			//IsCheck:    false,
+			//AccessItem: nil,
+		}
+		// 查看该用户是否存在当前 顶级模块 的授权，如果存在 IsCheck=true
+		if _, ok := accessListMap[topAccess.Id]; ok {
+			newTopAccess.IsCheck = true
+		}
+		AccessItem := make([]models.ResponseAccessItemAuth, 0)
+		for _, access := range topAccess.AccessList {
+			newAccess := models.ResponseAccessItemAuth{
+				AccessId:   access.Id,
+				ActionName: access.ActionName,
+				// IsCheck:    false,
+			}
+			// 查看该用户是否存在当前 子模块 的授权，如果存在 IsCheck=true
+			if _, ok := accessListMap[access.Id]; ok {
+				newAccess.IsCheck = true
+			}
+			AccessItem = append(AccessItem, newAccess)
+		}
+		newTopAccess.AccessItem = AccessItem
+		data = append(data, newTopAccess)
+	}
+	return data, nil
+}

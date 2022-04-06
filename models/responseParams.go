@@ -74,3 +74,16 @@ type EditAccessInfo struct {
 
 	NewTopAccessList []NewTopAccess `json:"access_list"` // 所有的顶级模块
 }
+
+type ResponseAccessItemAuth struct {
+	AccessId   int    `json:"access_id"`   // 权限id
+	ActionName string `json:"action_name"` // 操作名称
+	IsCheck    bool   `json:"is_check"`    // 是否已授权
+}
+
+type ResponseTopAccessItemAuth struct {
+	AccessId   int                      `json:"access_id"`       // 权限id
+	ModuleName string                   `json:"module_name"`     // 模块名字
+	IsCheck    bool                     `json:"is_check"`        // 是否已授权
+	AccessItem []ResponseAccessItemAuth `json:"son_access_list"` // 子模块列表
+}

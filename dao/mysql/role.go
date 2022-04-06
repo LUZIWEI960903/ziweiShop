@@ -75,3 +75,9 @@ func DeleteRoleById(roleId int) (err error) {
 	role.IsDeleted = 1
 	return db.Save(&role).Error
 }
+
+// GetAccessListByRoleId 根据roleId 查询 所有access --- role_access 表
+func GetAccessListByRoleId(roleId int) (accessList []models.RoleAccess, err error) {
+	accessList = []models.RoleAccess{}
+	return accessList, db.Where("role_id=?", roleId).Find(&accessList).Error
+}
