@@ -28,9 +28,16 @@ func (LoginLogic) DoLogin(c *gin.Context, p *models.LoginParams) (err error) {
 	if ok := captcha.VerifyCaptcha(p.CaptchaId, p.CaptchaValue); !ok {
 		return ErrorInValidCaptcha
 	}
+
+	// 根据username查询userId
+	ManagerId := mysql.GetManagerIdByUsername(p.Username)
+	if ManagerId == -1 {
+		return ErrorManagerNotExist
+	}
 	// 设置sessions、cookie
 	session := sessions.Default(c)
 	session.Set("username", p.Username)
+	session.Set("ManagerId", ManagerId)
 	err = session.Save()
 	return
 }

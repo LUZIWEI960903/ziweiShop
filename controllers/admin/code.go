@@ -38,6 +38,7 @@ const (
 	CodeEditAccessErr
 	CodeDeleteAccessErr
 	CodeRoleAuthAccessErr
+	CodeGetAdminIndexPageInfoErr
 )
 
 var (
@@ -78,6 +79,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeEditAccessErr:                  "Edit access error",
 	CodeDeleteAccessErr:                "Delete access error",
 	CodeRoleAuthAccessErr:              "Role auth access error",
+	CodeGetAdminIndexPageInfoErr:       "Get admin index page error",
 }
 
 func (code ResCode) Msg() string {

@@ -16,7 +16,7 @@ func IsManagerExist(username string) (err error) {
 	return nil
 }
 
-// VerifyUsernameAndPassword
+// VerifyUsernameAndPassword 校验username + password
 func VerifyUsernameAndPassword(username, password string) (err error) {
 	u := []models.Manager{}
 	// md5加密密码

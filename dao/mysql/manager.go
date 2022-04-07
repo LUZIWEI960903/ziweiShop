@@ -24,6 +24,16 @@ func GetManagerByIdOrUsername(params interface{}) (err error) {
 	return nil
 }
 
+// GetManagerIdByUsername 根据username 查询userId
+func GetManagerIdByUsername(username string) (userId int) {
+	uList := []models.Manager{}
+	db.Where("username=? AND is_deleted=0", username).First(&uList)
+	if len(uList) < 1 {
+		return -1
+	}
+	return uList[0].Id
+}
+
 // AddManager 增加管理员
 func AddManager(p *models.AddManagerParams) (err error) {
 	manager := models.Manager{
