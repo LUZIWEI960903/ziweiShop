@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
@@ -159,5 +160,20 @@ func (con RoleController) Auth(c *gin.Context) {
 
 // DoAuth 给角色授权的接口
 func (con RoleController) DoAuth(c *gin.Context) {
-
+	// 解析参数
+	p := new(models.DoAuthParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) DoAuth(c *gin.Context)] [c.ShouldBindJSON(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeRoleAuthAccessErr)
+		return
+	}
+	fmt.Println(p)
+	// 业务逻辑
+	err := logic.RoleLogic{}.DoAuth(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con RoleController) DoAuth(c *gin.Context)] [logic.RoleLogic{}.DoAuth(p)] failed, err:", zap.Error(err))
+		con.error(c, CodeRoleAuthAccessErr)
+		return
+	}
+	con.success(c, true)
 }

@@ -56,3 +56,8 @@ type EditAccessParams struct {
 	Url         string `json:"url"`         // 路由跳转地址
 	Description string `json:"description"` // 描述
 }
+
+type DoAuthParams struct {
+	Id         int                         `json:"role_id"`     // 角色id
+	AccessItem []ResponseTopAccessItemAuth `json:"access_item"` // 权限列表
+}

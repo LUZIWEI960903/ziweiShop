@@ -81,3 +81,22 @@ func GetAccessListByRoleId(roleId int) (accessList []models.RoleAccess, err erro
 	accessList = []models.RoleAccess{}
 	return accessList, db.Where("role_id=?", roleId).Find(&accessList).Error
 }
+
+// DeleteAccessByRoleId 删除该roleId 下的所有access --- role_access 表
+func DeleteAccessByRoleId(roleId int) (err error) {
+	roleAccess := models.RoleAccess{}
+	return db.Where("role_id=?", roleId).Delete(&roleAccess).Error
+}
+
+// CreateRoleAccess 插入 roleId accessId --- role_access 表
+func CreateRoleAccess(roleId int, accessIdList []int) (err error) {
+	roleAccess := models.RoleAccess{}
+	for _, accessId := range accessIdList {
+		roleAccess.RoleId = roleId
+		roleAccess.AccessId = accessId
+		if err = db.Create(&roleAccess).Error; err != nil {
+			return err
+		}
+	}
+	return nil
+}

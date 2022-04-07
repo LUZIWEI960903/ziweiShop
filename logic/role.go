@@ -114,3 +114,35 @@ func (RoleLogic) Auth(roleId int) (data []models.ResponseTopAccessItemAuth, err 
 	}
 	return data, nil
 }
+
+func (RoleLogic) DoAuth(p *models.DoAuthParams) (err error) {
+	// 校验 roleId是否存在
+	_, err = mysql.GetRoleById(p.Id)
+	if err != nil {
+		return ErrorRoleNotExist
+	}
+
+	// 校验 顶级模块 + 子模块 是否存在
+	accessIdList := make([]int, 0)
+	for _, topAccessList := range p.AccessItem {
+		if _, err := mysql.GetAccessById(topAccessList.AccessId); err != nil {
+			return err
+		}
+		accessIdList = append(accessIdList, topAccessList.AccessId)
+		for _, accessList := range topAccessList.AccessItem {
+			if _, err := mysql.GetAccessById(accessList.AccessId); err != nil {
+				return err
+			}
+			accessIdList = append(accessIdList, accessList.AccessId)
+		}
+	}
+
+	// 清空 该 roleId 下的所有 access
+	err = mysql.DeleteAccessByRoleId(p.Id)
+	if err != nil {
+		return ErrorDeleteAccessByRoleId
+	}
+
+	// 根据accessId 插入数据
+	return mysql.CreateRoleAccess(p.Id, accessIdList)
+}
