@@ -17,7 +17,14 @@ type FocusController struct {
 
 // Index 轮播图主页面的接口
 func (con FocusController) Index(c *gin.Context) {
-
+	// 业务逻辑
+	focusList, err := logic.FocusLogic{}.GetFocusList()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [(con FocusController) Index(c *gin.Context)] [logic.FocusLogic{}.GetFocusList()] failed, err:", zap.Error(err))
+		con.error(c, CodeGetFocusListErr)
+		return
+	}
+	con.success(c, focusList)
 }
 
 // Add 增加轮播图页面的接口
