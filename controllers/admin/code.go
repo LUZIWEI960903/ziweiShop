@@ -7,8 +7,9 @@ type ResCode int
 const (
 	CodeSuccess ResCode = iota
 	CodeServerBusy
+	CodeInvalidAccess
 
-	CodeInValidParams = 1000 + iota
+	CodeInValidParams ResCode = 1000 + iota
 	CodeManagerNotExist
 	CodeManagerPasswordErr
 	CodeInValidCaptcha
@@ -49,6 +50,7 @@ var (
 var CodeMsgMap = map[ResCode]string{
 	CodeSuccess:                        "",
 	CodeServerBusy:                     "Server busy",
+	CodeInvalidAccess:                  "Invalid access",
 	CodeInValidParams:                  "Invalid params",
 	CodeManagerNotExist:                "Manager is not exist",
 	CodeManagerPasswordErr:             "Manager username or password error",

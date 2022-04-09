@@ -21,11 +21,12 @@ func (con MainPageController) Index(c *gin.Context) {
 		return
 	}
 	fmt.Println("Welcome ", username)
-	managerId, ok := session.Get("ManagerId").(int)
+	managerId, ok := session.Get("managerId").(int)
 	if !ok {
 		con.error(c, CodeNeedToLogin)
 		return
 	}
+	//fmt.Printf("main page managerid%v managername:%v\n", managerId, username)
 	// 业务逻辑
 	data, err := logic.MainPageLogic{}.GetAdminIndexPageInfo(managerId)
 	if err != nil {

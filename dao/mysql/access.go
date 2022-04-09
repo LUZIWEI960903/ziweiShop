@@ -87,3 +87,27 @@ func DeleteAccessById(accessId int) (err error) {
 	access.IsDeleted = 1
 	return db.Save(&access).Error
 }
+
+// GetAccessIdByUrl 根据url 查询accessId  --- access 表
+func GetAccessIdByUrl(url string) (accessId int) {
+	access := []models.Access{}
+	db.Where("url=? AND is_deleted=0", url).First(&access)
+	if len(access) < 1 {
+		return -1
+	}
+	return access[0].Id
+}
+
+// GetAllAccessUrl 获取所有url  --- access 表
+func GetAllAccessUrl() (accessUrlList []models.ResponseAccessUrl) {
+	accessList := []models.Access{}
+	db.Find(&accessList)
+	if len(accessList) < 1 {
+		return nil
+	}
+	for _, access := range accessList {
+		accessUrl := models.ResponseAccessUrl{Url: access.Url}
+		accessUrlList = append(accessUrlList, accessUrl)
+	}
+	return accessUrlList
+}

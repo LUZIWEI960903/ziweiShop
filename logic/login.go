@@ -30,14 +30,15 @@ func (LoginLogic) DoLogin(c *gin.Context, p *models.LoginParams) (err error) {
 	}
 
 	// 根据username查询userId
-	ManagerId := mysql.GetManagerIdByUsername(p.Username)
-	if ManagerId == -1 {
+	ManagerInfo := mysql.GetManagerInfoByUsername(p.Username)
+	if ManagerInfo == nil {
 		return ErrorManagerNotExist
 	}
 	// 设置sessions、cookie
 	session := sessions.Default(c)
 	session.Set("username", p.Username)
-	session.Set("ManagerId", ManagerId)
+	session.Set("managerId", ManagerInfo.Id)
+	session.Set("roleId", ManagerInfo.RoleId)
 	err = session.Save()
 	return
 }

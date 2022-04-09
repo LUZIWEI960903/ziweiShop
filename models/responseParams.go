@@ -87,3 +87,7 @@ type ResponseTopAccessItemAuth struct {
 	IsCheck    bool                     `json:"is_check"`        // 是否已授权
 	AccessItem []ResponseAccessItemAuth `json:"son_access_list"` // 子模块列表
 }
+
+type ResponseAccessUrl struct {
+	Url string // 路由跳转地址
+}
