@@ -69,10 +69,14 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/focus", admin.FocusController{}.Index)
 		// 添加轮播图页面
 		adminRouters.GET("/focus/add", admin.FocusController{}.Add)
+		// 添加轮播图
+		adminRouters.POST("/focus/add", admin.FocusController{}.DoAdd)
 		// 编辑轮播图页面
 		adminRouters.GET("/focus/edit", admin.FocusController{}.Edit)
+		// 编辑轮播图
+		adminRouters.PUT("/focus/edit", admin.FocusController{}.DoEdit)
 		// 删除轮播图页面
-		adminRouters.GET("/focus/delete", admin.FocusController{}.Delete)
+		adminRouters.DELETE("/focus/delete", admin.FocusController{}.Delete)
 
 	}
 }

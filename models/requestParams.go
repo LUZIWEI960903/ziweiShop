@@ -61,3 +61,10 @@ type DoAuthParams struct {
 	Id         int                         `json:"role_id"`     // 角色id
 	AccessItem []ResponseTopAccessItemAuth `json:"access_item"` // 权限列表
 }
+
+type AddFocusParams struct {
+	FocusType int    `json:"focus_type"` // 轮播图类型 1.web 2.app 3.小程序
+	Sort      int    `json:"sort"`       // 排序方式
+	Title     string `json:"title"`      // 轮播图名称
+	Link      string `json:"links"`      // 跳转地址
+}
