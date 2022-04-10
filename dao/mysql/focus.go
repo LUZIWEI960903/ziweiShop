@@ -26,3 +26,13 @@ func GetFocusList() (focusList []models.Focus, err error) {
 	err = db.Where("is_deleted=0").Find(&focusList).Error
 	return focusList, err
 }
+
+// GetFocusById 根据 focusId 获取 focus  --- focus 表
+func GetFocusById(focusId int) (focus *models.Focus, err error) {
+	focus = &models.Focus{}
+	err = db.Where("id=? AND is_deleted=0", focusId).First(&focus).Error
+	if err != nil {
+		return nil, err
+	}
+	return focus, nil
+}

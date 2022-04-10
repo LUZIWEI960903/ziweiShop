@@ -101,3 +101,18 @@ type ResponseFocus struct {
 	FocusImg  string `json:"focus_img"`  // 轮播图图片
 	Link      string `json:"link"`       // 跳转地址
 }
+
+type FocusType struct {
+	TypeId int    `json:"type_id"`
+	Type   string `json:"type"`
+}
+
+type ResponseEditFocus struct {
+	Id        int         `json:"id"`         // 轮播图id
+	FocusType []FocusType `json:"focus_type"` // 轮播图类型 1.web 2.app 3.小程序
+	Sort      int         `json:"sort"`       // 排序方式
+	Status    int         `json:"status"`     // 状态
+	Title     string      `json:"title"`      // 轮播图名称
+	FocusImg  string      `json:"focus_img"`  // 轮播图图片
+	Link      string      `json:"link"`       // 跳转地址
+}

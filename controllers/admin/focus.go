@@ -29,7 +29,7 @@ func (con FocusController) Index(c *gin.Context) {
 
 // Add 增加轮播图页面的接口
 func (con FocusController) Add(c *gin.Context) {
-
+	con.success(c, true)
 }
 
 // DoAdd 增加轮播图的接口
@@ -74,7 +74,22 @@ func (con FocusController) DoAdd(c *gin.Context) {
 
 // Edit 编辑轮播图页面的接口
 func (con FocusController) Edit(c *gin.Context) {
-
+	// 解析参数
+	focusIdStr := c.Query("id")
+	focusId, err := strconv.Atoi(focusIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [(con FocusController) Edit(c *gin.Context)] [strconv.Atoi(focusIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	focusInfo, err := logic.FocusLogic{}.GetFocusById(focusId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [(con FocusController) Edit(c *gin.Context)] [logic.FocusLogic{}.GetFocusById(focusId)] failed, err:", zap.Error(err))
+		con.error(c, CodeGetFocusErr)
+		return
+	}
+	con.success(c, focusInfo)
 }
 
 // DoEdit 编辑轮播图的接口
