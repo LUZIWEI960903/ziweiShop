@@ -9,3 +9,12 @@ func AjaxChangeStatus(id, table, field string) (err error) {
 	}
 	return nil
 }
+
+// AjaxChangeSort 使用 Ajax 更新指定表的指定id的sort
+func AjaxChangeSort(id, table, field, num string) (err error) {
+
+	if RowsAffected := db.Exec("update "+table+" set "+field+" = "+num+" where id = ? AND is_deleted=0;", id).RowsAffected; RowsAffected != 1 {
+		return ErrAjaxChangeStatus
+	}
+	return nil
+}

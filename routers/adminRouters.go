@@ -80,6 +80,8 @@ func adminRoutersInit(r *gin.Engine) {
 
 		// Ajax更新 指定表的 指定id的 status
 		adminRouters.PUT("/changeStatus", admin.AJAXController{}.ChangeStatus)
+		// Ajax更新 指定表的 指定id的 sort
+		adminRouters.PUT("/changeSort", admin.AJAXController{}.ChangeSort)
 
 	}
 }
