@@ -45,6 +45,7 @@ const (
 	CodeAddFocusErr
 	CodeGetFocusListErr
 	CodeEditFocusErr
+	CodeDeleteFocusErr
 )
 
 var (
@@ -92,6 +93,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeAddFocusErr:                    "Add focus error",
 	CodeGetFocusListErr:                "Get focus list error",
 	CodeEditFocusErr:                   "Edit focus error",
+	CodeDeleteFocusErr:                 "Delete focus error",
 }
 
 func (code ResCode) Msg() string {

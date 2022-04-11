@@ -141,5 +141,20 @@ func (con FocusController) DoEdit(c *gin.Context) {
 
 // Delete 删除轮播图的接口
 func (con FocusController) Delete(c *gin.Context) {
-
+	// 解析参数
+	focusIdStr := c.Query("id")
+	focusId, err := strconv.Atoi(focusIdStr)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [(con FocusController) Delete(c *gin.Context)] [strconv.Atoi(focusIdStr)] failed, err:", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	err = logic.FocusLogic{}.DeleteFocus(focusId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [(con FocusController) Delete(c *gin.Context)] [logic.FocusLogic{}.DeleteFocus(focusId)] failed, err:", zap.Error(err))
+		con.error(c, CodeDeleteFocusErr)
+		return
+	}
+	con.success(c, true)
 }

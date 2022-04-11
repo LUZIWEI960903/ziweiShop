@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"os"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 )
@@ -72,4 +73,17 @@ func (FocusLogic) GetFocusById(focusId int) (focusInfo *models.ResponseEditFocus
 
 func (FocusLogic) DoEdit(p *models.EditFocusParams, focusImgSrc string) (err error) {
 	return mysql.EditFocus(p, focusImgSrc)
+}
+
+func (FocusLogic) DeleteFocus(focusId int) (err error) {
+	dst, err := mysql.DeleteFocusById(focusId)
+	if err != nil {
+		return err
+	}
+
+	// 删除存储图片
+	if dst != "" {
+		err = os.Remove(dst)
+	}
+	return
 }

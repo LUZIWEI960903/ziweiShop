@@ -54,3 +54,14 @@ func EditFocus(p *models.EditFocusParams, focusImgSrc string) (err error) {
 	}
 	return db.Save(&focus).Error
 }
+
+// DeleteFocusById 根据focusId 逻辑删除 focus  --- focus 表
+func DeleteFocusById(focusId int) (dst string, err error) {
+	focus := []models.Focus{}
+	db.Where("id=? AND is_deleted=0", focusId).First(&focus)
+	if len(focus) < 1 {
+		return "", ErrGetFocus
+	}
+	focus[0].IsDeleted = 1
+	return focus[0].FocusImg, db.Save(&focus).Error
+}
