@@ -78,5 +78,8 @@ func adminRoutersInit(r *gin.Engine) {
 		// 删除轮播图页面
 		adminRouters.DELETE("/focus/delete", admin.FocusController{}.Delete)
 
+		// Ajax更新 指定表的 指定id的 status
+		adminRouters.PUT("/changeStatus", admin.AJAXController{}.ChangeStatus)
+
 	}
 }

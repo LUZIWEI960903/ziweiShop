@@ -16,4 +16,6 @@ var (
 	ErrGetAccess                      = errors.New("Get access info error~~")
 
 	ErrGetFocus = errors.New("Get focus error~~")
+
+	ErrAjaxChangeStatus = errors.New("Update status error~~")
 )

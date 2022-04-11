@@ -46,6 +46,7 @@ const (
 	CodeGetFocusListErr
 	CodeEditFocusErr
 	CodeDeleteFocusErr
+	CodeAjaxChangeStatusErr
 )
 
 var (
@@ -94,6 +95,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeGetFocusListErr:                "Get focus list error",
 	CodeEditFocusErr:                   "Edit focus error",
 	CodeDeleteFocusErr:                 "Delete focus error",
+	CodeAjaxChangeStatusErr:            "Ajax change status error",
 }
 
 func (code ResCode) Msg() string {
