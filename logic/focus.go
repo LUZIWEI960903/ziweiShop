@@ -69,3 +69,7 @@ func (FocusLogic) GetFocusById(focusId int) (focusInfo *models.ResponseEditFocus
 	}
 	return focusInfo, nil
 }
+
+func (FocusLogic) DoEdit(p *models.EditFocusParams, focusImgSrc string) (err error) {
+	return mysql.EditFocus(p, focusImgSrc)
+}

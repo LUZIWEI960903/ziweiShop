@@ -68,3 +68,12 @@ type AddFocusParams struct {
 	Title     string `json:"title"`      // 轮播图名称
 	Link      string `json:"links"`      // 跳转地址
 }
+
+type EditFocusParams struct {
+	Id        int    `json:"id"`         // 轮播图id
+	FocusType int    `json:"focus_type"` // 轮播图类型 1.web 2.app 3.小程序
+	Sort      int    `json:"sort"`       // 排序方式
+	Status    int    `json:"status"`     // 状态
+	Title     string `json:"title"`      // 轮播图名称
+	Link      string `json:"link"`       // 跳转地址
+}

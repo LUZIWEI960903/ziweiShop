@@ -14,4 +14,6 @@ var (
 	ErrGetTopAccessList               = errors.New("Get top access list error~~")
 	ErrGetTopAccessListWithAccessList = errors.New("Get top access list with access list error~~")
 	ErrGetAccess                      = errors.New("Get access info error~~")
+
+	ErrGetFocus = errors.New("Get focus error~~")
 )

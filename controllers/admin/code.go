@@ -44,6 +44,7 @@ const (
 	CodeUploadImgErr
 	CodeAddFocusErr
 	CodeGetFocusListErr
+	CodeEditFocusErr
 )
 
 var (
@@ -90,6 +91,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeUploadImgErr:                   "Upload image error",
 	CodeAddFocusErr:                    "Add focus error",
 	CodeGetFocusListErr:                "Get focus list error",
+	CodeEditFocusErr:                   "Edit focus error",
 }
 
 func (code ResCode) Msg() string {

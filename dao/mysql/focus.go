@@ -36,3 +36,21 @@ func GetFocusById(focusId int) (focus *models.Focus, err error) {
 	}
 	return focus, nil
 }
+
+// EditFocus 修改轮播图   --- focus 表
+func EditFocus(p *models.EditFocusParams, focusImgSrc string) (err error) {
+	focus := []models.Focus{}
+	db.Where("id=? AND is_deleted=0", p.Id).First(&focus)
+	if len(focus) < 1 {
+		return ErrGetFocus
+	}
+	focus[0].FocusType = p.FocusType
+	focus[0].Sort = p.Sort
+	focus[0].Status = p.Status
+	focus[0].Title = p.Title
+	focus[0].Link = p.Link
+	if focusImgSrc != "" {
+		focus[0].FocusImg = focusImgSrc
+	}
+	return db.Save(&focus).Error
+}
