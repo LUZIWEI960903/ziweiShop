@@ -49,6 +49,7 @@ const (
 	CodeAjaxChangeStatusErr
 	CodeAjaxChangeSortErr
 	CodeAddGoodsCateErr
+	CodeGetTopGoodsCateListErr
 )
 
 var (
@@ -100,6 +101,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeAjaxChangeStatusErr:            "Ajax change status error",
 	CodeAjaxChangeSortErr:              "Ajax change sort error",
 	CodeAddGoodsCateErr:                "Add goods cate error",
+	CodeGetTopGoodsCateListErr:         "Get top goods cate list error",
 }
 
 func (code ResCode) Msg() string {

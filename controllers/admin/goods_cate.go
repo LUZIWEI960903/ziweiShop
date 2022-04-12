@@ -23,7 +23,14 @@ func (con GoodsCateController) Index(c *gin.Context) {
 
 // Add 增加商品分类页面的接口
 func (con GoodsCateController) Add(c *gin.Context) {
-
+	// 业务逻辑
+	TopGoodsCateList, err := logic.GoodsCateLogic{}.GetTopGoodsCateList()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) Add(c *gin.Context)] [logic.GoodsCateLogic{}.GetTopGoodsCateList()] failed, ", zap.Error(err))
+		con.error(c, CodeGetTopGoodsCateListErr)
+		return
+	}
+	con.success(c, TopGoodsCateList)
 }
 
 // DoAdd 增加商品分类的接口

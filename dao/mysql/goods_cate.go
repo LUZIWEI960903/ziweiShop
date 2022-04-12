@@ -23,3 +23,10 @@ func AddGoodsCate(p *models.AddGoodsCateParams, cateImg string) (err error) {
 	}
 	return db.Create(&goodsCate).Error
 }
+
+// GetTopGoodsCateList 查询所有 顶级商品分类  --- goods_cate 表
+func GetTopGoodsCateList() (oTopGoodsCateList []models.GoodsCate, err error) {
+	oTopGoodsCateList = []models.GoodsCate{}
+	err = db.Where("pid=0 AND is_deleted=0").Find(&oTopGoodsCateList).Error
+	return oTopGoodsCateList, err
+}
