@@ -19,7 +19,8 @@ func InitAdminAuthMiddleware(c *gin.Context) {
 	username, ok := session.Get("username").(string)
 	roleId, _ := session.Get("roleId").(int)
 	managerId, _ := session.Get("managerId").(int)
-	fmt.Printf("username:%v, roleId:%v, managerId:%v\n", username, roleId, managerId)
+	isSuper, _ := session.Get("isSuper").(int)
+	fmt.Printf("username:%v, roleId:%v, managerId:%v, isSuper:%v\n", username, roleId, managerId, isSuper)
 
 	if !ok || username == "" {
 		if pathname != "/admin/login" && pathname != "/admin/captcha" {
@@ -37,9 +38,9 @@ func InitAdminAuthMiddleware(c *gin.Context) {
 				urlMap[accessUrl.Url] = true
 			}
 		}
-		fmt.Printf("urlMap:%v\n", urlMap)
+		//fmt.Printf("urlMap:%v\n", urlMap)
 		url := strings.Replace(pathname, "/admin", "", 1)
-		if _, ok := urlMap[url]; ok {
+		if _, ok := urlMap[url]; ok && isSuper != 1 {
 			// 根据 roleId 查询该 manager 对应的 role 其下的所有 access
 			accessList, err := mysql.GetAccessListByRoleId(roleId)
 			if err != nil {

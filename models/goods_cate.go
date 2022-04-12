@@ -11,8 +11,8 @@ type GoodsCate struct {
 	CateImg     string // 商品分类图片地址
 	Link        string // 商品分类跳转地址
 	Template    string // 商品分类加载的模板
-	SubTitle    string // 商品分类副标题
-	Keywords    string // 商品分类关键词
+	SubTitle    string // 商品分类Seo标题
+	Keywords    string // 商品分类Seo关键词
 	Description string // 商品分类描述
 }
 

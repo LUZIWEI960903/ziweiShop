@@ -39,6 +39,7 @@ func (LoginLogic) DoLogin(c *gin.Context, p *models.LoginParams) (err error) {
 	session.Set("username", p.Username)
 	session.Set("managerId", ManagerInfo.Id)
 	session.Set("roleId", ManagerInfo.RoleId)
+	session.Set("isSuper", ManagerInfo.IsSuper)
 	err = session.Save()
 	return
 }

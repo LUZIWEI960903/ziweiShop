@@ -83,5 +83,18 @@ func adminRoutersInit(r *gin.Engine) {
 		// Ajax更新 指定表的 指定id的 sort
 		adminRouters.PUT("/changeSort", admin.AJAXController{}.ChangeSort)
 
+		// 商品分类页面
+		adminRouters.GET("/goodsCate", admin.GoodsCateController{}.Index)
+		// 添加商品分类页面
+		adminRouters.GET("/goodsCate/add", admin.GoodsCateController{}.Add)
+		// 添加商品分类
+		adminRouters.POST("/goodsCate/add", admin.GoodsCateController{}.DoAdd)
+		// 编辑商品分类页面
+		adminRouters.GET("/goodsCate/edit", admin.GoodsCateController{}.Edit)
+		// 编辑商品分类
+		adminRouters.PUT("/goodsCate/edit", admin.GoodsCateController{}.DoEdit)
+		// 删除商品分类页面
+		adminRouters.DELETE("/goodsCate/delete", admin.GoodsCateController{}.Delete)
+
 	}
 }

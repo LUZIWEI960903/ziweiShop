@@ -77,3 +77,15 @@ type EditFocusParams struct {
 	Title     string `json:"title"`      // 轮播图名称
 	Link      string `json:"link"`       // 跳转地址
 }
+
+type AddGoodsCateParams struct {
+	Pid         int    `json:"pid"`         // 二级商品分类id与Id自关联
+	Status      int    `json:"status"`      // 商品分类状态
+	Sort        int    `json:"sort"`        // 商品分类排序
+	Title       string `json:"title"`       // 商品分类名
+	Link        string `json:"link"`        // 商品分类跳转地址
+	Template    string `json:"template"`    // 商品分类加载的模板
+	SubTitle    string `json:"sub_title"`   // 商品分类Seo标题
+	Keywords    string `json:"keywords"`    // 商品分类Seo关键词
+	Description string `json:"description"` // 商品分类描述
+}
