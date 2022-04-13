@@ -30,3 +30,10 @@ func GetTopGoodsCateList() (oTopGoodsCateList []models.GoodsCate, err error) {
 	err = db.Where("pid=0 AND is_deleted=0").Find(&oTopGoodsCateList).Error
 	return oTopGoodsCateList, err
 }
+
+// GetTopGoodsCateWithGoodsCateList 查询所有 顶级商品分类+子商品分类  --- goods_cate 表
+func GetTopGoodsCateWithGoodsCateList() (oTopGoodsCateWithGoodsCateList []models.GoodsCate, err error) {
+	oTopGoodsCateWithGoodsCateList = []models.GoodsCate{}
+	err = db.Where("pid=0 AND is_deleted=0").Preload("GoodsCateItems", "is_deleted=0").Find(&oTopGoodsCateWithGoodsCateList).Error
+	return oTopGoodsCateWithGoodsCateList, err
+}

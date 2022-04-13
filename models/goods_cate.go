@@ -14,6 +14,8 @@ type GoodsCate struct {
 	SubTitle    string // 商品分类Seo标题
 	Keywords    string // 商品分类Seo关键词
 	Description string // 商品分类描述
+
+	GoodsCateItems []GoodsCate `gorm:"foreignKey:Pid;references:Id"` // 该商品分类下的子分类
 }
 
 func (GoodsCate) TableName() string {

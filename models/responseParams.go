@@ -130,3 +130,18 @@ type TopGoodsCate struct {
 	Keywords    string `json:"keywords"`    // 商品分类Seo关键词
 	Description string `json:"description"` // 商品分类描述
 }
+
+type GoodsCateWithGoodsCate struct {
+	Id             int            `json:"id"`               // 商品分类id
+	Pid            int            `json:"pid"`              // 二级商品分类id与Id自关联
+	Status         int            `json:"status"`           // 商品分类状态
+	Sort           int            `json:"sort"`             // 商品分类排序
+	Title          string         `json:"title"`            // 商品分类名
+	CateImg        string         `json:"cate_img"`         // 商品分类图片地址
+	Link           string         `json:"link"`             // 商品分类跳转地址
+	Template       string         `json:"template"`         // 商品分类加载的模板
+	SubTitle       string         `json:"sub_title"`        // 商品分类Seo标题
+	Keywords       string         `json:"keywords"`         // 商品分类Seo关键词
+	Description    string         `json:"description"`      // 商品分类描述
+	GoodsCateItems []TopGoodsCate `json:"goods_cate_items"` // 该商品分类下的子分类
+}

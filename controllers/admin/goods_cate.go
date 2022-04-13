@@ -18,7 +18,14 @@ type GoodsCateController struct {
 
 // Index 商品分类页面的接口
 func (con GoodsCateController) Index(c *gin.Context) {
-
+	// 业务逻辑
+	TopGoodsCateWithGoodsCateList, err := logic.GoodsCateLogic{}.GetTopGoodsCateWithGoodsCateList()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) Index(c *gin.Context)] [logic.GoodsCateLogic{}.GetTopGoodsCateWithGoodsCateList()] failed, ", zap.Error(err))
+		con.error(c, CodeGetTopGoodsCateWithGoodsCateListErr)
+		return
+	}
+	con.success(c, TopGoodsCateWithGoodsCateList)
 }
 
 // Add 增加商品分类页面的接口
