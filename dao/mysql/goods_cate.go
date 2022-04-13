@@ -37,3 +37,13 @@ func GetTopGoodsCateWithGoodsCateList() (oTopGoodsCateWithGoodsCateList []models
 	err = db.Where("pid=0 AND is_deleted=0").Preload("GoodsCateItems", "is_deleted=0").Find(&oTopGoodsCateWithGoodsCateList).Error
 	return oTopGoodsCateWithGoodsCateList, err
 }
+
+// GetGoodsCateById 根据 goodsCateId 查询该商品分类信息  --- goods_cate 表
+func GetGoodsCateById(goodsCateId int) (ogoodsCateInfo *models.GoodsCate, err error) {
+	ogoodsCateList := []models.GoodsCate{}
+	err = db.Where("id=? AND is_deleted=0", goodsCateId).First(&ogoodsCateList).Error
+	if len(ogoodsCateList) < 1 {
+		return nil, ErrGetGoodsCate
+	}
+	return &ogoodsCateList[0], err
+}

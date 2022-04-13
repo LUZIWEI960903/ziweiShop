@@ -64,15 +64,10 @@ func (con GoodsCateController) DoAdd(c *gin.Context) {
 		Description: c.PostForm("description"),
 	}
 
-	cateImg, err := tools.UploadImg(c, "cate_img")
-	if err != nil {
-		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) DoAdd(c *gin.Context)] [tools.UploadImg(c, \"cate_img\")] failed, ", zap.Error(err))
-		con.error(c, CodeUploadImgErr)
-		return
-	}
+	cateImg, _ := tools.UploadImg(c, "cate_img")
 
 	// 业务逻辑
-	err = logic.GoodsCateLogic{}.DoAdd(p, cateImg)
+	err := logic.GoodsCateLogic{}.DoAdd(p, cateImg)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) DoAdd(c *gin.Context)] [logic.GoodsCateLogic{}.DoAdd(p, cateImg)] failed, ", zap.Error(err))
 		con.error(c, CodeAddGoodsCateErr)
@@ -83,7 +78,21 @@ func (con GoodsCateController) DoAdd(c *gin.Context) {
 
 // Edit 编辑商品分类页面的接口
 func (con GoodsCateController) Edit(c *gin.Context) {
-
+	// 解析参数
+	goodsCateId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) Edit(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	goodsCateInfo, err := logic.GoodsCateLogic{}.GetGoodsCateInfo(goodsCateId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) Edit(c *gin.Context)] [logic.GoodsCateLogic{}.GetGoodsCateInfo(goodsCateId)] failed, ", zap.Error(err))
+		con.error(c, CodeGetGoodsCateInfoErr)
+		return
+	}
+	con.success(c, goodsCateInfo)
 }
 
 // DoEdit 编辑商品分类的接口

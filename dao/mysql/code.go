@@ -18,4 +18,6 @@ var (
 	ErrGetFocus = errors.New("Get focus error~~")
 
 	ErrAjaxChangeStatus = errors.New("Update status error~~")
+
+	ErrGetGoodsCate = errors.New("Get goods cate info error~~")
 )

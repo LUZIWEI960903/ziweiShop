@@ -80,3 +80,48 @@ func (GoodsCateLogic) GetTopGoodsCateWithGoodsCateList() (TopGoodsCateWithGoodsC
 	}
 	return TopGoodsCateWithGoodsCateList, nil
 }
+
+func (GoodsCateLogic) GetGoodsCateInfo(goodsCateId int) (goodsCateInfo *models.GoodsCateInfo, err error) {
+	// 根据 goodsCateId 查询该商品分类信息
+	ogoodsCateInfo, err := mysql.GetGoodsCateById(goodsCateId)
+	if err != nil {
+		return nil, err
+	}
+	// 查询所有 顶级商品分类
+	otopGoodsCateList, err := mysql.GetTopGoodsCateList()
+	if err != nil {
+		return nil, err
+	}
+	// 构造返回数据
+	topGoodsCateList := make([]models.TopGoodsCate1, 0)
+	topGoodsCateList1 := make([]models.TopGoodsCate1, 0)
+	topGoodsCateList2 := make([]models.TopGoodsCate1, 0)
+	for _, topGoodsCate := range otopGoodsCateList {
+		newTopGoodsCate := models.TopGoodsCate1{
+			Id:    topGoodsCate.Id,
+			Pid:   topGoodsCate.Pid,
+			Title: topGoodsCate.Title,
+		}
+		if topGoodsCate.Id == ogoodsCateInfo.Pid {
+			topGoodsCateList1 = append(topGoodsCateList1, newTopGoodsCate)
+		} else {
+			topGoodsCateList2 = append(topGoodsCateList2, newTopGoodsCate)
+		}
+		topGoodsCateList = append(topGoodsCateList1, topGoodsCateList2...)
+	}
+	goodsCateInfo = &models.GoodsCateInfo{
+		Id:            ogoodsCateInfo.Id,
+		Status:        ogoodsCateInfo.Status,
+		Sort:          ogoodsCateInfo.Sort,
+		Title:         ogoodsCateInfo.Title,
+		CateImg:       ogoodsCateInfo.CateImg,
+		Link:          ogoodsCateInfo.Link,
+		Template:      ogoodsCateInfo.Template,
+		SubTitle:      ogoodsCateInfo.SubTitle,
+		Keywords:      ogoodsCateInfo.Keywords,
+		Description:   ogoodsCateInfo.Description,
+		TopGoodsCate1: topGoodsCateList,
+	}
+
+	return goodsCateInfo, nil
+}
