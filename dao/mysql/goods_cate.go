@@ -72,6 +72,26 @@ func EditGoodsCate(p *models.EditGoodsCateParams, cateImg string) (err error) {
 	return db.Save(&goodsCate).Error
 }
 
+// IsTopGoodsCate 根据 goodsCateId 查询是否为顶级分类  --- goods_cate 表
+func IsTopGoodsCate(goodsCateId int) bool {
+	goodsCate := models.GoodsCate{}
+	RowsAffected := db.Where("id=? AND pid=0 AND is_deleted=0", goodsCateId).First(&goodsCate).RowsAffected
+	if RowsAffected != 1 {
+		return false
+	}
+	return true
+}
+
+// IsSonGoodsCate 根据 goodsCateId 查询其下是否存在子分类  --- goods_cate 表
+func IsSonGoodsCate(goodsCateId int) bool {
+	goodsCate := []models.GoodsCate{}
+	db.Where("pid=? AND is_deleted=0", goodsCateId).First(&goodsCate)
+	if len(goodsCate) < 1 {
+		return false
+	}
+	return true
+}
+
 // DeleteGoodsCate 根据 goodsCateId 逻辑删除 商品类型 --- goods_cate 表
 func DeleteGoodsCate(goodsCateId int) (cateImg string, err error) {
 	goodsCate := []models.GoodsCate{}

@@ -132,6 +132,13 @@ func (GoodsCateLogic) DoEdit(p *models.EditGoodsCateParams, cateImg string) (err
 }
 
 func (GoodsCateLogic) Delete(goodsCateId int) (err error) {
+	// 判断是否为 顶级商品分类
+	if ok := mysql.IsTopGoodsCate(goodsCateId); ok {
+		// 判断 是否存在子分类
+		if ok1 := mysql.IsSonGoodsCate(goodsCateId); ok1 {
+			return ErrorDeleteGoodsCate
+		}
+	}
 	cateImg, err := mysql.DeleteGoodsCate(goodsCateId)
 	if err != nil {
 		return err
