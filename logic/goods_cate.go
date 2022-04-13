@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"os"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 )
@@ -128,4 +129,17 @@ func (GoodsCateLogic) GetGoodsCateInfo(goodsCateId int) (goodsCateInfo *models.G
 
 func (GoodsCateLogic) DoEdit(p *models.EditGoodsCateParams, cateImg string) (err error) {
 	return mysql.EditGoodsCate(p, cateImg)
+}
+
+func (GoodsCateLogic) Delete(goodsCateId int) (err error) {
+	cateImg, err := mysql.DeleteGoodsCate(goodsCateId)
+	if err != nil {
+		return err
+	}
+	// 删除对应图片
+	if cateImg != "" {
+		err1 := os.Remove(cateImg)
+		return err1
+	}
+	return nil
 }

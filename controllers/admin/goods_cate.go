@@ -135,5 +135,19 @@ func (con GoodsCateController) DoEdit(c *gin.Context) {
 
 // Delete 删除商品分类的接口
 func (con GoodsCateController) Delete(c *gin.Context) {
-
+	// 解析参数
+	goodsCateId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) Delete(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	err = logic.GoodsCateLogic{}.Delete(goodsCateId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) Delete(c *gin.Context)] [logic.GoodsCateLogic{}.Delete(goodsCateId)] failed, ", zap.Error(err))
+		con.error(c, CodeDeleteGoodsCateErr)
+		return
+	}
+	con.success(c, true)
 }

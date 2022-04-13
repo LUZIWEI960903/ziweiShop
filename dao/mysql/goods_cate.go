@@ -71,3 +71,15 @@ func EditGoodsCate(p *models.EditGoodsCateParams, cateImg string) (err error) {
 	}
 	return db.Save(&goodsCate).Error
 }
+
+// DeleteGoodsCate 根据 goodsCateId 逻辑删除 商品类型 --- goods_cate 表
+func DeleteGoodsCate(goodsCateId int) (cateImg string, err error) {
+	goodsCate := []models.GoodsCate{}
+	db.Where("id=? AND is_deleted=0", goodsCateId).First(&goodsCate)
+	if len(goodsCate) < 1 {
+		return "", ErrGetGoodsCate
+	}
+
+	goodsCate[0].IsDeleted = 1
+	return goodsCate[0].CateImg, db.Save(&goodsCate).Error
+}
