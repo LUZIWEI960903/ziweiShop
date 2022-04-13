@@ -99,11 +99,11 @@ func (con GoodsCateController) Edit(c *gin.Context) {
 func (con GoodsCateController) DoEdit(c *gin.Context) {
 	// 解析参数
 	id, err1 := strconv.Atoi(c.PostForm("id"))
-	pid, err1 := strconv.Atoi(c.PostForm("pid"))
-	status, err2 := strconv.Atoi(c.PostForm("status"))
-	sort, err3 := strconv.Atoi(c.PostForm("sort"))
+	pid, err2 := strconv.Atoi(c.PostForm("pid"))
+	status, err3 := strconv.Atoi(c.PostForm("status"))
+	sort, err4 := strconv.Atoi(c.PostForm("sort"))
 
-	if err1 != nil || err2 != nil || err3 != nil {
+	if err1 != nil || err2 != nil || err3 != nil || err4 != nil {
 		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) DoAdd(c *gin.Context)] [strconv.Atoi(c.PostForm())] failed, ", zap.Error(errors.New("Invalid params")))
 		con.error(c, CodeInValidParams)
 		return
