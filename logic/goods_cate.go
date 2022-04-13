@@ -125,3 +125,7 @@ func (GoodsCateLogic) GetGoodsCateInfo(goodsCateId int) (goodsCateInfo *models.G
 
 	return goodsCateInfo, nil
 }
+
+func (GoodsCateLogic) DoEdit(p *models.EditGoodsCateParams, cateImg string) (err error) {
+	return mysql.EditGoodsCate(p, cateImg)
+}

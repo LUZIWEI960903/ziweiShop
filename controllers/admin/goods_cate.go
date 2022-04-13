@@ -97,7 +97,40 @@ func (con GoodsCateController) Edit(c *gin.Context) {
 
 // DoEdit 编辑商品分类的接口
 func (con GoodsCateController) DoEdit(c *gin.Context) {
+	// 解析参数
+	id, err1 := strconv.Atoi(c.PostForm("id"))
+	pid, err1 := strconv.Atoi(c.PostForm("pid"))
+	status, err2 := strconv.Atoi(c.PostForm("status"))
+	sort, err3 := strconv.Atoi(c.PostForm("sort"))
 
+	if err1 != nil || err2 != nil || err3 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) DoAdd(c *gin.Context)] [strconv.Atoi(c.PostForm())] failed, ", zap.Error(errors.New("Invalid params")))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	p := &models.EditGoodsCateParams{
+		Id:          id,
+		Pid:         pid,
+		Status:      status,
+		Sort:        sort,
+		Title:       c.PostForm("title"),
+		Link:        c.PostForm("link"),
+		Template:    c.PostForm("template"),
+		SubTitle:    c.PostForm("sub_title"),
+		Keywords:    c.PostForm("keywords"),
+		Description: c.PostForm("description"),
+	}
+
+	cateImg, _ := tools.UploadImg(c, "cate_img")
+
+	// 业务逻辑
+	err := logic.GoodsCateLogic{}.DoEdit(p, cateImg)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsCateController) DoEdit(c *gin.Context)] [logic.GoodsCateLogic{}.DoEdit(p, cateImg)] failed, ", zap.Error(err))
+		con.error(c, CodeEditGoodsCateErr)
+		return
+	}
+	con.success(c, true)
 }
 
 // Delete 删除商品分类的接口
