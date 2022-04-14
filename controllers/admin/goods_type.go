@@ -20,7 +20,7 @@ func (con BaseController) Index(c *gin.Context) {
 
 // Add 增加商品类型页面的接口
 func (con BaseController) Add(c *gin.Context) {
-
+	con.success(c, true)
 }
 
 // DoAdd 增加商品类型的接口
