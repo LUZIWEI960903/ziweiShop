@@ -96,5 +96,18 @@ func adminRoutersInit(r *gin.Engine) {
 		// 删除商品分类页面
 		adminRouters.DELETE("/goodsCate/delete", admin.GoodsCateController{}.Delete)
 
+		// 商品类型页面
+		adminRouters.GET("/goodsType", admin.GoodsTypeController{}.Index)
+		// 添加商品类型页面
+		adminRouters.GET("/goodsType/add", admin.GoodsTypeController{}.Add)
+		// 添加商品类型
+		adminRouters.POST("/goodsType/add", admin.GoodsTypeController{}.DoAdd)
+		// 编辑商品类型页面
+		adminRouters.GET("/goodsType/edit", admin.GoodsTypeController{}.Edit)
+		// 编辑商品类型
+		adminRouters.PUT("/goodsType/edit", admin.GoodsTypeController{}.DoEdit)
+		// 删除商品类型页面
+		adminRouters.DELETE("/goodsType/delete", admin.GoodsTypeController{}.Delete)
+
 	}
 }

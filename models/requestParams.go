@@ -102,3 +102,9 @@ type EditGoodsCateParams struct {
 	Keywords    string `json:"keywords"`    // 商品分类Seo关键词
 	Description string `json:"description"` // 商品分类描述
 }
+
+type AddGoodsTypeParams struct {
+	Title       string `json:"title"`       // 商品类型名
+	Description string `json:"description"` // 商品类型描述
+	Status      int    `json:"status"`      // 商品类型状态
+}
