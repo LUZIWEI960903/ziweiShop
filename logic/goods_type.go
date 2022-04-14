@@ -52,3 +52,7 @@ func (GoodsTypeLogic) GetGoodsTypeInfo(goodsTypeId int) (goodsTypeInfo *models.G
 func (GoodsTypeLogic) DoEdit(p *models.EditGoodsTypeParams) (err error) {
 	return mysql.EditGoodsType(p)
 }
+
+func (GoodsTypeLogic) Delete(goodsTypeId int) (err error) {
+	return mysql.DeleteGoodsType(goodsTypeId)
+}

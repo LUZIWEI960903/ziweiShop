@@ -49,3 +49,14 @@ func EditGoodsType(p *models.EditGoodsTypeParams) (err error) {
 
 	return db.Save(&goodTypeList).Error
 }
+
+// DeleteGoodsType 逻辑删除删除 商品类型  --- goods_type 表
+func DeleteGoodsType(goodsTypeId int) (err error) {
+	goodsTypeList := []models.GoodsType{}
+	db.Where("id=? AND is_deleted=0", goodsTypeId).First(&goodsTypeList)
+	if len(goodsTypeList) < 1 {
+		return ErrGetGoodsType
+	}
+	goodsTypeList[0].IsDeleted = 1
+	return db.Save(&goodsTypeList).Error
+}

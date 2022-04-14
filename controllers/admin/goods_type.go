@@ -96,5 +96,21 @@ func (con BaseController) DoEdit(c *gin.Context) {
 
 // Delete 删除商品类型的接口
 func (con BaseController) Delete(c *gin.Context) {
+	// 解析参数
+	goodsTypeId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con BaseController) Delete(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	err = logic.GoodsTypeLogic{}.Delete(goodsTypeId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con BaseController) Delete(c *gin.Context)] [logic.GoodsTypeLogic{}.Delete(goodsTypeId)] failed, ", zap.Error(err))
+		con.error(c, CodeDeleteGoodsTypeErr)
+		return
+	}
+
+	con.success(c, true)
 }
