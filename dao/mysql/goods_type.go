@@ -25,3 +25,13 @@ func GetGoodsTypeList() (oGoodsTypeList []models.GoodsType, err error) {
 	}
 	return oGoodsTypeList, err
 }
+
+// GetGoodsTypeById 根据 goodsTypeId 查询 商品类型信息 --- goods_type 表
+func GetGoodsTypeById(goodsTypeId int) (oGoodsTypeInfo *models.GoodsType, err error) {
+	oGoodsTypeInfoList := []models.GoodsType{}
+	err = db.Where("id=? AND is_deleted=0", goodsTypeId).First(&oGoodsTypeInfoList).Error
+	if len(oGoodsTypeInfoList) < 1 {
+		return nil, ErrGetGoodsType
+	}
+	return &oGoodsTypeInfoList[0], err
+}

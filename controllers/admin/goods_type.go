@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
 
@@ -53,7 +54,23 @@ func (con BaseController) DoAdd(c *gin.Context) {
 
 // Edit 编辑商品类型页面的接口
 func (con BaseController) Edit(c *gin.Context) {
+	// 解析参数
+	goodsTypeId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con BaseController) Edit(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	goodsTypeInfo, err := logic.GoodsTypeLogic{}.GetGoodsTypeInfo(goodsTypeId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con BaseController) Edit(c *gin.Context)] [logic.GoodsTypeLogic{}.GetGoodsTypeInfo(goodsTypeId)] failed, ", zap.Error(err))
+		con.error(c, CodeGetGoodsTypeInfoErr)
+		return
+	}
+
+	con.success(c, goodsTypeInfo)
 }
 
 // DoEdit 编辑商品类型的接口

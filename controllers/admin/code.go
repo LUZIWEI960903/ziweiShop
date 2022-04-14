@@ -56,6 +56,7 @@ const (
 	CodeDeleteGoodsCateErr
 	CodeAddGoodsTypeErr
 	CodeGetGoodsTypeListErr
+	CodeGetGoodsTypeInfoErr
 )
 
 var (
@@ -114,6 +115,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeDeleteGoodsCateErr:                  "Delete goods cate error",
 	CodeAddGoodsTypeErr:                     "Add goods type error",
 	CodeGetGoodsTypeListErr:                 "Get goods type list error",
+	CodeGetGoodsTypeInfoErr:                 "Get goods type info error",
 }
 
 func (code ResCode) Msg() string {

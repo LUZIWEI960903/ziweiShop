@@ -32,3 +32,19 @@ func (GoodsTypeLogic) GetGoodsTypeList() (goodsTypeList []models.GetGoodsType, e
 
 	return goodsTypeList, nil
 }
+
+func (GoodsTypeLogic) GetGoodsTypeInfo(goodsTypeId int) (goodsTypeInfo *models.GoodsTypeInfo, err error) {
+	// 根据 goodsTypeId 查询 商品类型信息
+	oGoodsTypeInfo, err := mysql.GetGoodsTypeById(goodsTypeId)
+	if err != nil {
+		return nil, err
+	}
+
+	// 构造返回数据
+	return &models.GoodsTypeInfo{
+		Id:          oGoodsTypeInfo.Id,
+		Status:      oGoodsTypeInfo.Status,
+		Title:       oGoodsTypeInfo.Title,
+		Description: oGoodsTypeInfo.Description,
+	}, nil
+}
