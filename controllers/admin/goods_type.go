@@ -15,7 +15,14 @@ type GoodsTypeController struct {
 
 // Index 商品类型页面的接口
 func (con BaseController) Index(c *gin.Context) {
-
+	// 业务逻辑
+	goodsTypeList, err := logic.GoodsTypeLogic{}.GetGoodsTypeList()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con BaseController) Index(c *gin.Context)] [logic.GoodsTypeLogic{}.GetGoodsTypeList()] failed, ", zap.Error(err))
+		con.error(c, CodeGetGoodsTypeListErr)
+		return
+	}
+	con.success(c, goodsTypeList)
 }
 
 // Add 增加商品类型页面的接口

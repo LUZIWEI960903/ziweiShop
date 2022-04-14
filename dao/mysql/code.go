@@ -20,4 +20,6 @@ var (
 	ErrAjaxChangeStatus = errors.New("Update status error~~")
 
 	ErrGetGoodsCate = errors.New("Get goods cate info error~~")
+
+	ErrGetGoodsType = errors.New("Get goods type list error~~")
 )
