@@ -35,3 +35,17 @@ func GetGoodsTypeById(goodsTypeId int) (oGoodsTypeInfo *models.GoodsType, err er
 	}
 	return &oGoodsTypeInfoList[0], err
 }
+
+// EditGoodsType 修改 商品类型信息  --- goods_type 表
+func EditGoodsType(p *models.EditGoodsTypeParams) (err error) {
+	goodTypeList := []models.GoodsType{}
+	db.Where("id=? AND is_deleted=0", p.Id).First(&goodTypeList)
+	if len(goodTypeList) < 1 {
+		return ErrGetGoodsType
+	}
+	goodTypeList[0].Title = p.Title
+	goodTypeList[0].Description = p.Description
+	goodTypeList[0].Status = p.Status
+
+	return db.Save(&goodTypeList).Error
+}

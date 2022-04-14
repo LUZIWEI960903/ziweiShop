@@ -104,7 +104,14 @@ type EditGoodsCateParams struct {
 }
 
 type AddGoodsTypeParams struct {
+	Status      int    `json:"status"`      // 商品类型状态
 	Title       string `json:"title"`       // 商品类型名
 	Description string `json:"description"` // 商品类型描述
+}
+
+type EditGoodsTypeParams struct {
+	Id          int    `json:"id"`          // 商品类型id
 	Status      int    `json:"status"`      // 商品类型状态
+	Title       string `json:"title"`       // 商品类型名
+	Description string `json:"description"` // 商品类型描述
 }

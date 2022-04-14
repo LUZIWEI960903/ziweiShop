@@ -48,3 +48,7 @@ func (GoodsTypeLogic) GetGoodsTypeInfo(goodsTypeId int) (goodsTypeInfo *models.G
 		Description: oGoodsTypeInfo.Description,
 	}, nil
 }
+
+func (GoodsTypeLogic) DoEdit(p *models.EditGoodsTypeParams) (err error) {
+	return mysql.EditGoodsType(p)
+}

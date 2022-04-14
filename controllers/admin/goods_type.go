@@ -75,7 +75,23 @@ func (con BaseController) Edit(c *gin.Context) {
 
 // DoEdit 编辑商品类型的接口
 func (con BaseController) DoEdit(c *gin.Context) {
+	// 解析参数
+	p := new(models.EditGoodsTypeParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con BaseController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	err := logic.GoodsTypeLogic{}.DoEdit(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con BaseController) DoEdit(c *gin.Context)] [logic.GoodsTypeLogic{}.DoEdit(p)] failed, ", zap.Error(err))
+		con.error(c, CodeEditGoodsTypeErr)
+		return
+	}
+
+	con.success(c, true)
 }
 
 // Delete 删除商品类型的接口
