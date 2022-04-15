@@ -3,6 +3,7 @@ package logic
 import (
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
+	"ziweiShop/pkg/tools"
 )
 
 type GoodsTypeAttributeLogic struct {
@@ -78,6 +79,7 @@ func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data []models.Goo
 			AttrType:  oGoodsTypeAttribute.AttrType,
 			Title:     oGoodsTypeAttribute.Title,
 			AttrValue: oGoodsTypeAttribute.AttrValue,
+			AddTime:   tools.UnixToDate(oGoodsTypeAttribute.AddTime),
 		}
 		data = append(data, GoodsTypeAttribute)
 	}
