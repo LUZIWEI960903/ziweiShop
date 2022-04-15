@@ -5,10 +5,10 @@ import (
 	"ziweiShop/models"
 )
 
-type GoodsTypeAttribute struct {
+type GoodsTypeAttributeLogic struct {
 }
 
-func (GoodsTypeAttribute) ShowAddPage(cateId int) (data *models.AddGoodsTypeAttributePageData, err error) {
+func (GoodsTypeAttributeLogic) ShowAddPageLogic(cateId int) (data *models.AddGoodsTypeAttributePageData, err error) {
 	// 查询 cateId 是否存在
 	_, err = mysql.GetGoodsCateById(cateId)
 	if err != nil {
@@ -44,4 +44,13 @@ func (GoodsTypeAttribute) ShowAddPage(cateId int) (data *models.AddGoodsTypeAttr
 		CateId:         cateId,
 		GoodsTypeItems: GoodsTypeItems,
 	}, nil
+}
+
+func (GoodsTypeAttributeLogic) DoAddLogic(p *models.AddGoodsTypeAttributeParams) (err error) {
+	// 查看 cateId 是否存在
+	_, err = mysql.GetGoodsTypeById(p.CateId)
+	if err != nil {
+		return err
+	}
+	return mysql.AddGoodsTypeAttribute(p)
 }
