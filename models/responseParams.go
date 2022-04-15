@@ -187,11 +187,16 @@ type AddGoodsTypeAttributePageData struct {
 
 type GoodsTypeAttributeInfo struct {
 	Id        int    `json:"id"`         // 商品类型属性的id
-	CateId    int    `json:"cate_id"`    // 对应的商品类型id
 	Status    int    `json:"status"`     // 商品类型属性的状态
 	Sort      int    `json:"sort"`       // 商品类型属性的排序
 	AttrType  int    `json:"attr_type"`  // 商品类型属性的录入方式 1. 单行文本框 2. 多行文本框 3. 从下面的列表中选择（一行代表一个可选值 ）
 	Title     string `json:"title"`      // 商品类型属性名
 	AttrValue string `json:"attr_value"` // 商品类型属性的录入值
 	AddTime   string `json:"add_time"`   // 创建商品类型属性的时间
+}
+
+type GoodsTypeAttributeIndexPageData struct {
+	CateId                      int                      `json:"cate_id"`                    // 对应的商品类型id
+	Title                       string                   `json:"goods_type"`                 // 对应的商品类型
+	GoodsTypeAttributeInfoItems []GoodsTypeAttributeInfo `json:"goods_type_attribute_items"` // 商品类型属性列表
 }

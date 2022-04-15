@@ -56,9 +56,9 @@ func (GoodsTypeAttributeLogic) DoAddLogic(p *models.AddGoodsTypeAttributeParams)
 	return mysql.AddGoodsTypeAttribute(p)
 }
 
-func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data []models.GoodsTypeAttributeInfo, err error) {
+func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data *models.GoodsTypeAttributeIndexPageData, err error) {
 	// 查看 cateId 是否存在
-	_, err = mysql.GetGoodsTypeById(cateId)
+	oGoodTypeInfo, err := mysql.GetGoodsTypeById(cateId)
 	if err != nil {
 		return nil, err
 	}
@@ -70,10 +70,10 @@ func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data []models.Goo
 	}
 
 	// 构造返回数据
+	GoodsTypeAttributeList := make([]models.GoodsTypeAttributeInfo, 0)
 	for _, oGoodsTypeAttribute := range oGoodsTypeAttributeList {
 		GoodsTypeAttribute := models.GoodsTypeAttributeInfo{
 			Id:        oGoodsTypeAttribute.Id,
-			CateId:    oGoodsTypeAttribute.CateId,
 			Status:    oGoodsTypeAttribute.Status,
 			Sort:      oGoodsTypeAttribute.Sort,
 			AttrType:  oGoodsTypeAttribute.AttrType,
@@ -81,7 +81,12 @@ func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data []models.Goo
 			AttrValue: oGoodsTypeAttribute.AttrValue,
 			AddTime:   tools.UnixToDate(oGoodsTypeAttribute.AddTime),
 		}
-		data = append(data, GoodsTypeAttribute)
+		GoodsTypeAttributeList = append(GoodsTypeAttributeList, GoodsTypeAttribute)
 	}
-	return data, nil
+
+	return &models.GoodsTypeAttributeIndexPageData{
+		CateId:                      cateId,
+		Title:                       oGoodTypeInfo.Title,
+		GoodsTypeAttributeInfoItems: GoodsTypeAttributeList,
+	}, nil
 }
