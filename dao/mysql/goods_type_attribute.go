@@ -25,3 +25,13 @@ func GetGoodsTypeAttributeList(cateId int) (oGoodsTypeAttributeList []models.Goo
 	err = db.Where("cate_id=? AND is_deleted=0", cateId).Find(&oGoodsTypeAttributeList).Error
 	return oGoodsTypeAttributeList, err
 }
+
+// GetGoodsTypeAttributeById 根据 goodsTypeAttributeId 查询 商品类型属性是否存在  --- goods_type_attribute 表
+func GetGoodsTypeAttributeById(goodsTypeAttributeId int) (oGoodsTypeAttribute *models.GoodsTypeAttribute, err error) {
+	oGoodsTypeAttributeList := []models.GoodsTypeAttribute{}
+	err = db.Where("id=? AND is_deleted=0", goodsTypeAttributeId).First(&oGoodsTypeAttributeList).Error
+	if len(oGoodsTypeAttributeList) < 1 || err != nil {
+		return nil, ErrGetGoodsTypeAttribute
+	}
+	return &oGoodsTypeAttributeList[0], nil
+}

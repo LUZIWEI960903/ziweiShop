@@ -9,7 +9,7 @@ import (
 type GoodsTypeAttributeLogic struct {
 }
 
-func (GoodsTypeAttributeLogic) ShowAddPageLogic(cateId int) (data *models.AddGoodsTypeAttributePageData, err error) {
+func (GoodsTypeAttributeLogic) ShowAddPageLogic(cateId int) (data *models.GoodsTypeAttributeAddPageData, err error) {
 	// 查询 cateId 是否存在
 	_, err = mysql.GetGoodsCateById(cateId)
 	if err != nil {
@@ -41,7 +41,7 @@ func (GoodsTypeAttributeLogic) ShowAddPageLogic(cateId int) (data *models.AddGoo
 	}
 	GoodsTypeItems = append(GoodsTypeItems1, GoodsTypeItems2...)
 
-	return &models.AddGoodsTypeAttributePageData{
+	return &models.GoodsTypeAttributeAddPageData{
 		CateId:         cateId,
 		GoodsTypeItems: GoodsTypeItems,
 	}, nil
@@ -88,5 +88,47 @@ func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data *models.Good
 		CateId:                      cateId,
 		Title:                       oGoodTypeInfo.Title,
 		GoodsTypeAttributeInfoItems: GoodsTypeAttributeList,
+	}, nil
+}
+
+func (GoodsTypeAttributeLogic) ShowEditPageLogic(goodsTypeAttributeId int) (data *models.GoodsTypeAttributeEditPageData, err error) {
+	// 查询 goodsTypeAttribute 是否存在
+	oGoodsTypeAttribute, err := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
+	if err != nil {
+		return nil, err
+	}
+
+	// 查询 所有商品类型
+	oGoodsTypeList, err := mysql.GetGoodsTypeList()
+	if err != nil {
+		return nil, err
+	}
+
+	// 构造返回数据
+	goodsTypeList := make([]models.GoodsTypeItems, 0)
+	goodsTypeList1 := make([]models.GoodsTypeItems, 0)
+	goodsTypeList2 := make([]models.GoodsTypeItems, 0)
+
+	for _, oGoodsType := range oGoodsTypeList {
+		goodsType := models.GoodsTypeItems{
+			Id:    oGoodsType.Id,
+			Title: oGoodsType.Title,
+		}
+		if oGoodsType.Id == oGoodsTypeAttribute.CateId {
+			goodsTypeList1 = append(goodsTypeList1, goodsType)
+		} else {
+			goodsTypeList2 = append(goodsTypeList2, goodsType)
+		}
+	}
+	goodsTypeList = append(goodsTypeList1, goodsTypeList2...)
+
+	return &models.GoodsTypeAttributeEditPageData{
+		Id:             oGoodsTypeAttribute.Id,
+		Status:         oGoodsTypeAttribute.Status,
+		Sort:           oGoodsTypeAttribute.Sort,
+		AttrType:       oGoodsTypeAttribute.AttrType,
+		Title:          oGoodsTypeAttribute.Title,
+		AttrValue:      oGoodsTypeAttribute.AttrValue,
+		GoodsTypeItems: goodsTypeList,
 	}, nil
 }

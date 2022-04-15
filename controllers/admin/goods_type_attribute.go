@@ -76,3 +76,24 @@ func (con GoodsTypeAttributeController) DoAdd(c *gin.Context) {
 
 	con.success(c, true)
 }
+
+// Edit 修改商品类型属性页面的接口
+func (con GoodsTypeAttributeController) Edit(c *gin.Context) {
+	// 获取 goodsTypeAttributeId
+	goodsTypeAttributeId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Edit(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	data, err := logic.GoodsTypeAttributeLogic{}.ShowEditPageLogic(goodsTypeAttributeId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Edit(c *gin.Context)] [logic.GoodsTypeAttributeLogic{}.ShowEditPageLogic(cateId)] failed, ", zap.Error(err))
+		con.error(c, CodeGetEditPageDataErr)
+		return
+	}
+
+	con.success(c, data)
+}
