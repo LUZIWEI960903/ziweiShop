@@ -179,3 +179,8 @@ type GoodsTypeInfo struct {
 	Title       string `json:"title"`        // 商品类型名
 	Description string `json:"descriptions"` // 商品类型描述
 }
+
+type AddGoodsTypeAttributePageData struct {
+	CateId         int             `json:"cate_id"`          // 对应的商品类型id
+	GoodsTypeItems []GoodsTypeInfo `json:"goods_type_items"` // 商品类型列表
+}

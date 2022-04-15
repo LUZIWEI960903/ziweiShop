@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 15/04/2022 10:37:44
+ Date: 15/04/2022 10:55:50
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,7 @@ CREATE TABLE `goods_type_attribute`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `cate_id` int(11) NULL DEFAULT NULL,
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `attr_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `attr_type` tinyint(1) NULL DEFAULT NULL,
   `attr_value` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `status` tinyint(1) NULL DEFAULT NULL,
   `sort` int(11) NULL DEFAULT NULL,
