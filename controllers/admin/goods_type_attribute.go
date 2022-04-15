@@ -67,9 +67,9 @@ func (con GoodsTypeAttributeController) DoAdd(c *gin.Context) {
 	}
 
 	// 业务逻辑
-	err := logic.GoodsTypeAttributeLogic{}.DoAddLogic(p)
+	err := logic.GoodsTypeAttributeLogic{}.DoAddGoodsTypeAttributeLogic(p)
 	if err != nil {
-		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) DoAdd(c *gin.Context)] [logic.GoodsTypeAttributeLogic{}.DoAddLogic(p)] failed, ", zap.Error(err))
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) DoAdd(c *gin.Context)] [logic.GoodsTypeAttributeLogic{}.DoAddGoodsTypeAttributeLogic(p)] failed, ", zap.Error(err))
 		con.error(c, CodeDoAddLogicErr)
 		return
 	}
@@ -96,4 +96,25 @@ func (con GoodsTypeAttributeController) Edit(c *gin.Context) {
 	}
 
 	con.success(c, data)
+}
+
+// DoEdit 修改商品类型属性的接口
+func (con GoodsTypeAttributeController) DoEdit(c *gin.Context) {
+	// 解析参数
+	p := new(models.EditGoodsTypeAttributeParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	err := logic.GoodsTypeAttributeLogic{}.DoEditGoodsTypeAttributeLogic(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) DoEdit(c *gin.Context)] [logic.GoodsTypeAttributeLogic{}.DoEditGoodsTypeAttributeLogic(p)] failed, ", zap.Error(err))
+		con.error(c, CodeDoEditLogicErr)
+		return
+	}
+
+	con.success(c, true)
 }

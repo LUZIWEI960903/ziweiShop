@@ -35,3 +35,19 @@ func GetGoodsTypeAttributeById(goodsTypeAttributeId int) (oGoodsTypeAttribute *m
 	}
 	return &oGoodsTypeAttributeList[0], nil
 }
+
+// EditGoodsTypeAttribute 根据 goodsTypeAttributeId 修改 商品类型属性  --- goods_type_attribute 表
+func EditGoodsTypeAttribute(p *models.EditGoodsTypeAttributeParams) (err error) {
+	oGoodsTypeAttributeList := []models.GoodsTypeAttribute{}
+	err = db.Where("id=? AND is_deleted=0", p.Id).First(&oGoodsTypeAttributeList).Error
+	if len(oGoodsTypeAttributeList) < 1 || err != nil {
+		return ErrGetGoodsTypeAttribute
+	}
+	oGoodsTypeAttributeList[0].CateId = p.CateId
+	oGoodsTypeAttributeList[0].Status = p.Status
+	oGoodsTypeAttributeList[0].Sort = p.Sort
+	oGoodsTypeAttributeList[0].AttrType = p.AttrType
+	oGoodsTypeAttributeList[0].Title = p.Title
+	oGoodsTypeAttributeList[0].AttrValue = p.AttrValue
+	return db.Save(&oGoodsTypeAttributeList).Error
+}

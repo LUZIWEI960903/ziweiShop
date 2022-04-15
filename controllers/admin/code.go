@@ -64,6 +64,7 @@ const (
 	CodeDoAddLogicErr
 	CodeGetIndexPageDataErr
 	CodeGetEditPageDataErr
+	CodeDoEditLogicErr
 )
 
 var (
@@ -130,6 +131,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeDoAddLogicErr:       "Do add logic error",
 	CodeGetIndexPageDataErr: "Get index page data error",
 	CodeGetEditPageDataErr:  "Get edit page data error",
+	CodeDoEditLogicErr:      "Do edit logic error",
 }
 
 func (code ResCode) Msg() string {

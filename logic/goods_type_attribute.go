@@ -47,7 +47,7 @@ func (GoodsTypeAttributeLogic) ShowAddPageLogic(cateId int) (data *models.GoodsT
 	}, nil
 }
 
-func (GoodsTypeAttributeLogic) DoAddLogic(p *models.AddGoodsTypeAttributeParams) (err error) {
+func (GoodsTypeAttributeLogic) DoAddGoodsTypeAttributeLogic(p *models.AddGoodsTypeAttributeParams) (err error) {
 	// 查看 cateId 是否存在
 	_, err = mysql.GetGoodsTypeById(p.CateId)
 	if err != nil {
@@ -131,4 +131,8 @@ func (GoodsTypeAttributeLogic) ShowEditPageLogic(goodsTypeAttributeId int) (data
 		AttrValue:      oGoodsTypeAttribute.AttrValue,
 		GoodsTypeItems: goodsTypeList,
 	}, nil
+}
+
+func (GoodsTypeAttributeLogic) DoEditGoodsTypeAttributeLogic(p *models.EditGoodsTypeAttributeParams) (err error) {
+	return mysql.EditGoodsTypeAttribute(p)
 }
