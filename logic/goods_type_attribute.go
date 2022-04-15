@@ -54,3 +54,32 @@ func (GoodsTypeAttributeLogic) DoAddLogic(p *models.AddGoodsTypeAttributeParams)
 	}
 	return mysql.AddGoodsTypeAttribute(p)
 }
+
+func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data []models.GoodsTypeAttributeInfo, err error) {
+	// 查看 cateId 是否存在
+	_, err = mysql.GetGoodsTypeById(cateId)
+	if err != nil {
+		return nil, err
+	}
+
+	// 根据 cateId 查询其所有 商品类型属性
+	oGoodsTypeAttributeList, err := mysql.GetGoodsTypeAttributeList(cateId)
+	if err != nil {
+		return nil, err
+	}
+
+	// 构造返回数据
+	for _, oGoodsTypeAttribute := range oGoodsTypeAttributeList {
+		GoodsTypeAttribute := models.GoodsTypeAttributeInfo{
+			Id:        oGoodsTypeAttribute.Id,
+			CateId:    oGoodsTypeAttribute.CateId,
+			Status:    oGoodsTypeAttribute.Status,
+			Sort:      oGoodsTypeAttribute.Sort,
+			AttrType:  oGoodsTypeAttribute.AttrType,
+			Title:     oGoodsTypeAttribute.Title,
+			AttrValue: oGoodsTypeAttribute.AttrValue,
+		}
+		data = append(data, GoodsTypeAttribute)
+	}
+	return data, nil
+}

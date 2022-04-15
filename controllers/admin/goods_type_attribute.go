@@ -16,7 +16,23 @@ type GoodsTypeAttributeController struct {
 
 // Index 显示商品类型属性页面的接口
 func (con GoodsTypeAttributeController) Index(c *gin.Context) {
+	// 获取cate_id
+	cateId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Index(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	data, err := logic.GoodsTypeAttributeLogic{}.ShowIndexPageLogic(cateId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Index(c *gin.Context)] [logic.GoodsTypeAttributeLogic{}.ShowIndexPageLogic(cateId)] failed, ", zap.Error(err))
+		con.error(c, CodeGetIndexPageDataErr)
+		return
+	}
+
+	con.success(c, data)
 }
 
 // Add 添加商品类型属性页面的接口
@@ -32,7 +48,7 @@ func (con GoodsTypeAttributeController) Add(c *gin.Context) {
 	// 业务逻辑
 	data, err := logic.GoodsTypeAttributeLogic{}.ShowAddPageLogic(cateId)
 	if err != nil {
-		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Add(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Add(c *gin.Context)] [logic.GoodsTypeAttributeLogic{}.ShowAddPageLogic(cateId)] failed, ", zap.Error(err))
 		con.error(c, CodeGetAddPageDataErr)
 		return
 	}

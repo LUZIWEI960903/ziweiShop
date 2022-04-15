@@ -18,3 +18,10 @@ func AddGoodsTypeAttribute(p *models.AddGoodsTypeAttributeParams) (err error) {
 	}
 	return db.Create(&goodsTypeAttribute).Error
 }
+
+// GetGoodsTypeAttributeList 根据 cateId 查询其下的 所有商品类型属性   --- goods_type_attribute 表
+func GetGoodsTypeAttributeList(cateId int) (oGoodsTypeAttributeList []models.GoodsTypeAttribute, err error) {
+	oGoodsTypeAttributeList = []models.GoodsTypeAttribute{}
+	err = db.Where("cate_id=? AND is_deleted=0", cateId).Find(&oGoodsTypeAttributeList).Error
+	return oGoodsTypeAttributeList, err
+}
