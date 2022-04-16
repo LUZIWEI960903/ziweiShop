@@ -51,3 +51,15 @@ func EditGoodsTypeAttribute(p *models.EditGoodsTypeAttributeParams) (err error) 
 	oGoodsTypeAttributeList[0].AttrValue = p.AttrValue
 	return db.Save(&oGoodsTypeAttributeList).Error
 }
+
+// DeleteGoodsTypeAttribute 根据 goodsTypeAttributeId 逻辑删除 商品类型属性  --- goods_type_attribute 表
+func DeleteGoodsTypeAttribute(goodsTypeAttributeId int) (err error) {
+	oGoodsTypeAttributeList := []models.GoodsTypeAttribute{}
+	err = db.Where("id=? AND is_deleted=0", goodsTypeAttributeId).First(&oGoodsTypeAttributeList).Error
+	if len(oGoodsTypeAttributeList) < 1 || err != nil {
+		return ErrGetGoodsTypeAttribute
+	}
+
+	oGoodsTypeAttributeList[0].IsDeleted = 1
+	return db.Save(&oGoodsTypeAttributeList).Error
+}

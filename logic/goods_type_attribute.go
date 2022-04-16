@@ -136,3 +136,7 @@ func (GoodsTypeAttributeLogic) ShowEditPageLogic(goodsTypeAttributeId int) (data
 func (GoodsTypeAttributeLogic) DoEditGoodsTypeAttributeLogic(p *models.EditGoodsTypeAttributeParams) (err error) {
 	return mysql.EditGoodsTypeAttribute(p)
 }
+
+func (GoodsTypeAttributeLogic) DeleteLogic(goodsTypeAttributeId int) (err error) {
+	return mysql.DeleteGoodsTypeAttribute(goodsTypeAttributeId)
+}

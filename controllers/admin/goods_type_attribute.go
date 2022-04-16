@@ -118,3 +118,24 @@ func (con GoodsTypeAttributeController) DoEdit(c *gin.Context) {
 
 	con.success(c, true)
 }
+
+// Delete 删除商品类型属性的接口
+func (con GoodsTypeAttributeController) Delete(c *gin.Context) {
+	// 解析参数
+	goodsTypeAttributeId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Delete(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	err = logic.GoodsTypeAttributeLogic{}.DeleteLogic(goodsTypeAttributeId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsTypeAttributeController) Delete(c *gin.Context)] [logic.GoodsTypeAttributeLogic{}.DeleteLogic(goodsTypeAttributeId)] failed, ", zap.Error(err))
+		con.error(c, CodeDeleteLogicErr)
+		return
+	}
+
+	con.success(c, true)
+}
