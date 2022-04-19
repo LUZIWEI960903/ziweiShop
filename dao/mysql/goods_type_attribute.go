@@ -63,3 +63,13 @@ func DeleteGoodsTypeAttribute(goodsTypeAttributeId int) (err error) {
 	oGoodsTypeAttributeList[0].IsDeleted = 1
 	return db.Save(&oGoodsTypeAttributeList).Error
 }
+
+// GetGoodsTypeAttributeByCateId 根据 cateId 获取所有的 商品类型属性  --- goods_type_attribute 表
+func GetGoodsTypeAttributeByCateId(cateId int) (goodsTypeAttributeList []models.GoodsTypeAttribute, err error) {
+	goodsTypeAttributeList = []models.GoodsTypeAttribute{}
+	err = db.Where("cate_id=? AND is_deleted=0", cateId).Find(&goodsTypeAttributeList).Error
+	if len(goodsTypeAttributeList) < 1 || err != nil {
+		return nil, ErrGetGoodsTypeAttribute
+	}
+	return goodsTypeAttributeList, err
+}
