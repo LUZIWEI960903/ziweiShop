@@ -76,7 +76,23 @@ func (con GoodsColorController) Edit(c *gin.Context) {
 
 // DoEdit 编辑商品颜色的接口
 func (con GoodsColorController) DoEdit(c *gin.Context) {
+	// 解析参数
+	p := new(models.EditGoodsColorParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsColorController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	err := logic.GoodsColorLogic{}.DoEditGoodsColorLogic(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsColorController) DoEdit(c *gin.Context)] [logic.GoodsColorLogic{}.DoEditGoodsColorLogic(p)] failed, ", zap.Error(err))
+		con.error(c, CodeDoEditLogicErr)
+		return
+	}
+
+	con.success(c, true)
 }
 
 // Delete 删除商品颜色的接口

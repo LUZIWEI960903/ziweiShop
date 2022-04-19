@@ -48,3 +48,7 @@ func (GoodsColorLogic) ShowEditPageLogic(goodsColorId int) (goodsColorInfo *mode
 	}
 	return goodsColorInfo, nil
 }
+
+func (GoodsColorLogic) DoEditGoodsColorLogic(p *models.EditGoodsColorParams) (err error) {
+	return mysql.EditGoodsColor(p)
+}

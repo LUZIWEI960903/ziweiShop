@@ -19,7 +19,7 @@ func GetGoodsColorList() (oGoodsColorList []models.GoodsColor, err error) {
 	return oGoodsColorList, err
 }
 
-// GetGoodsColorById 根据 goodsColorId 获取 商品颜色id
+// GetGoodsColorById 根据 goodsColorId 获取 商品颜色id  --- goods_color 表
 func GetGoodsColorById(goodsColorId int) (oGoodsColor *models.GoodsColor, err error) {
 	oGoodsColorList := []models.GoodsColor{}
 	err = db.Where("id=? AND is_deleted=0", goodsColorId).First(&oGoodsColorList).Error
@@ -27,4 +27,17 @@ func GetGoodsColorById(goodsColorId int) (oGoodsColor *models.GoodsColor, err er
 		return nil, ErrGetGoodsColor
 	}
 	return &oGoodsColorList[0], nil
+}
+
+// EditGoodsColor 根据 goodsColorId 修改 商品颜色  --- goods_color 表
+func EditGoodsColor(p *models.EditGoodsColorParams) (err error) {
+	goodsColorList := []models.GoodsColor{}
+	err = db.Where("id=? AND is_deleted=0", p.Id).First(&goodsColorList).Error
+	if len(goodsColorList) < 1 || err != nil {
+		return ErrGetGoodsColor
+	}
+	goodsColorList[0].Status = p.Status
+	goodsColorList[0].ColorName = p.ColorName
+	goodsColorList[0].ColorValue = p.ColorValue
+	return db.Save(&goodsColorList).Error
 }
