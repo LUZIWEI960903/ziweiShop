@@ -31,3 +31,20 @@ func (GoodsColorLogic) ShowIndexPageLogic() (data []models.GoodsColorList, err e
 	}
 	return data, nil
 }
+
+func (GoodsColorLogic) ShowEditPageLogic(goodsColorId int) (goodsColorInfo *models.GoodsColorList, err error) {
+	// 获取 商品颜色详情
+	oGoodesColor, err := mysql.GetGoodsColorById(goodsColorId)
+	if err != nil {
+		return nil, err
+	}
+
+	// 构造返回数据
+	goodsColorInfo = &models.GoodsColorList{
+		Id:         oGoodesColor.Id,
+		Status:     oGoodesColor.Status,
+		ColorName:  oGoodesColor.ColorName,
+		ColorValue: oGoodesColor.ColorValue,
+	}
+	return goodsColorInfo, nil
+}

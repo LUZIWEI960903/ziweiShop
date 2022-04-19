@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
 
@@ -54,7 +55,23 @@ func (con GoodsColorController) DoAdd(c *gin.Context) {
 
 // Edit 编辑商品颜色页面的接口
 func (con GoodsColorController) Edit(c *gin.Context) {
+	// 解析参数
+	goodsColorId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsColorController) Edit(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	//业务逻辑
+	goodsColorInfo, err := logic.GoodsColorLogic{}.ShowEditPageLogic(goodsColorId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsColorController) Edit(c *gin.Context)] [logic.GoodsColorLogic{}.ShowEditPageLogic(goodsColorId)] failed, ", zap.Error(err))
+		con.error(c, CodeGetEditPageDataErr)
+		return
+	}
+
+	con.success(c, goodsColorInfo)
 }
 
 // DoEdit 编辑商品颜色的接口

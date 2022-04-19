@@ -24,4 +24,6 @@ var (
 	ErrGetGoodsType = errors.New("Get goods type list error~~")
 
 	ErrGetGoodsTypeAttribute = errors.New("Get goods type attribute error~~")
+
+	ErrGetGoodsColor = errors.New("Get goods color error~~")
 )
