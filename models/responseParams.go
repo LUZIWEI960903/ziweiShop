@@ -216,3 +216,20 @@ type GoodsTypeAttributeEditPageData struct {
 
 	GoodsTypeItems []GoodsTypeItems `json:"goods_type_items"` // 商品类型列表
 }
+
+type TopGoodsCate2 struct {
+	Id    int    `json:"id"`    // 商品分类id
+	Pid   int    `json:"pid"`   // 二级商品分类id与Id自关联
+	Title string `json:"title"` // 商品分类名
+}
+
+type GoodsCateWithGoodsCate1 struct {
+	Id                  int             `json:"id"`                     // 商品分类id
+	Pid                 int             `json:"pid"`                    // 二级商品分类id与Id自关联
+	Title               string          `json:"title"`                  // 商品分类名
+	ChildGoodsCateItems []TopGoodsCate2 `json:"child_goods_cate_items"` // 该商品分类下的子分类
+}
+
+type GoodsAddPageData struct {
+	GoodsCateItems []GoodsCateWithGoodsCate1 `json:"goods_cate_items"`
+}
