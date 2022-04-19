@@ -41,3 +41,14 @@ func EditGoodsColor(p *models.EditGoodsColorParams) (err error) {
 	goodsColorList[0].ColorValue = p.ColorValue
 	return db.Save(&goodsColorList).Error
 }
+
+// DeleteGoodsColor 根据 goodsColorId 逻辑删除 商品颜色  --- goods_color 表
+func DeleteGoodsColor(goodsColorId int) (err error) {
+	goodsColorList := []models.GoodsColor{}
+	err = db.Where("id=? AND is_deleted=0", goodsColorId).First(&goodsColorList).Error
+	if len(goodsColorList) < 1 || err != nil {
+		return ErrGetGoodsColor
+	}
+	goodsColorList[0].IsDeleted = 1
+	return db.Save(&goodsColorList).Error
+}

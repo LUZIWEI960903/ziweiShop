@@ -97,5 +97,20 @@ func (con GoodsColorController) DoEdit(c *gin.Context) {
 
 // Delete 删除商品颜色的接口
 func (con GoodsColorController) Delete(c *gin.Context) {
+	// 解析参数
+	goodsColorId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsColorController) Delete(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	err = logic.GoodsColorLogic{}.DeleteGoodsColorLogic(goodsColorId)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsColorController) Delete(c *gin.Context)] [logic.GoodsColorLogic{}.DeleteGoodsColorLogic(goodsColorId)] failed, ", zap.Error(err))
+		con.error(c, CodeDeleteLogicErr)
+		return
+	}
 
+	con.success(c, true)
 }
