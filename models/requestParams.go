@@ -134,3 +134,8 @@ type EditGoodsTypeAttributeParams struct {
 	Title     string `json:"title"`      // 商品类型属性名
 	AttrValue string `json:"attr_value"` // 商品类型属性的录入值
 }
+
+type AddGoodsColorParams struct {
+	ColorName  string `json:"color_name"`  // 商品颜色名
+	ColorValue string `json:"color_value"` // 商品颜色值
+}

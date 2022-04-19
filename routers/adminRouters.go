@@ -122,6 +122,19 @@ func adminRoutersInit(r *gin.Engine) {
 		// 删除商品类型属性页面
 		adminRouters.DELETE("/goodsTypeAttribute/delete", admin.GoodsTypeAttributeController{}.Delete)
 
+		// 商品颜色页面
+		adminRouters.GET("/goodsColor", admin.GoodsColorController{}.Index)
+		// 添加商品颜色页面
+		adminRouters.GET("/goodsColor/add", admin.GoodsColorController{}.Add)
+		// 添加商品颜色
+		adminRouters.POST("/goodsColor/add", admin.GoodsColorController{}.DoAdd)
+		// 编辑商品颜色页面
+		adminRouters.GET("/goodsColor/edit", admin.GoodsColorController{}.Edit)
+		// 编辑商品颜色
+		adminRouters.PUT("/goodsColor/edit", admin.GoodsColorController{}.DoEdit)
+		// 删除商品颜色页面
+		adminRouters.DELETE("/goodsColor/delete", admin.GoodsColorController{}.Delete)
+
 		// 商品页面
 		adminRouters.GET("/goods", admin.GoodsController{}.Index)
 		// 添加商品页面
