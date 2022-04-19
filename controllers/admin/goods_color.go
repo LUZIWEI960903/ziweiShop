@@ -20,7 +20,7 @@ func (con GoodsColorController) Index(c *gin.Context) {
 
 // Add 增加商品颜色页面的接口
 func (con GoodsColorController) Add(c *gin.Context) {
-
+	con.success(c, true)
 }
 
 // DoAdd 增加商品颜色的接口
