@@ -126,6 +126,8 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/goods", admin.GoodsController{}.Index)
 		// 添加商品页面
 		adminRouters.GET("/goods/add", admin.GoodsController{}.Add)
+		// wysiwyg-editor上传图片
+		adminRouters.POST("/goods/imageUpload", admin.GoodsController{}.ImageUpload)
 
 	}
 }
