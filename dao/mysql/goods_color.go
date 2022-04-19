@@ -11,3 +11,10 @@ func AddGoodsColor(p *models.AddGoodsColorParams) (err error) {
 	}
 	return db.Create(&goodsColor).Error
 }
+
+// GetGoodsColorList 获取所有 商品颜色  --- goods_color 表
+func GetGoodsColorList() (oGoodsColorList []models.GoodsColor, err error) {
+	oGoodsColorList = []models.GoodsColor{}
+	err = db.Where("is_deleted=0").Find(&oGoodsColorList).Error
+	return oGoodsColorList, err
+}

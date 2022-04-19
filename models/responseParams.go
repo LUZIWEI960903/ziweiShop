@@ -233,3 +233,10 @@ type GoodsCateWithGoodsCate1 struct {
 type GoodsAddPageData struct {
 	GoodsCateItems []GoodsCateWithGoodsCate1 `json:"goods_cate_items"`
 }
+
+type GoodsColorList struct {
+	Id         int    `json:"id"`          // 商品颜色id
+	Status     int    `json:"status"`      // 商品颜色状态
+	ColorName  string `json:"color_name"`  // 商品颜色名
+	ColorValue string `json:"color_value"` // 商品颜色值
+}

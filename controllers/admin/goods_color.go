@@ -15,7 +15,15 @@ type GoodsColorController struct {
 
 // Index 商品颜色页面的接口
 func (con GoodsColorController) Index(c *gin.Context) {
+	// 业务逻辑
+	data, err := logic.GoodsColorLogic{}.ShowIndexPageLogic()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsColorController) Index(c *gin.Context)] [logic.GoodsColorLogic{}.ShowIndexPageLogic()] failed, ", zap.Error(err))
+		con.error(c, CodeGetIndexPageDataErr)
+		return
+	}
 
+	con.success(c, data)
 }
 
 // Add 增加商品颜色页面的接口
