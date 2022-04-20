@@ -146,3 +146,30 @@ type EditGoodsColorParams struct {
 	ColorName  string `json:"color_name"`  // 商品颜色名
 	ColorValue string `json:"color_value"` // 商品颜色值
 }
+
+type AddGoodsParams struct {
+	CateId        int     `json:"cate_id"`        // 商品的分类id
+	GoodsNumber   int     `json:"goods_number"`   // 商品库存
+	IsHot         int     `json:"is_hot"`         // 是否热门商品
+	IsBest        int     `json:"is_best"`        // 是否推荐商品
+	IsNew         int     `json:"is_new"`         // 是否新的商品
+	GoodsTypeId   int     `json:"goods_type_id"`  // 商品关联类型
+	Sort          int     `json:"sort"`           // 商品排序
+	Status        int     `json:"status"`         // 商品状态
+	AddTime       int     `json:"add_time"`       // 商品增加时间
+	Price         float64 `json:"price"`          // 商品价格
+	MarketPrice   float64 `json:"market_price"`   // 商品市场价格
+	Title         string  `json:"title"`          // 商品名
+	SubTitle      string  `json:"sub_title"`      // 商品的二级标题
+	GoodsSn       string  `json:"goods_sn"`       // 商品的sn号
+	RelationGoods string  `json:"relation_goods"` // 关联商品
+	GoodsAttr     string  `json:"goods_attr"`     // 商品属性
+	GoodsVersion  string  `json:"goods_version"`  // 商品版本
+	GoodsImg      string  `json:"goods_img"`      // 商品图片
+	GoodsGift     string  `json:"goods_gift"`     // 商品赠品
+	GoodsFitting  string  `json:"goods_fitting"`  // 商品配件
+	GoodsColor    string  `json:"goods_color"`    // 商品颜色
+	GoodsKeywords string  `json:"goods_keywords"` // 商品关键词
+	GoodsDesc     string  `json:"goods_desc"`     // 商品描述
+	GoodsContent  string  `json:"goods_content"`  // 商品详情
+}

@@ -1,8 +1,10 @@
 package logic
 
 import (
+	"strconv"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
+	"ziweiShop/pkg/tools"
 )
 
 type GoodsLogic struct {
@@ -91,4 +93,54 @@ func (GoodsLogic) AjaxGetGoodsTypeAttributeLogic(cateId int) (data []models.Ajax
 		data = append(data, newGoodsTypeAttribute)
 	}
 	return data, nil
+}
+
+func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrIdList, attrValueList []string) (err error) {
+	// 创建商品
+	goods, err := mysql.AddGoods(p)
+	if err != nil {
+		return err
+	}
+
+	// 增加图库信息
+	for _, goodsImageUrl := range goodsImageList {
+		goodsImageObj := models.GoodsImage{
+			GoodsId: goods.Id,
+			ColorId: 0,
+			Sort:    10,
+			AddTime: int(tools.GetUnix()),
+			Status:  1,
+			ImgUrl:  goodsImageUrl,
+		}
+		if err1 := mysql.AddGoodsImage(&goodsImageObj); err1 != nil {
+			return err1
+		}
+	}
+
+	// 增加规格包装
+	for i, l := 0, len(attrIdList); i < l; i++ {
+		// 获取商品类型属性 信息
+		goodsTypeAttributeId, _ := strconv.Atoi(attrIdList[i])
+		oGoodsTypeAttribute, err1 := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
+		if err1 != nil {
+			return err1
+		}
+		// 创建 goodsAttr
+		goodsAttrObj := models.GoodsAttr{
+			GoodsId:         goods.Id,
+			AttributeCateId: oGoodsTypeAttribute.CateId,
+			AttributeId:     oGoodsTypeAttribute.Id,
+			AttributeType:   oGoodsTypeAttribute.AttrType,
+			AddTime:         int(tools.GetUnix()),
+			Status:          1,
+			AttributeTitle:  oGoodsTypeAttribute.Title,
+			AttributeValue:  attrValueList[i],
+			Sort:            10,
+		}
+		if err2 := mysql.AddGoodsAttr(&goodsAttrObj); err2 != nil {
+			return err2
+		}
+	}
+
+	return nil
 }
