@@ -26,3 +26,7 @@ func GetDate() string {
 func GetUnix() int64 {
 	return time.Now().Unix()
 }
+
+func GetUnixN() int64 {
+	return time.Now().UnixNano()
+}

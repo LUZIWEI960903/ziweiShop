@@ -37,7 +37,7 @@ func UploadImg(c *gin.Context, picName string) (string, error) {
 	if err := os.MkdirAll(dir, 0666); err != nil {
 		return "", err
 	}
-	fileName := fmt.Sprintf("%v%v", GetUnix(), extName)
+	fileName := fmt.Sprintf("%v%v", GetUnixN(), extName)
 	dst := path.Join(dir, fileName)
 	c.SaveUploadedFile(file, dst)
 	return dst, nil

@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"fmt"
 	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/pkg/tools"
@@ -30,6 +31,26 @@ func (con GoodsController) Add(c *gin.Context) {
 	}
 
 	con.success(c, data)
+}
+
+// DoAdd 增加商品的接口
+func (con GoodsController) DoAdd(c *gin.Context) {
+	// 解析参数
+	attrIdList := c.PostFormArray("attr_id_list")
+	attrValueList := c.PostFormArray("attr_value_list")
+	goodsImageList := c.PostFormArray("goods_image_list")
+	fmt.Println(attrIdList)
+	fmt.Println(attrValueList)
+	fmt.Println(goodsImageList)
+	// 业务逻辑
+	//err := logic.GoodsLogic{}.DoAddLogic()
+	//if err != nil {
+	//	zap.L().Error("[pkg: admin] [func: (con GoodsController) DoAdd(c *gin.Context)] [logic.GoodsLogic{}.ShowAddPageLogic()] failed, ", zap.Error(err))
+	//	con.error(c, CodeDoAddLogicErr)
+	//	return
+	//}
+
+	con.success(c, true)
 }
 
 // ImageUpload wysiwyg-editor上传图片的接口
