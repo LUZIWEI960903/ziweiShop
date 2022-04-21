@@ -15,7 +15,7 @@ type GoodsTypeController struct {
 }
 
 // Index 商品类型页面的接口
-func (con BaseController) Index(c *gin.Context) {
+func (con GoodsTypeController) Index(c *gin.Context) {
 	// 业务逻辑
 	goodsTypeList, err := logic.GoodsTypeLogic{}.GetGoodsTypeList()
 	if err != nil {
@@ -27,12 +27,12 @@ func (con BaseController) Index(c *gin.Context) {
 }
 
 // Add 增加商品类型页面的接口
-func (con BaseController) Add(c *gin.Context) {
+func (con GoodsTypeController) Add(c *gin.Context) {
 	con.success(c, true)
 }
 
 // DoAdd 增加商品类型的接口
-func (con BaseController) DoAdd(c *gin.Context) {
+func (con GoodsTypeController) DoAdd(c *gin.Context) {
 	// 解析参数
 	p := new(models.AddGoodsTypeParams)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -53,7 +53,7 @@ func (con BaseController) DoAdd(c *gin.Context) {
 }
 
 // Edit 编辑商品类型页面的接口
-func (con BaseController) Edit(c *gin.Context) {
+func (con GoodsTypeController) Edit(c *gin.Context) {
 	// 解析参数
 	goodsTypeId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {
@@ -74,7 +74,7 @@ func (con BaseController) Edit(c *gin.Context) {
 }
 
 // DoEdit 编辑商品类型的接口
-func (con BaseController) DoEdit(c *gin.Context) {
+func (con GoodsTypeController) DoEdit(c *gin.Context) {
 	// 解析参数
 	p := new(models.EditGoodsTypeParams)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -95,7 +95,7 @@ func (con BaseController) DoEdit(c *gin.Context) {
 }
 
 // Delete 删除商品类型的接口
-func (con BaseController) Delete(c *gin.Context) {
+func (con GoodsTypeController) Delete(c *gin.Context) {
 	// 解析参数
 	goodsTypeId, err := strconv.Atoi(c.Query("id"))
 	if err != nil {

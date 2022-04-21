@@ -2,6 +2,7 @@ package logic
 
 import (
 	"strconv"
+	"strings"
 	"sync"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
@@ -188,5 +189,149 @@ func (GoodsLogic) ShowIndexPageDataLogic() (data *models.GoodsIndexPageData, err
 
 	return &models.GoodsIndexPageData{
 		GoodsItems: GoodsItems,
+	}, nil
+}
+
+func (GoodsLogic) ShowEditPageLogic(goodsId int) (data *models.GoodsEditPageData, err error) {
+	// 查询 goods 信息
+	oGoodsInfo, err1 := mysql.GetGoodsById(goodsId)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	// 查询所有 该商品图库信息
+	oGoodsImageList, err2 := mysql.GetGoodsImageListByGoodsId(goodsId)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	// 查询所有 该商品的包装规格信息
+	oGoodsAttrList, err3 := mysql.GetGoodsAttrListByGoodsId(goodsId)
+	if err3 != nil {
+		return nil, err3
+	}
+
+	// 查询所有 商品分类
+	oTopGoodsCateWithGoodsCateList, err4 := mysql.GetTopGoodsCateWithGoodsCateList()
+	if err4 != nil {
+		return nil, err4
+	}
+
+	// 查询所有 商品颜色
+	oGoodsColorList, err5 := mysql.GetGoodsColorList()
+	if err5 != nil {
+		return nil, err5
+	}
+
+	// 查询所有 商品类型
+	oGoodsTypeList, err6 := mysql.GetGoodsTypeList()
+	if err6 != nil {
+		return nil, err6
+	}
+
+	// 构造返回数据
+	Goods := models.GoodsEdit{
+		CateId:        oGoodsInfo.CateId,
+		GoodsNumber:   oGoodsInfo.GoodsNumber,
+		IsHot:         oGoodsInfo.IsHot,
+		IsBest:        oGoodsInfo.IsBest,
+		IsNew:         oGoodsInfo.IsNew,
+		GoodsTypeId:   oGoodsInfo.GoodsTypeId,
+		Sort:          oGoodsInfo.Sort,
+		Status:        oGoodsInfo.Status,
+		Price:         oGoodsInfo.Price,
+		MarketPrice:   oGoodsInfo.MarketPrice,
+		Title:         oGoodsInfo.Title,
+		SubTitle:      oGoodsInfo.SubTitle,
+		GoodsSn:       oGoodsInfo.GoodsSn,
+		RelationGoods: oGoodsInfo.RelationGoods,
+		GoodsAttr:     oGoodsInfo.GoodsAttr,
+		GoodsVersion:  oGoodsInfo.GoodsVersion,
+		GoodsImg:      oGoodsInfo.GoodsImg,
+		GoodsGift:     oGoodsInfo.GoodsGift,
+		GoodsFitting:  oGoodsInfo.GoodsFitting,
+		GoodsKeywords: oGoodsInfo.GoodsKeywords,
+		GoodsDesc:     oGoodsInfo.GoodsDesc,
+		GoodsContent:  oGoodsInfo.GoodsContent,
+	}
+
+	GoodsImageItems := make([]models.GoodsImageList, 0)
+	for _, oGoodsImage := range oGoodsImageList {
+		newGoodsImage := models.GoodsImageList{
+			Id:      oGoodsImage.Id,
+			GoodsId: oGoodsImage.GoodsId,
+			ImgUrl:  oGoodsImage.ImgUrl,
+		}
+		GoodsImageItems = append(GoodsImageItems, newGoodsImage)
+	}
+
+	GoodsAttrItems := make([]models.GoodsAttrList, 0)
+	for _, oGoodsAttr := range oGoodsAttrList {
+		newGoodsAttr := models.GoodsAttrList{
+			Id:              oGoodsAttr.Id,
+			GoodsId:         oGoodsAttr.GoodsId,
+			AttributeCateId: oGoodsAttr.AttributeCateId,
+			AttributeId:     oGoodsAttr.AttributeId,
+			AttributeType:   oGoodsAttr.AttributeType,
+			AttributeTitle:  oGoodsAttr.AttributeTitle,
+			AttributeValue:  oGoodsAttr.AttributeValue,
+		}
+		GoodsAttrItems = append(GoodsAttrItems, newGoodsAttr)
+	}
+
+	GoodsCateItems := make([]models.GoodsCateWithGoodsCate1, 0)
+	for _, oTopGoodsCate := range oTopGoodsCateWithGoodsCateList {
+		newTopGoodsCate := models.GoodsCateWithGoodsCate1{
+			Id:    oTopGoodsCate.Id,
+			Pid:   oTopGoodsCate.Pid,
+			Title: oTopGoodsCate.Title,
+			//ChildGoodsCateItems: nil,
+		}
+		ChildGoodsCateItems := make([]models.TopGoodsCate2, 0)
+		for _, oGoodsCate := range oTopGoodsCate.GoodsCateItems {
+			newGoodsCate := models.TopGoodsCate2{
+				Id:    oGoodsCate.Id,
+				Pid:   oGoodsCate.Pid,
+				Title: oGoodsCate.Title,
+			}
+			ChildGoodsCateItems = append(ChildGoodsCateItems, newGoodsCate)
+		}
+		newTopGoodsCate.ChildGoodsCateItems = ChildGoodsCateItems
+		GoodsCateItems = append(GoodsCateItems, newTopGoodsCate)
+	}
+
+	selectedColorIdList := strings.Split(oGoodsInfo.GoodsColor, ",")
+	goodsColorIdMap := make(map[string]bool)
+	for _, colorIdStr := range selectedColorIdList {
+		goodsColorIdMap[colorIdStr] = true
+	}
+	GoodsColorItems := make([]models.GoodsColorList2, 0)
+	for _, oGoodsColor := range oGoodsColorList {
+		newGoodsColor := models.GoodsColorList2{
+			Id:        oGoodsColor.Id,
+			ColorName: oGoodsColor.ColorName,
+		}
+		if _, ok := goodsColorIdMap[strconv.Itoa(oGoodsColor.Id)]; ok {
+			newGoodsColor.IsCheck = true
+		}
+		GoodsColorItems = append(GoodsColorItems, newGoodsColor)
+	}
+
+	GoodsTypeItems := make([]models.GoodsTypeList1, 0)
+	for _, oGoodsType := range oGoodsTypeList {
+		newGoodsType := models.GoodsTypeList1{
+			Id:    oGoodsType.Id,
+			Title: oGoodsType.Title,
+		}
+		GoodsTypeItems = append(GoodsTypeItems, newGoodsType)
+	}
+
+	return &models.GoodsEditPageData{
+		Goods:           Goods,
+		GoodsCateItems:  GoodsCateItems,
+		GoodsColorItems: GoodsColorItems,
+		GoodsTypeItems:  GoodsTypeItems,
+		GoodsImageItems: GoodsImageItems,
+		GoodsAttrItems:  GoodsAttrItems,
 	}, nil
 }

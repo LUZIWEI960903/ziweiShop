@@ -253,6 +253,12 @@ type GoodsColorList1 struct {
 	ColorName string `json:"color_name"` // 商品颜色名
 }
 
+type GoodsColorList2 struct {
+	Id        int    `json:"id"`         // 商品颜色id
+	ColorName string `json:"color_name"` // 商品颜色名
+	IsCheck   bool   `json:"is_check"`   // 是否有选中
+}
+
 type AjaxGoodsTypeAttribute struct {
 	Id        int    `json:"id"`         // 商品类型属性的id
 	CateId    int    `json:"cate_id"`    // 对应的商品类型id
@@ -277,4 +283,54 @@ type GoodsIndexPage struct {
 
 type GoodsIndexPageData struct {
 	GoodsItems []GoodsIndexPage `json:"goods_items"` // 商品列表
+}
+
+type GoodsEdit struct {
+	CateId        int     `json:"cate_id"`        // 商品的分类id
+	GoodsNumber   int     `json:"goods_number"`   // 商品库存
+	IsHot         int     `json:"is_hot"`         // 是否热门商品
+	IsBest        int     `json:"is_best"`        // 是否推荐商品
+	IsNew         int     `json:"is_new"`         // 是否新的商品
+	GoodsTypeId   int     `json:"goods_type_id"`  // 商品关联类型
+	Sort          int     `json:"sort"`           // 商品排序
+	Status        int     `json:"status"`         // 商品状态
+	Price         float64 `json:"price"`          // 商品价格
+	MarketPrice   float64 `json:"market_price"`   // 商品市场价格
+	Title         string  `json:"title"`          // 商品名
+	SubTitle      string  `json:"sub_title"`      // 商品的二级标题
+	GoodsSn       string  `json:"goods_sn"`       // 商品的sn号
+	RelationGoods string  `json:"relation_goods"` // 关联商品
+	GoodsAttr     string  `json:"goods_attr"`     // 商品属性
+	GoodsVersion  string  `json:"goods_version"`  // 商品版本
+	GoodsImg      string  `json:"goods_img"`      // 商品图片
+	GoodsGift     string  `json:"goods_gift"`     // 商品赠品
+	GoodsFitting  string  `json:"goods_fitting"`  // 商品配件
+	GoodsKeywords string  `json:"goods_keywords"` // 商品关键词
+	GoodsDesc     string  `json:"goods_desc"`     // 商品描述
+	GoodsContent  string  `json:"goods_content"`  // 商品详情
+}
+
+type GoodsImageList struct {
+	Id      int    `json:"id"`       // 商品图片id
+	GoodsId int    `json:"goods_id"` // 商品id
+	ImgUrl  string `json:"img_url"`  // 商品图片路径
+}
+
+type GoodsAttrList struct {
+	Id              int    `json:"id"`                // 商品属性id
+	GoodsId         int    `json:"goods_id"`          // 商品id
+	AttributeCateId int    `json:"attribute_cate_id"` // 商品属性对应的cateId
+	AttributeId     int    `json:"attribute_id"`      // 商品属性的Id
+	AttributeType   int    `json:"attribute_type"`    // 商品属性的类型 1. 单行文本框 2. 多行文本框 3. 下拉框
+	AttributeTitle  string `json:"attribute_title"`   // 商品属性的名
+	AttributeValue  string `json:"attribute_value"`   // 商品属性的填写内容
+}
+
+type GoodsEditPageData struct {
+	Goods           GoodsEdit                 `json:"goods"` // 商品详情
+	GoodsCateItems  []GoodsCateWithGoodsCate1 `json:"goods_cate_items"`
+	GoodsColorItems []GoodsColorList2         `json:"goods_color_items"`
+	GoodsTypeItems  []GoodsTypeList1          `json:"goods_type_items"`
+	GoodsImageItems []GoodsImageList          `json:"goods_image_items"` // 该商品图库信息
+	GoodsAttrItems  []GoodsAttrList           `json:"goods_attr_items"`  // 该商品包装规格信息
 }

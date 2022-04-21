@@ -40,3 +40,13 @@ func GetGoodsList() (oGoodsList []models.Goods, err error) {
 	err = db.Where("is_deleted=0").Find(&oGoodsList).Error
 	return oGoodsList, err
 }
+
+// GetGoodsById  // 根据 goodId 查询 商品详情   --- goods 表
+func GetGoodsById(goodsId int) (oGoodsInfo *models.Goods, err error) {
+	goodsList := []models.Goods{}
+	err = db.Where("id=? AND is_deleted=0", goodsId).First(&goodsList).Error
+	if len(goodsList) < 1 || err != nil {
+		return nil, ErrGetGoods
+	}
+	return &goodsList[0], nil
+}

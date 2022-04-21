@@ -116,6 +116,26 @@ func (con GoodsController) DoAdd(c *gin.Context) {
 	con.success(c, true)
 }
 
+// Edit 编辑商品页面的接口
+func (con GoodsController) Edit(c *gin.Context) {
+	// 解析参数
+	goodsId, err := strconv.Atoi(c.Query("id"))
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) Edit(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	data, err1 := logic.GoodsLogic{}.ShowEditPageLogic(goodsId)
+	if err1 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) Edit(c *gin.Context)] [logic.GoodsLogic{}.ShowEditPageLogic(goodsId)] failed, ", zap.Error(err1))
+		con.error(c, CodeGetEditPageDataErr)
+		return
+	}
+
+	con.success(c, data)
+}
+
 // ImageUpload wysiwyg-editor上传图片的接口
 func (con GoodsController) ImageUpload(c *gin.Context) {
 	ImgSrc, err := tools.UploadImg(c, "file")
