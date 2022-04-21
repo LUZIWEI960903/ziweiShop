@@ -2,6 +2,7 @@ package logic
 
 import (
 	"strconv"
+	"sync"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
@@ -9,6 +10,8 @@ import (
 
 type GoodsLogic struct {
 }
+
+var wg sync.WaitGroup
 
 func (GoodsLogic) ShowAddPageLogic() (data *models.GoodsAddPageData, err error) {
 	// 获取商品分类
@@ -103,44 +106,56 @@ func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrId
 	}
 
 	// 增加图库信息
-	for _, goodsImageUrl := range goodsImageList {
-		goodsImageObj := models.GoodsImage{
-			GoodsId: goods.Id,
-			ColorId: 0,
-			Sort:    10,
-			AddTime: int(tools.GetUnix()),
-			Status:  1,
-			ImgUrl:  goodsImageUrl,
+	wg.Add(1)
+	go func() error {
+		for _, goodsImageUrl := range goodsImageList {
+			goodsImageObj := models.GoodsImage{
+				GoodsId: goods.Id,
+				ColorId: 0,
+				Sort:    10,
+				AddTime: int(tools.GetUnix()),
+				Status:  1,
+				ImgUrl:  goodsImageUrl,
+			}
+			if err1 := mysql.AddGoodsImage(&goodsImageObj); err1 != nil {
+				return err1
+			}
 		}
-		if err1 := mysql.AddGoodsImage(&goodsImageObj); err1 != nil {
-			return err1
-		}
-	}
+		wg.Done()
+		return nil
+	}()
 
 	// 增加规格包装
-	for i, l := 0, len(attrIdList); i < l; i++ {
-		// 获取商品类型属性 信息
-		goodsTypeAttributeId, _ := strconv.Atoi(attrIdList[i])
-		oGoodsTypeAttribute, err1 := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
-		if err1 != nil {
-			return err1
+	wg.Add(1)
+	go func() error {
+		for i, l := 0, len(attrIdList); i < l; i++ {
+			// 获取商品类型属性 信息
+			goodsTypeAttributeId, _ := strconv.Atoi(attrIdList[i])
+			oGoodsTypeAttribute, err1 := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
+			if err1 != nil {
+				return err1
+			}
+			// 创建 goodsAttr
+			goodsAttrObj := models.GoodsAttr{
+				GoodsId:         goods.Id,
+				AttributeCateId: oGoodsTypeAttribute.CateId,
+				AttributeId:     oGoodsTypeAttribute.Id,
+				AttributeType:   oGoodsTypeAttribute.AttrType,
+				AddTime:         int(tools.GetUnix()),
+				Status:          1,
+				AttributeTitle:  oGoodsTypeAttribute.Title,
+				AttributeValue:  attrValueList[i],
+				Sort:            10,
+			}
+			if err2 := mysql.AddGoodsAttr(&goodsAttrObj); err2 != nil {
+				return err2
+			}
 		}
-		// 创建 goodsAttr
-		goodsAttrObj := models.GoodsAttr{
-			GoodsId:         goods.Id,
-			AttributeCateId: oGoodsTypeAttribute.CateId,
-			AttributeId:     oGoodsTypeAttribute.Id,
-			AttributeType:   oGoodsTypeAttribute.AttrType,
-			AddTime:         int(tools.GetUnix()),
-			Status:          1,
-			AttributeTitle:  oGoodsTypeAttribute.Title,
-			AttributeValue:  attrValueList[i],
-			Sort:            10,
-		}
-		if err2 := mysql.AddGoodsAttr(&goodsAttrObj); err2 != nil {
-			return err2
-		}
-	}
+		wg.Done()
+		return nil
+	}()
+
+	wg.Wait()
 
 	return nil
 }
