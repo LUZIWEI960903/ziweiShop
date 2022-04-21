@@ -159,3 +159,34 @@ func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrId
 
 	return nil
 }
+
+func (GoodsLogic) ShowIndexPageDataLogic() (data *models.GoodsIndexPageData, err error) {
+	// 查询所有商品
+	oGoodsList, err := mysql.GetGoodsList()
+	if err != nil {
+		return nil, err
+	}
+
+	// 构造返回数据
+	GoodsItems := make([]models.GoodsIndexPage, 0)
+	for _, oGoods := range oGoodsList {
+		newGoods := models.GoodsIndexPage{
+			Id:          oGoods.Id,
+			Title:       oGoods.Title,
+			Price:       oGoods.Price,
+			MarketPrice: oGoods.MarketPrice,
+			IsHot:       oGoods.IsHot,
+			IsBest:      oGoods.IsBest,
+			IsNew:       oGoods.IsNew,
+			ClickCount:  oGoods.ClickCount,
+			GoodsNumber: oGoods.GoodsNumber,
+			Sort:        oGoods.Sort,
+			Status:      oGoods.Status,
+		}
+		GoodsItems = append(GoodsItems, newGoods)
+	}
+
+	return &models.GoodsIndexPageData{
+		GoodsItems: GoodsItems,
+	}, nil
+}

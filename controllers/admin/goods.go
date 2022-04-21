@@ -19,7 +19,15 @@ type GoodsController struct {
 
 // Index 商品页面的接口
 func (con GoodsController) Index(c *gin.Context) {
+	// 业务逻辑
+	data, err := logic.GoodsLogic{}.ShowIndexPageDataLogic()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) Index(c *gin.Context)] [logic.GoodsLogic{}.ShowIndexPageDataLogic()] failed, ", zap.Error(err))
+		con.error(c, CodeGetIndexPageDataErr)
+		return
+	}
 
+	con.success(c, data)
 }
 
 // Add 增加商品页面的接口

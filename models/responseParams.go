@@ -260,3 +260,21 @@ type AjaxGoodsTypeAttribute struct {
 	AttrType  int    `json:"attr_type"`  // 商品类型属性的录入方式 1. 单行文本框 2. 多行文本框 3. 从下面的列表中选择（一行代表一个可选值 ）
 	AttrValue string `json:"attr_value"` // 商品类型属性的录入值
 }
+
+type GoodsIndexPage struct {
+	Id          int     `json:"id"`           // 商品id
+	Title       string  `json:"title"`        // 商品名
+	Price       float64 `json:"price"`        // 商品价格
+	MarketPrice float64 `json:"market_price"` // 商品市场价格
+	IsHot       int     `json:"is_hot"`       // 是否热门商品
+	IsBest      int     `json:"is_best"`      // 是否推荐商品
+	IsNew       int     `json:"is_new"`       // 是否新的商品
+	ClickCount  int     `json:"click_count"`  // 商品点击数
+	GoodsNumber int     `json:"goods_number"` // 商品库存
+	Sort        int     `json:"sort"`         // 商品排序
+	Status      int     `json:"status"`       // 商品状态
+}
+
+type GoodsIndexPageData struct {
+	GoodsItems []GoodsIndexPage `json:"goods_items"` // 商品列表
+}

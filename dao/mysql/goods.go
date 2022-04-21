@@ -33,3 +33,10 @@ func AddGoods(p *models.AddGoodsParams) (goods models.Goods, err error) {
 	}
 	return goods, db.Create(&goods).Error
 }
+
+// GetGoodsList 查询所有 goods   --- goods 表
+func GetGoodsList() (oGoodsList []models.Goods, err error) {
+	oGoodsList = []models.Goods{}
+	err = db.Where("is_deleted=0").Find(&oGoodsList).Error
+	return oGoodsList, err
+}
