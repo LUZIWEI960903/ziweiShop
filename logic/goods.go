@@ -335,3 +335,70 @@ func (GoodsLogic) ShowEditPageLogic(goodsId int) (data *models.GoodsEditPageData
 		GoodsAttrItems:  GoodsAttrItems,
 	}, nil
 }
+
+func (GoodsLogic) EditGoodsLogic(p *models.EditGoodsParams, goodsImageList, attrIdList, attrValueList []string) (err error) {
+	// 根据 goodsId 修改商品 信息
+	err1 := mysql.EditGoods(p)
+	if err1 != nil {
+		return err1
+	}
+
+	// 增加商品图库信息
+	wg.Add(1)
+	go func() error {
+		for _, goodsImageUrl := range goodsImageList {
+			goodsImageObj := models.GoodsImage{
+				GoodsId: p.Id,
+				ColorId: 0,
+				Sort:    10,
+				AddTime: int(tools.GetUnix()),
+				Status:  1,
+				ImgUrl:  goodsImageUrl,
+			}
+			if err2 := mysql.AddGoodsImage(&goodsImageObj); err2 != nil {
+				return err2
+			}
+		}
+		wg.Done()
+		return nil
+	}()
+
+	// 增加规格包装
+	wg.Add(1)
+	go func() error {
+		// 删除原有的规格包装
+		if err := mysql.DeleteGoodsAttr(p.Id); err != nil {
+			return err
+		}
+
+		for i, l := 0, len(attrIdList); i < l; i++ {
+			// 获取商品类型属性 信息
+			goodsTypeAttributeId, _ := strconv.Atoi(attrIdList[i])
+			oGoodsTypeAttribute, err3 := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
+			if err3 != nil {
+				return err3
+			}
+			// 创建 goodsAttr
+			goodsAttrObj := models.GoodsAttr{
+				GoodsId:         p.Id,
+				AttributeCateId: oGoodsTypeAttribute.CateId,
+				AttributeId:     oGoodsTypeAttribute.Id,
+				AttributeType:   oGoodsTypeAttribute.AttrType,
+				AddTime:         int(tools.GetUnix()),
+				Status:          1,
+				AttributeTitle:  oGoodsTypeAttribute.Title,
+				AttributeValue:  attrValueList[i],
+				Sort:            10,
+			}
+			if err4 := mysql.AddGoodsAttr(&goodsAttrObj); err4 != nil {
+				return err4
+			}
+		}
+		wg.Done()
+		return nil
+	}()
+
+	wg.Wait()
+
+	return nil
+}

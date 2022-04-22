@@ -50,3 +50,40 @@ func GetGoodsById(goodsId int) (oGoodsInfo *models.Goods, err error) {
 	}
 	return &goodsList[0], nil
 }
+
+// EditGoods  修改 goods 信息   --- goods 表
+func EditGoods(p *models.EditGoodsParams) (err error) {
+	goodsList := []models.Goods{}
+	err = db.Where("id=? AND is_deleted=0", p.Id).First(&goodsList).Error
+	if len(goodsList) < 1 || err != nil {
+		return ErrGetGoods
+	}
+
+	goodsList[0].CateId = p.CateId
+	goodsList[0].GoodsNumber = p.GoodsNumber
+	goodsList[0].IsHot = p.IsHot
+	goodsList[0].IsBest = p.IsBest
+	goodsList[0].IsNew = p.IsNew
+	goodsList[0].GoodsTypeId = p.GoodsTypeId
+	goodsList[0].Sort = p.Sort
+	goodsList[0].Status = p.Status
+	goodsList[0].Price = p.Price
+	goodsList[0].MarketPrice = p.MarketPrice
+	goodsList[0].Title = p.Title
+	goodsList[0].SubTitle = p.SubTitle
+	goodsList[0].GoodsSn = p.GoodsSn
+	goodsList[0].RelationGoods = p.RelationGoods
+	goodsList[0].GoodsAttr = p.GoodsAttr
+	goodsList[0].GoodsVersion = p.GoodsVersion
+	if p.GoodsImg != "" {
+		goodsList[0].GoodsImg = p.GoodsImg
+	}
+	goodsList[0].GoodsGift = p.GoodsGift
+	goodsList[0].GoodsFitting = p.GoodsFitting
+	goodsList[0].GoodsColor = p.GoodsColor
+	goodsList[0].GoodsKeywords = p.GoodsKeywords
+	goodsList[0].GoodsDesc = p.GoodsDesc
+	goodsList[0].GoodsContent = p.GoodsContent
+
+	return db.Save(&goodsList).Error
+}
