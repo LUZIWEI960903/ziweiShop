@@ -239,3 +239,25 @@ func (con GoodsController) GoodsTypeAttribute(c *gin.Context) {
 
 	con.success(c, data)
 }
+
+// ChangeGoodsImageColor 使用Ajax 根据 imageId 改变其 colorId的接口
+func (con GoodsController) ChangeGoodsImageColor(c *gin.Context) {
+	// 解析参数
+	goodsImageId, err1 := strconv.Atoi(c.Query("goods_image_id"))
+	colorId, err2 := strconv.Atoi(c.Query("color_id"))
+	if err1 != nil || err2 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) ChangeGoodsImageColor(c *gin.Context)]")
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	err3 := logic.GoodsLogic{}.AjaxChangeGoodsImageLogic(goodsImageId, colorId)
+	if err3 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) ChangeGoodsImageColor(c *gin.Context)] [logic.GoodsLogic{}.AjaxChangeGoodsImageLogic(goodsImageId, colorId)] failed, ", zap.Error(err3))
+		con.error(c, CodeAjaxErr)
+		return
+	}
+
+	con.success(c, true)
+}

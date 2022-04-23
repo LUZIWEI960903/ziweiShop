@@ -402,3 +402,8 @@ func (GoodsLogic) EditGoodsLogic(p *models.EditGoodsParams, goodsImageList, attr
 
 	return nil
 }
+
+func (GoodsLogic) AjaxChangeGoodsImageLogic(goodsImageId, colorId int) (err error) {
+	// 根据 goodsImageId 修改colorId
+	return mysql.EditColorByGoodsImageId(goodsImageId, colorId)
+}

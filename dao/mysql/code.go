@@ -28,4 +28,6 @@ var (
 	ErrGetGoodsColor = errors.New("Get goods color error~~")
 
 	ErrGetGoods = errors.New("Get goods error~~")
+
+	ErrGetGoodsImage = errors.New("Get goods image error~~")
 )

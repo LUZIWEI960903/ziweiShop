@@ -149,6 +149,8 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.POST("/goods/imageUpload", admin.GoodsController{}.ImageUpload)
 		// Ajax动态获取商品类型属性
 		adminRouters.GET("/goods/goodsTypeAttribute", admin.GoodsController{}.GoodsTypeAttribute)
+		// Ajax动态修改商品图片颜色
+		adminRouters.PUT("/goods/changeGoodsImageColor", admin.GoodsController{}.ChangeGoodsImageColor)
 
 	}
 }
