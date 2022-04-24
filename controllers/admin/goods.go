@@ -261,3 +261,24 @@ func (con GoodsController) ChangeGoodsImageColor(c *gin.Context) {
 
 	con.success(c, true)
 }
+
+// RemoveGoodsImage 使用Ajax 根据 imageId 逻辑删除 商品图库的接口
+func (con GoodsController) RemoveGoodsImage(c *gin.Context) {
+	// 解析参数
+	goodsImageId, err1 := strconv.Atoi(c.Query("goods_image_id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) RemoveGoodsImage(c *gin.Context)] [strconv.Atoi(c.Query(\"goods_image_id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	err2 := logic.GoodsLogic{}.AjaxRemoveGoodsImageLogic(goodsImageId)
+	if err2 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) RemoveGoodsImage(c *gin.Context)] [logic.GoodsLogic{}.AjaxRemoveGoodsImageLogic(goodsImageId)] failed, ", zap.Error(err2))
+		con.error(c, CodeAjaxErr)
+		return
+	}
+
+	con.success(c, true)
+}

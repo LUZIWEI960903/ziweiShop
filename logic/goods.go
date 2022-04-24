@@ -407,3 +407,7 @@ func (GoodsLogic) AjaxChangeGoodsImageLogic(goodsImageId, colorId int) (err erro
 	// 根据 goodsImageId 修改colorId
 	return mysql.EditColorByGoodsImageId(goodsImageId, colorId)
 }
+
+func (GoodsLogic) AjaxRemoveGoodsImageLogic(goodsImageId int) (err error) {
+	return mysql.AjaxRemoveGoodsImageByGoodsImageId(goodsImageId)
+}
