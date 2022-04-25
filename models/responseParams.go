@@ -283,6 +283,8 @@ type GoodsIndexPage struct {
 
 type GoodsIndexPageData struct {
 	GoodsItems []GoodsIndexPage `json:"goods_items"` // 商品列表
+	PageCount  float64          `json:"page_count"`  // 商品总页数
+	Page       int              `json:"page"`        // 第几页
 }
 
 type GoodsEdit struct {

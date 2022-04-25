@@ -163,7 +163,7 @@ func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrId
 
 func (GoodsLogic) ShowIndexPageDataLogic(page, pageSize int) (data *models.GoodsIndexPageData, err error) {
 	// 分页查询所有商品
-	oGoodsList, err := mysql.GetGoodsListByPage(page, pageSize)
+	oGoodsList, pageCount, err := mysql.GetGoodsListByPage(page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -189,6 +189,8 @@ func (GoodsLogic) ShowIndexPageDataLogic(page, pageSize int) (data *models.Goods
 
 	return &models.GoodsIndexPageData{
 		GoodsItems: GoodsItems,
+		PageCount:  pageCount,
+		Page:       page,
 	}, nil
 }
 

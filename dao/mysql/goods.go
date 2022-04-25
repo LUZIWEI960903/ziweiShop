@@ -1,6 +1,9 @@
 package mysql
 
-import "ziweiShop/models"
+import (
+	"math"
+	"ziweiShop/models"
+)
 
 // AddGoods 创建商品  --- goods 表
 func AddGoods(p *models.AddGoodsParams) (goods models.Goods, err error) {
@@ -35,10 +38,16 @@ func AddGoods(p *models.AddGoodsParams) (goods models.Goods, err error) {
 }
 
 // GetGoodsListByPage 分页查询 GoodsList --- goods 表
-func GetGoodsListByPage(page, pageSize int) (oGoodsList []models.Goods, err error) {
+func GetGoodsListByPage(page, pageSize int) (oGoodsList []models.Goods, pageCount float64, err error) {
 	oGoodsList = []models.Goods{}
 	err = db.Where("is_deleted=0").Offset(pageSize * (page - 1)).Limit(pageSize).Find(&oGoodsList).Error
-	return oGoodsList, err
+
+	var count int64
+	// 获取goods总条数
+	db.Table("goods").Where("is_deleted=0").Count(&count)
+	// 获取总页数
+	pageCount = math.Ceil(float64(count) / float64(pageSize))
+	return oGoodsList, pageCount, err
 }
 
 // GetGoodsById  // 根据 goodId 查询 商品详情   --- goods 表
