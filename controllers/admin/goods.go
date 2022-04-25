@@ -18,10 +18,18 @@ type GoodsController struct {
 
 // Index 商品页面的接口
 func (con GoodsController) Index(c *gin.Context) {
+	// 解析参数
+	page, err1 := strconv.Atoi(c.DefaultQuery("p", "1"))
+	pageSize, err2 := strconv.Atoi(c.DefaultQuery("s", "5"))
+	if err1 != nil || err2 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) Index(c *gin.Context)] [strconv.Atoi(c.Query(\"p\"))]")
+		con.error(c, CodeInValidParams)
+		return
+	}
 	// 业务逻辑
-	data, err := logic.GoodsLogic{}.ShowIndexPageDataLogic()
+	data, err := logic.GoodsLogic{}.ShowIndexPageDataLogic(page, pageSize)
 	if err != nil {
-		zap.L().Error("[pkg: admin] [func: (con GoodsController) Index(c *gin.Context)] [logic.GoodsLogic{}.ShowIndexPageDataLogic()] failed, ", zap.Error(err))
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) Index(c *gin.Context)] [logic.GoodsLogic{}.ShowIndexPageDataLogic(page, pageSize)] failed, ", zap.Error(err))
 		con.error(c, CodeGetIndexPageDataErr)
 		return
 	}

@@ -34,10 +34,10 @@ func AddGoods(p *models.AddGoodsParams) (goods models.Goods, err error) {
 	return goods, db.Create(&goods).Error
 }
 
-// GetGoodsList 查询所有 goods   --- goods 表
-func GetGoodsList() (oGoodsList []models.Goods, err error) {
+// GetGoodsListByPage 分页查询 GoodsList --- goods 表
+func GetGoodsListByPage(page, pageSize int) (oGoodsList []models.Goods, err error) {
 	oGoodsList = []models.Goods{}
-	err = db.Where("is_deleted=0").Find(&oGoodsList).Error
+	err = db.Where("is_deleted=0").Offset(pageSize * (page - 1)).Limit(pageSize).Find(&oGoodsList).Error
 	return oGoodsList, err
 }
 
