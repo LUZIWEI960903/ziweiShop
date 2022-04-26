@@ -75,7 +75,7 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/focus/edit", admin.FocusController{}.Edit)
 		// 编辑轮播图
 		adminRouters.PUT("/focus/edit", admin.FocusController{}.DoEdit)
-		// 删除轮播图页面
+		// 删除轮播图
 		adminRouters.DELETE("/focus/delete", admin.FocusController{}.Delete)
 
 		// Ajax更新 指定表的 指定id的 status
@@ -93,7 +93,7 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/goodsCate/edit", admin.GoodsCateController{}.Edit)
 		// 编辑商品分类
 		adminRouters.PUT("/goodsCate/edit", admin.GoodsCateController{}.DoEdit)
-		// 删除商品分类页面
+		// 删除商品分类
 		adminRouters.DELETE("/goodsCate/delete", admin.GoodsCateController{}.Delete)
 
 		// 商品类型页面
@@ -106,7 +106,7 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/goodsType/edit", admin.GoodsTypeController{}.Edit)
 		// 编辑商品类型
 		adminRouters.PUT("/goodsType/edit", admin.GoodsTypeController{}.DoEdit)
-		// 删除商品类型页面
+		// 删除商品类型
 		adminRouters.DELETE("/goodsType/delete", admin.GoodsTypeController{}.Delete)
 
 		// 商品类型属性页面
@@ -119,7 +119,7 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/goodsTypeAttribute/edit", admin.GoodsTypeAttributeController{}.Edit)
 		// 编辑商品类型属性
 		adminRouters.PUT("/goodsTypeAttribute/edit", admin.GoodsTypeAttributeController{}.DoEdit)
-		// 删除商品类型属性页面
+		// 删除商品类型属性
 		adminRouters.DELETE("/goodsTypeAttribute/delete", admin.GoodsTypeAttributeController{}.Delete)
 
 		// 商品颜色页面
@@ -132,7 +132,7 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/goodsColor/edit", admin.GoodsColorController{}.Edit)
 		// 编辑商品颜色
 		adminRouters.PUT("/goodsColor/edit", admin.GoodsColorController{}.DoEdit)
-		// 删除商品颜色页面
+		// 删除商品颜色
 		adminRouters.DELETE("/goodsColor/delete", admin.GoodsColorController{}.Delete)
 
 		// 商品页面
@@ -155,6 +155,19 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.PUT("/goods/changeGoodsImageColor", admin.GoodsController{}.ChangeGoodsImageColor)
 		// Ajax动态删除商品图库
 		adminRouters.DELETE("/goods/removeGoodsImage", admin.GoodsController{}.RemoveGoodsImage)
+
+		// 导航栏主页面
+		adminRouters.GET("/nav", admin.NavController{}.Index)
+		// 添加导航栏页面
+		adminRouters.GET("/nav/add", admin.NavController{}.Add)
+		// 添加导航栏
+		adminRouters.POST("/nav/add", admin.NavController{}.DoAdd)
+		// 编辑导航栏页面
+		adminRouters.GET("/nav/edit", admin.NavController{}.Edit)
+		// 编辑导航栏
+		adminRouters.PUT("/nav/edit", admin.NavController{}.DoEdit)
+		// 删除导航栏
+		adminRouters.DELETE("/nav/delete", admin.NavController{}.Delete)
 
 	}
 }
