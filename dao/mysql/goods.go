@@ -39,9 +39,14 @@ func AddGoods(p *models.AddGoodsParams) (goods *models.Goods, err error) {
 }
 
 // GetGoodsListByPage 分页查询 GoodsList --- goods 表
-func GetGoodsListByPage(page, pageSize int) (oGoodsList []models.Goods, pageCount float64, err error) {
+func GetGoodsListByPage(page, pageSize int, keywords string) (oGoodsList []models.Goods, pageCount float64, err error) {
 	oGoodsList = []models.Goods{}
-	err = db.Where("is_deleted=0").Offset(pageSize * (page - 1)).Limit(pageSize).Find(&oGoodsList).Error
+	where := "is_deleted=0"
+	if keywords != "" {
+		where += ` AND title LIKE "%` + keywords + `%"`
+	}
+
+	err = db.Where(where).Offset(pageSize * (page - 1)).Limit(pageSize).Find(&oGoodsList).Error
 
 	var count int64
 	// 获取goods总条数
