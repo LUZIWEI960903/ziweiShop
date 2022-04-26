@@ -156,7 +156,6 @@ type AddGoodsParams struct {
 	GoodsTypeId   int     `json:"goods_type_id"`  // 商品关联类型
 	Sort          int     `json:"sort"`           // 商品排序
 	Status        int     `json:"status"`         // 商品状态
-	AddTime       int     `json:"add_time"`       // 商品增加时间
 	Price         float64 `json:"price"`          // 商品价格
 	MarketPrice   float64 `json:"market_price"`   // 商品市场价格
 	Title         string  `json:"title"`          // 商品名

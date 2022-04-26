@@ -3,37 +3,38 @@ package mysql
 import (
 	"math"
 	"ziweiShop/models"
+	"ziweiShop/pkg/tools"
 )
 
 // AddGoods 创建商品  --- goods 表
-func AddGoods(p *models.AddGoodsParams) (goods models.Goods, err error) {
-	goods = models.Goods{
-		CateId:        p.CateId,
-		ClickCount:    0,
-		GoodsNumber:   p.GoodsNumber,
-		IsHot:         p.IsHot,
-		IsBest:        p.IsBest,
-		IsNew:         p.IsNew,
-		GoodsTypeId:   p.GoodsTypeId,
-		Sort:          p.Sort,
-		Status:        p.Status,
-		AddTime:       p.AddTime,
-		Price:         p.Price,
-		MarketPrice:   p.MarketPrice,
-		Title:         p.Title,
-		SubTitle:      p.SubTitle,
-		GoodsSn:       p.GoodsSn,
-		RelationGoods: p.RelationGoods,
-		GoodsAttr:     p.GoodsAttr,
-		GoodsVersion:  p.GoodsVersion,
-		GoodsImg:      p.GoodsImg,
-		GoodsGift:     p.GoodsGift,
-		GoodsFitting:  p.GoodsFitting,
-		GoodsColor:    p.GoodsColor,
-		GoodsKeywords: p.GoodsKeywords,
-		GoodsDesc:     p.GoodsDesc,
-		GoodsContent:  p.GoodsContent,
-	}
+func AddGoods(p *models.AddGoodsParams) (goods *models.Goods, err error) {
+	goods = &models.Goods{}
+	goods.CateId = p.CateId
+	goods.ClickCount = 0
+	goods.GoodsNumber = p.GoodsNumber
+	goods.IsHot = p.IsHot
+	goods.IsBest = p.IsBest
+	goods.IsNew = p.IsNew
+	goods.GoodsTypeId = p.GoodsTypeId
+	goods.Sort = p.Sort
+	goods.Status = p.Status
+	goods.AddTime = int(tools.GetUnix())
+	goods.Price = p.Price
+	goods.MarketPrice = p.MarketPrice
+	goods.Title = p.Title
+	goods.SubTitle = p.SubTitle
+	goods.GoodsSn = p.GoodsSn
+	goods.RelationGoods = p.RelationGoods
+	goods.GoodsAttr = p.GoodsAttr
+	goods.GoodsVersion = p.GoodsVersion
+	goods.GoodsImg = p.GoodsImg
+	goods.GoodsGift = p.GoodsGift
+	goods.GoodsFitting = p.GoodsFitting
+	goods.GoodsColor = p.GoodsColor
+	goods.GoodsKeywords = p.GoodsKeywords
+	goods.GoodsDesc = p.GoodsDesc
+	goods.GoodsContent = p.GoodsContent
+
 	return goods, db.Create(&goods).Error
 }
 
@@ -95,4 +96,16 @@ func EditGoods(p *models.EditGoodsParams) (err error) {
 	goodsList[0].GoodsContent = p.GoodsContent
 
 	return db.Save(&goodsList).Error
+}
+
+// DeleteGoods  根据 goodsId 逻辑删除 goods  --- goods 表
+func DeleteGoods(goodsId int) (imgSrc string, err error) {
+	goodsList := []models.Goods{}
+	err = db.Where("id=? AND is_deleted=0", goodsId).First(&goodsList).Error
+	if len(goodsList) < 1 || err != nil {
+		return "", ErrGetGoods
+	}
+	//fmt.Printf("goods:%#v\n", goodsList)
+	goodsList[0].IsDeleted = 1
+	return goodsList[0].GoodsImg, db.Save(&goodsList).Error
 }

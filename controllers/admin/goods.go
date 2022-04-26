@@ -103,12 +103,11 @@ func (con GoodsController) DoAdd(c *gin.Context) {
 		GoodsImg:      goodsImg,
 		GoodsTypeId:   goodsTypeId,
 
-		IsHot:   isHot,
-		IsBest:  isBest,
-		IsNew:   isNew,
-		Sort:    sort,
-		Status:  status,
-		AddTime: int(tools.GetUnix()),
+		IsHot:  isHot,
+		IsBest: isBest,
+		IsNew:  isNew,
+		Sort:   sort,
+		Status: status,
 	}
 
 	// 业务逻辑
@@ -209,6 +208,27 @@ func (con GoodsController) DoEdit(c *gin.Context) {
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con GoodsController) DoEdit(c *gin.Context)] [logic.GoodsLogic{}.EditGoodsLogic(p, goodsImageList, attrIdList, attrValueList)] failed, ", zap.Error(err))
 		con.error(c, CodeDoEditLogicErr)
+		return
+	}
+
+	con.success(c, true)
+}
+
+// Delete 删除商品
+func (con GoodsController) Delete(c *gin.Context) {
+	// 解析参数
+	goodsId, err1 := strconv.Atoi(c.Query("id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) Delete(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	err2 := logic.GoodsLogic{}.DeleteGoodsLogic(goodsId)
+	if err2 != nil {
+		zap.L().Error("[pkg: admin] [func: (con GoodsController) Delete(c *gin.Context)] [logic.GoodsLogic{}.DeleteGoodsLogic(goodsId)] failed, ", zap.Error(err2))
+		con.error(c, CodeDeleteLogicErr)
 		return
 	}
 

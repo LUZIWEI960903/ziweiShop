@@ -145,6 +145,8 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.GET("/goods/edit", admin.GoodsController{}.Edit)
 		// 编辑商品
 		adminRouters.PUT("/goods/edit", admin.GoodsController{}.DoEdit)
+		// 删除商品
+		adminRouters.DELETE("/goods/delete", admin.GoodsController{}.Delete)
 		// wysiwyg-editor上传图片
 		adminRouters.POST("/goods/imageUpload", admin.GoodsController{}.ImageUpload)
 		// Ajax动态获取商品类型属性

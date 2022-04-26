@@ -421,3 +421,34 @@ func (GoodsLogic) AjaxRemoveGoodsImageLogic(goodsImageId int) (err error) {
 	}
 	return nil
 }
+
+func (GoodsLogic) DeleteGoodsLogic(goodsId int) error {
+	// 逻辑删除 goods
+	imgSrc1, err1 := mysql.DeleteGoods(goodsId)
+	if err1 != nil {
+		return err1
+	}
+
+	// 逻辑删除 goodsAttr
+	err2 := mysql.DeleteGoodsAttr(goodsId)
+	if err2 != nil {
+		return err2
+	}
+
+	// 逻辑删除 goodsImage
+	imgSrc2List, err3 := mysql.DeleteGoodsImageList(goodsId)
+	if err3 != nil {
+		return err3
+	}
+
+	if err := os.Remove(imgSrc1); err != nil {
+		return err
+	}
+
+	for _, imgSrc2 := range imgSrc2List {
+		if imgSrc2 != "" {
+			os.Remove(imgSrc2)
+		}
+	}
+	return nil
+}
