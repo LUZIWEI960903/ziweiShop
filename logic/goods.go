@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -411,5 +412,12 @@ func (GoodsLogic) AjaxChangeGoodsImageLogic(goodsImageId, colorId int) (err erro
 }
 
 func (GoodsLogic) AjaxRemoveGoodsImageLogic(goodsImageId int) (err error) {
-	return mysql.AjaxRemoveGoodsImageByGoodsImageId(goodsImageId)
+	imgSrc, err1 := mysql.AjaxRemoveGoodsImageByGoodsImageId(goodsImageId)
+	if err1 != nil {
+		return err1
+	}
+	if imgSrc != "" {
+		return os.Remove(imgSrc)
+	}
+	return nil
 }
