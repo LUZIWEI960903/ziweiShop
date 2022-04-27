@@ -19,7 +19,7 @@ func (con NavController) Index(c *gin.Context) {
 
 // Add 增加导航栏页面的接口
 func (con NavController) Add(c *gin.Context) {
-
+	con.success(c, true)
 }
 
 // DoAdd 增加导航栏的接口
