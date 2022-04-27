@@ -75,7 +75,23 @@ func (con NavController) Edit(c *gin.Context) {
 
 // DoEdit 编辑导航栏的接口
 func (con NavController) DoEdit(c *gin.Context) {
+	// 解析参数
+	p := new(models.EditNavParams)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	err := logic.NavLogic{}.EditNavLogic(p)
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) DoEdit(c *gin.Context)] [logic.NavLogic{}.EditNavLogic(p)] failed, ", zap.Error(err))
+		con.error(c, CodeDoEditLogicErr)
+		return
+	}
+
+	con.success(c, true)
 }
 
 // Delete 删除导航栏的接口

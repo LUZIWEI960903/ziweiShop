@@ -61,3 +61,7 @@ func (NavLogic) ShowEditPageLogic(navId int) (*models.NavEditPageData, error) {
 		NavInfo: NavInfo,
 	}, nil
 }
+
+func (NavLogic) EditNavLogic(p *models.EditNavParams) error {
+	return mysql.EditNav(p)
+}
