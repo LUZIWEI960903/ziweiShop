@@ -25,3 +25,13 @@ func AddNav(p *models.AddNavParams) error {
 func GetNavList() (oNavList []models.Nav, err error) {
 	return oNavList, db.Where("is_deleted=0").Find(&oNavList).Error
 }
+
+// GetNavById
+func GetNavById(navId int) (*models.Nav, error) {
+	oNavList := []models.Nav{}
+	err := db.Where("id=? AND is_deleted=0", navId).First(&oNavList).Error
+	if len(oNavList) < 1 || err != nil {
+		return nil, ErrGetNav
+	}
+	return &oNavList[0], nil
+}

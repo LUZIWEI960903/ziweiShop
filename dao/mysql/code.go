@@ -30,4 +30,6 @@ var (
 	ErrGetGoods = errors.New("Get goods error~~")
 
 	ErrGetGoodsImage = errors.New("Get goods image error~~")
+
+	ErrGetNav = errors.New("Get nav error~~")
 )

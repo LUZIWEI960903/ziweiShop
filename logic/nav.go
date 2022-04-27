@@ -38,3 +38,26 @@ func (NavLogic) ShowIndexPageDataLogic() (*models.NavIndexPageData, error) {
 		NavItems: NavItems,
 	}, nil
 }
+
+func (NavLogic) ShowEditPageLogic(navId int) (*models.NavEditPageData, error) {
+	// 查询 nav
+	oNav, err := mysql.GetNavById(navId)
+	if err != nil {
+		return nil, err
+	}
+
+	NavInfo := models.Nav1{
+		Id:        oNav.Id,
+		Position:  oNav.Position,
+		IsOpennew: oNav.IsOpennew,
+		Sort:      oNav.Sort,
+		Status:    oNav.Status,
+		Title:     oNav.Title,
+		Link:      oNav.Link,
+		Relation:  oNav.Relation,
+	}
+
+	return &models.NavEditPageData{
+		NavInfo: NavInfo,
+	}, nil
+}

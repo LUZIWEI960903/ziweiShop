@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"strconv"
 	"ziweiShop/logic"
 	"ziweiShop/models"
 
@@ -53,7 +54,23 @@ func (con NavController) DoAdd(c *gin.Context) {
 
 // Edit 编辑导航栏页面的接口
 func (con NavController) Edit(c *gin.Context) {
+	// 解析参数
+	navId, err1 := strconv.Atoi(c.Query("id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) Edit(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	data, err2 := logic.NavLogic{}.ShowEditPageLogic(navId)
+	if err2 != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) Edit(c *gin.Context)] [logic.NavLogic{}.ShowEditPageLogic(navId)] failed, ", zap.Error(err2))
+		con.error(c, CodeGetEditPageDataErr)
+		return
+	}
+
+	con.success(c, data)
 }
 
 // DoEdit 编辑导航栏的接口
