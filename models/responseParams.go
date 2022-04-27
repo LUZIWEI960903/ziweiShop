@@ -336,3 +336,17 @@ type GoodsEditPageData struct {
 	GoodsImageItems []GoodsImageList          `json:"goods_image_items"` // 该商品图库信息
 	GoodsAttrItems  []GoodsAttrList           `json:"goods_attr_items"`  // 该商品包装规格信息
 }
+
+type NavList struct {
+	Id       int    `json:"id"`       // 导航栏id
+	Position int    `json:"position"` // 导航栏位置
+	Sort     int    `json:"sort"`     // 导航栏排序
+	Status   int    `json:"status"`   // 导航栏状态
+	Title    string `json:"title"`    // 导航栏名
+	Link     string `json:"link"`     // 导航栏跳转链接
+	Relation string `json:"relation"` // 相关联的商品id列表
+}
+
+type NavIndexPageData struct {
+	NavItems []NavList `json:"nav_items"` // 导航栏列表
+}

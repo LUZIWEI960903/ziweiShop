@@ -20,3 +20,8 @@ func AddNav(p *models.AddNavParams) error {
 
 	return db.Create(&nav).Error
 }
+
+// GetNavList 获取 所有 nav  --- nav 表
+func GetNavList() (oNavList []models.Nav, err error) {
+	return oNavList, db.Where("is_deleted=0").Find(&oNavList).Error
+}

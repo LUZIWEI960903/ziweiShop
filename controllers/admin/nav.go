@@ -14,7 +14,15 @@ type NavController struct {
 
 // Index 导航栏主页面的接口
 func (con NavController) Index(c *gin.Context) {
+	// 业务逻辑
+	data, err := logic.NavLogic{}.ShowIndexPageDataLogic()
+	if err != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) Index(c *gin.Context)] [logic.NavLogic{}.ShowIndexPageDataLogic()] failed, ", zap.Error(err))
+		con.error(c, CodeGetIndexPageDataErr)
+		return
+	}
 
+	con.success(c, data)
 }
 
 // Add 增加导航栏页面的接口
