@@ -96,5 +96,21 @@ func (con NavController) DoEdit(c *gin.Context) {
 
 // Delete 删除导航栏的接口
 func (con NavController) Delete(c *gin.Context) {
+	// 解析参数
+	navId, err1 := strconv.Atoi(c.Query("id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) Delete(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
 
+	// 业务逻辑
+	err2 := logic.NavLogic{}.DeleteNavLogic(navId)
+	if err2 != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) Delete(c *gin.Context)] [logic.NavLogic{}.DeleteNavLogic(navId)] failed, ", zap.Error(err2))
+		con.error(c, CodeDeleteLogicErr)
+		return
+	}
+
+	con.success(c, true)
 }

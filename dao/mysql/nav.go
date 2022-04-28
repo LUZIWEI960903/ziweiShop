@@ -54,3 +54,15 @@ func EditNav(p *models.EditNavParams) error {
 	oNavList[0].Relation = p.Relation
 	return db.Save(&oNavList).Error
 }
+
+// DeleteNav 根据 navId  逻辑删除 nav  --- nav 表
+func DeleteNav(navId int) error {
+	oNavList := []models.Nav{}
+	err := db.Where("id=? AND is_deleted=0", navId).First(&oNavList).Error
+	if len(oNavList) < 1 || err != nil {
+		return ErrGetNav
+	}
+
+	oNavList[0].IsDeleted = 1
+	return db.Save(&oNavList).Error
+}

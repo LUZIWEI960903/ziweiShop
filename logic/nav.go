@@ -65,3 +65,7 @@ func (NavLogic) ShowEditPageLogic(navId int) (*models.NavEditPageData, error) {
 func (NavLogic) EditNavLogic(p *models.EditNavParams) error {
 	return mysql.EditNav(p)
 }
+
+func (NavLogic) DeleteNavLogic(navId int) error {
+	return mysql.DeleteNav(navId)
+}
