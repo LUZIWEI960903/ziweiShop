@@ -15,10 +15,18 @@ type NavController struct {
 
 // Index 导航栏主页面的接口
 func (con NavController) Index(c *gin.Context) {
+	// 解析参数
+	page, err1 := strconv.Atoi(c.DefaultQuery("p", "1"))
+	pageSize, err2 := strconv.Atoi(c.DefaultQuery("s", "5"))
+	if err1 != nil || err2 != nil {
+		zap.L().Error("[pkg: admin] [func: (con NavController) Index(c *gin.Context)] [strconv.Atoi(c.DefaultQuery(\"p\", \"1\"))] failed, ")
+		con.error(c, CodeInValidParams)
+		return
+	}
 	// 业务逻辑
-	data, err := logic.NavLogic{}.ShowIndexPageDataLogic()
+	data, err := logic.NavLogic{}.ShowIndexPageDataLogic(page, pageSize)
 	if err != nil {
-		zap.L().Error("[pkg: admin] [func: (con NavController) Index(c *gin.Context)] [logic.NavLogic{}.ShowIndexPageDataLogic()] failed, ", zap.Error(err))
+		zap.L().Error("[pkg: admin] [func: (con NavController) Index(c *gin.Context)] [logic.NavLogic{}.ShowIndexPageDataLogic(page, pageSize)] failed, ", zap.Error(err))
 		con.error(c, CodeGetIndexPageDataErr)
 		return
 	}

@@ -348,7 +348,9 @@ type NavList struct {
 }
 
 type NavIndexPageData struct {
-	NavItems []NavList `json:"nav_items"` // 导航栏列表
+	NavItems  []NavList `json:"nav_items"`  // 导航栏列表
+	PageCount float64   `json:"page_count"` // nav页数
+	Page      int       `json:"page"`       // 当前页数
 }
 
 type Nav1 struct {

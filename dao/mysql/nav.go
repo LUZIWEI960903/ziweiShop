@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"math"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 )
@@ -22,8 +23,14 @@ func AddNav(p *models.AddNavParams) error {
 }
 
 // GetNavList 获取 所有 nav  --- nav 表
-func GetNavList() (oNavList []models.Nav, err error) {
-	return oNavList, db.Where("is_deleted=0").Find(&oNavList).Error
+func GetNavList(page, pageSize int) (oNavList []models.Nav, pageCount float64, err error) {
+	err = db.Where("is_deleted=0").Offset((page - 1) * pageSize).Limit(pageSize).Find(&oNavList).Error
+
+	var count int64
+	db.Table("nav").Count(&count)
+
+	pageCount = math.Ceil(float64(count) / float64(pageSize))
+	return oNavList, pageCount, err
 }
 
 // GetNavById  根据 navId 查询 信息  --- nav 表

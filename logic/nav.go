@@ -12,9 +12,9 @@ func (NavLogic) AddNavLogic(p *models.AddNavParams) error {
 	return mysql.AddNav(p)
 }
 
-func (NavLogic) ShowIndexPageDataLogic() (*models.NavIndexPageData, error) {
+func (NavLogic) ShowIndexPageDataLogic(page, pageSize int) (*models.NavIndexPageData, error) {
 	// 获取 所有nav
-	oNavList, err := mysql.GetNavList()
+	oNavList, pageCount, err := mysql.GetNavList(page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +35,9 @@ func (NavLogic) ShowIndexPageDataLogic() (*models.NavIndexPageData, error) {
 	}
 
 	return &models.NavIndexPageData{
-		NavItems: NavItems,
+		NavItems:  NavItems,
+		PageCount: pageCount,
+		Page:      page,
 	}, nil
 }
 
