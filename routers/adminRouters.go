@@ -169,5 +169,8 @@ func adminRoutersInit(r *gin.Engine) {
 		// 删除导航栏
 		adminRouters.DELETE("/nav/delete", admin.NavController{}.Delete)
 
+		// 系统设置主页面
+		adminRouters.GET("/setting", admin.SettingController{}.Index)
+
 	}
 }

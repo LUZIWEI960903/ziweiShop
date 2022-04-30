@@ -2,6 +2,7 @@ package models
 
 type Setting struct {
 	Id              int    // 设置的id
+	OssStatus       int    // 网站的oss状态
 	SiteTitle       string // 网站的标题
 	SiteLogo        string // 网站的logo
 	SiteKeywords    string // 网站的关键词
@@ -15,7 +16,6 @@ type Setting struct {
 	AppSecret       string // 网站的app密钥
 	EndPoint        string // 网站的endpoint
 	BucketName      string // 网站的bucketname
-	OssStatus       string // 网站的oss状态
 }
 
 func (Setting) TableName() string {
