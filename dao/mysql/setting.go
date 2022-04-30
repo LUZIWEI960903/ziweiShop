@@ -18,10 +18,14 @@ func EditSetting(p *models.Setting) error {
 
 	setting.OssStatus = p.OssStatus
 	setting.SiteTitle = p.SiteTitle
-	setting.SiteLogo = p.SiteLogo
+	if p.SiteLogo != "" {
+		setting.SiteLogo = p.SiteLogo
+	}
 	setting.SiteKeywords = p.SiteKeywords
 	setting.SiteDescription = p.SiteDescription
-	setting.DefaultPic = p.DefaultPic
+	if p.DefaultPic != "" {
+		setting.DefaultPic = p.DefaultPic
+	}
 	setting.SiteIcp = p.SiteIcp
 	setting.SiteTel = p.SiteTel
 	setting.SearchKeywords = p.SearchKeywords

@@ -3,6 +3,7 @@ package admin
 import (
 	"ziweiShop/logic"
 	"ziweiShop/models"
+	"ziweiShop/pkg/tools"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -29,11 +30,16 @@ func (con SettingController) Index(c *gin.Context) {
 func (con SettingController) DoEdit(c *gin.Context) {
 	// 解析参数
 	p := new(models.Setting)
-	if err := c.ShouldBindJSON(p); err != nil {
-		zap.L().Error("[pkg: admin] [func: (con SettingController) DoEdit(c *gin.Context)] [c.ShouldBindJSON(p)] failed, ", zap.Error(err))
+	if err := c.ShouldBind(p); err != nil {
+		zap.L().Error("[pkg: admin] [func: (con SettingController) DoEdit(c *gin.Context)] [c.ShouldBind(p)] failed, ", zap.Error(err))
 		con.error(c, CodeInValidParams)
 		return
 	}
+	siteLogoSrc, _ := tools.UploadImg(c, "site_logo")
+	defaultPicSrc, _ := tools.UploadImg(c, "default_pic")
+	p.SiteLogo = siteLogoSrc
+	p.DefaultPic = defaultPicSrc
+
 	// 业务逻辑
 	err := logic.SettingLogic{}.EditSettingLogic(p)
 	if err != nil {
