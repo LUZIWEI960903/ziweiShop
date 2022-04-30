@@ -171,6 +171,8 @@ func adminRoutersInit(r *gin.Engine) {
 
 		// 系统设置主页面
 		adminRouters.GET("/setting", admin.SettingController{}.Index)
+		// 修改系统设置
+		adminRouters.PUT("/setting/edit", admin.SettingController{}.DoEdit)
 
 	}
 }
