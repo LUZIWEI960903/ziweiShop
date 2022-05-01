@@ -12,6 +12,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	ossAccessKey       = "LTAI5tMs38umRfiQQco4bvdq"
+	ossAccessKeySecret = "EdGIHTuKrD31b3MxgGKXY1OsvPQybd"
+	ossEndPoint        = "oss-cn-guangzhou.aliyuncs.com"
+	ossBucketName      = "ziwei-shop"
+)
+
 func GetOssStatus() int64 {
 	return config.Conf.OssStatus
 }
@@ -60,12 +67,12 @@ func LocalUploadImg(c *gin.Context, picName string) (string, error) {
 
 // OssUpload 上传oss云服务器的具体执行方法
 func OssUpload(file *multipart.FileHeader, dst string) (string, error) {
-	client, err := oss.New("oss-cn-guangzhou.aliyuncs.com", "LTAI5tMs38umRfiQQco4bvdq", "EdGIHTuKrD31b3MxgGKXY1OsvPQybd")
+	client, err := oss.New(ossEndPoint, ossAccessKey, ossAccessKeySecret)
 	if err != nil {
 		return "", err
 	}
 
-	bucket, err := client.Bucket("ziwei-shop")
+	bucket, err := client.Bucket(ossBucketName)
 	if err != nil {
 		return "", err
 	}
