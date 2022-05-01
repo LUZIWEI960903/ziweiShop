@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	ossAccessKey       = "LTAI5tMs38umRfiQQco4bvdq"
-	ossAccessKeySecret = "EdGIHTuKrD31b3MxgGKXY1OsvPQybd"
+	ossAccessKey       = "LTAI5tPdVw4WUtxhpod2e9ia"
+	ossAccessKeySecret = "ShvrPldc8p4pkYN7aC4NXTYhzJBhsZ"
 	ossEndPoint        = "oss-cn-guangzhou.aliyuncs.com"
 	ossBucketName      = "ziwei-shop"
 )
@@ -24,7 +24,7 @@ func GetOssStatus() int64 {
 }
 
 func UploadImg(c *gin.Context, picName string) (string, error) {
-	if GetOssStatus() == 1 {
+	if GetOssStatus() == 0 {
 		return OssUploadImg(c, picName)
 	}
 	return LocalUploadImg(c, picName)
