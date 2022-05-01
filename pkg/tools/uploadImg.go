@@ -24,7 +24,7 @@ func GetOssStatus() int64 {
 }
 
 func UploadImg(c *gin.Context, picName string) (string, error) {
-	if GetOssStatus() == 0 {
+	if GetOssStatus() == 1 {
 		return OssUploadImg(c, picName)
 	}
 	return LocalUploadImg(c, picName)
