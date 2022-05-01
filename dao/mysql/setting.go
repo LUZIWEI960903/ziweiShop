@@ -1,6 +1,9 @@
 package mysql
 
-import "ziweiShop/models"
+import (
+	"reflect"
+	"ziweiShop/models"
+)
 
 // GetSetting 获取 系统设置信息  --- setting 表
 func GetSetting() (*models.Setting, error) {
@@ -35,4 +38,13 @@ func EditSetting(p *models.Setting) error {
 	setting.EndPoint = p.EndPoint
 	setting.BucketName = p.BucketName
 	return db.Save(&setting).Error
+}
+
+// GetSettingFromColumn 通过列名来获取系统设置的值  --- setting 表
+func GetSettingFromColumn(columnName string) string {
+	setting := models.Setting{}
+	db.First(&setting)
+	// 通过反射来获取
+	v := reflect.ValueOf(setting)
+	return v.FieldByName(columnName).String()
 }

@@ -35,8 +35,10 @@ func (con SettingController) DoEdit(c *gin.Context) {
 		con.error(c, CodeInValidParams)
 		return
 	}
+
 	siteLogoSrc, _ := tools.UploadImg(c, "site_logo")
 	defaultPicSrc, _ := tools.UploadImg(c, "default_pic")
+
 	p.SiteLogo = siteLogoSrc
 	p.DefaultPic = defaultPicSrc
 
