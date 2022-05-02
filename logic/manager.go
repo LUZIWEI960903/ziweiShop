@@ -1,7 +1,7 @@
 package logic
 
 import (
-	mysql "ziweiShop/dao/mysql/admin"
+	mysql2 "ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 )
@@ -11,7 +11,7 @@ type ManagerLogic struct {
 
 func (ManagerLogic) GetRoleList() (newRoleList []models.NewRoleList, err error) {
 	// 查询roleList
-	roleList, err := mysql.GetRoleList()
+	roleList, err := mysql2.GetRoleList()
 	if err != nil {
 		return nil, err
 	}
@@ -28,22 +28,22 @@ func (ManagerLogic) GetRoleList() (newRoleList []models.NewRoleList, err error) 
 
 func (ManagerLogic) DoAdd(p *models.AddManagerParams) (err error) {
 	// 根据username查询管理员是否已存在，存在则报错
-	err = mysql.GetManagerByIdOrUsername(p.Username)
+	err = mysql2.GetManagerByIdOrUsername(p.Username)
 	if err != nil {
 		return ErrorManagerExist
 	}
 	// 判断role id 是否存在
-	err = mysql.IsRoleExist(p.RoleId)
-	if err != mysql.ErrRoleExist {
+	err = mysql2.IsRoleExist(p.RoleId)
+	if err != mysql2.ErrRoleExist {
 		return ErrorRoleNotExist
 	}
 	// 增加管理员
-	return mysql.AddManager(p)
+	return mysql2.AddManager(p)
 }
 
 func (ManagerLogic) GetIndexManagerList() (indexManagerList []models.IndexManagerList, err error) {
 	// 获取完整managerList
-	managerList, err := mysql.GetManagerList()
+	managerList, err := mysql2.GetManagerList()
 	if err != nil {
 		return nil, err
 	}
@@ -67,17 +67,17 @@ func (ManagerLogic) GetIndexManagerList() (indexManagerList []models.IndexManage
 
 func (ManagerLogic) GetEditManagerInfo(managerId int) (editManagerInfo *models.EditManagerList, err error) {
 	// 判断是否存在该managerId
-	err = mysql.GetManagerByIdOrUsername(managerId)
-	if err != mysql.ErrManagerExist {
+	err = mysql2.GetManagerByIdOrUsername(managerId)
+	if err != mysql2.ErrManagerExist {
 		return nil, ErrorManagerNotExist
 	}
 	// 根据managerId查询manager信息
-	managerInfo, err := mysql.GetManagerInfoById(managerId)
+	managerInfo, err := mysql2.GetManagerInfoById(managerId)
 	if err != nil {
 		return nil, err
 	}
 	// 获取所有role信息
-	roleList, err := mysql.GetRoleList()
+	roleList, err := mysql2.GetRoleList()
 	if err != nil {
 		return nil, err
 	}
@@ -111,19 +111,19 @@ func (ManagerLogic) GetEditManagerInfo(managerId int) (editManagerInfo *models.E
 
 func (ManagerLogic) DoEdit(p *models.EditManagerParams) (err error) {
 	// 查询managerId 是否存在
-	err = mysql.GetManagerByIdOrUsername(p.Id)
-	if err != mysql.ErrManagerExist {
+	err = mysql2.GetManagerByIdOrUsername(p.Id)
+	if err != mysql2.ErrManagerExist {
 		return ErrorManagerNotExist
 	}
 	// 查询roleId 是否存在
-	err = mysql.IsRoleExist(p.RoleId)
-	if err != mysql.ErrRoleExist {
+	err = mysql2.IsRoleExist(p.RoleId)
+	if err != mysql2.ErrRoleExist {
 		return ErrorRoleNotExist
 	}
 	// 执行修改manager信息操作
-	return mysql.EditManager(p)
+	return mysql2.EditManager(p)
 }
 
 func (ManagerLogic) DeleteManager(managerId int) (err error) {
-	return mysql.DeleteManagerById(managerId)
+	return mysql2.DeleteManagerById(managerId)
 }

@@ -1,7 +1,7 @@
 package admin
 
 import (
-	logic "ziweiShop/logic/admin"
+	"ziweiShop/logic"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

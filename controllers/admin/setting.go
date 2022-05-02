@@ -1,7 +1,7 @@
 package admin
 
 import (
-	logic "ziweiShop/logic/admin"
+	"ziweiShop/logic"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 

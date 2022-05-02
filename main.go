@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"time"
 	"ziweiShop/config"
-	mysql "ziweiShop/dao/mysql/admin"
+	"ziweiShop/dao/mysql"
 	"ziweiShop/dao/redis"
 	"ziweiShop/logger"
 	"ziweiShop/routers"

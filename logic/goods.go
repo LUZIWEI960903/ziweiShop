@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	mysql "ziweiShop/dao/mysql/admin"
+	mysql2 "ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 )
@@ -17,17 +17,17 @@ var wg sync.WaitGroup
 
 func (GoodsLogic) ShowAddPageLogic() (data *models.GoodsAddPageData, err error) {
 	// 获取商品分类
-	oTopGoodsCateWithGoodsCateList, err := mysql.GetTopGoodsCateWithGoodsCateList()
+	oTopGoodsCateWithGoodsCateList, err := mysql2.GetTopGoodsCateWithGoodsCateList()
 	if err != nil {
 		return nil, err
 	}
 	// 获取商品颜色信息
-	oGoodsColorList, err := mysql.GetGoodsColorList()
+	oGoodsColorList, err := mysql2.GetGoodsColorList()
 	if err != nil {
 		return nil, err
 	}
 	// 获取商品规格包装
-	oGoodsTypeList, err := mysql.GetGoodsTypeList()
+	oGoodsTypeList, err := mysql2.GetGoodsTypeList()
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (GoodsLogic) ShowAddPageLogic() (data *models.GoodsAddPageData, err error) 
 
 func (GoodsLogic) AjaxGetGoodsTypeAttributeLogic(cateId int) (data []models.AjaxGoodsTypeAttribute, err error) {
 	// 根据 查询所有 满足该 cateId的 商品类型属性
-	oGoodsTypeAttributeList, err := mysql.GetGoodsTypeAttributeByCateId(cateId)
+	oGoodsTypeAttributeList, err := mysql2.GetGoodsTypeAttributeByCateId(cateId)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ func (GoodsLogic) AjaxGetGoodsTypeAttributeLogic(cateId int) (data []models.Ajax
 
 func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrIdList, attrValueList []string) (err error) {
 	// 创建商品
-	goods, err := mysql.AddGoods(p)
+	goods, err := mysql2.AddGoods(p)
 	if err != nil {
 		return err
 	}
@@ -119,7 +119,7 @@ func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrId
 				Status:  1,
 				ImgUrl:  goodsImageUrl,
 			}
-			if err1 := mysql.AddGoodsImage(&goodsImageObj); err1 != nil {
+			if err1 := mysql2.AddGoodsImage(&goodsImageObj); err1 != nil {
 				return err1
 			}
 		}
@@ -133,7 +133,7 @@ func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrId
 		for i, l := 0, len(attrIdList); i < l; i++ {
 			// 获取商品类型属性 信息
 			goodsTypeAttributeId, _ := strconv.Atoi(attrIdList[i])
-			oGoodsTypeAttribute, err1 := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
+			oGoodsTypeAttribute, err1 := mysql2.GetGoodsTypeAttributeById(goodsTypeAttributeId)
 			if err1 != nil {
 				return err1
 			}
@@ -149,7 +149,7 @@ func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrId
 				AttributeValue:  attrValueList[i],
 				Sort:            10,
 			}
-			if err2 := mysql.AddGoodsAttr(&goodsAttrObj); err2 != nil {
+			if err2 := mysql2.AddGoodsAttr(&goodsAttrObj); err2 != nil {
 				return err2
 			}
 		}
@@ -164,7 +164,7 @@ func (GoodsLogic) AddGoodsLogic(p *models.AddGoodsParams, goodsImageList, attrId
 
 func (GoodsLogic) ShowIndexPageDataLogic(page, pageSize int, keywords string) (data *models.GoodsIndexPageData, err error) {
 	// 分页查询所有商品
-	oGoodsList, pageCount, err := mysql.GetGoodsListByPage(page, pageSize, keywords)
+	oGoodsList, pageCount, err := mysql2.GetGoodsListByPage(page, pageSize, keywords)
 	if err != nil {
 		return nil, err
 	}
@@ -197,37 +197,37 @@ func (GoodsLogic) ShowIndexPageDataLogic(page, pageSize int, keywords string) (d
 
 func (GoodsLogic) ShowEditPageLogic(goodsId int) (data *models.GoodsEditPageData, err error) {
 	// 查询 goods 信息
-	oGoodsInfo, err1 := mysql.GetGoodsById(goodsId)
+	oGoodsInfo, err1 := mysql2.GetGoodsById(goodsId)
 	if err1 != nil {
 		return nil, err1
 	}
 
 	// 查询所有 该商品图库信息
-	oGoodsImageList, err2 := mysql.GetGoodsImageListByGoodsId(goodsId)
+	oGoodsImageList, err2 := mysql2.GetGoodsImageListByGoodsId(goodsId)
 	if err2 != nil {
 		return nil, err2
 	}
 
 	// 查询所有 该商品的包装规格信息
-	oGoodsAttrList, err3 := mysql.GetGoodsAttrListByGoodsId(goodsId)
+	oGoodsAttrList, err3 := mysql2.GetGoodsAttrListByGoodsId(goodsId)
 	if err3 != nil {
 		return nil, err3
 	}
 
 	// 查询所有 商品分类
-	oTopGoodsCateWithGoodsCateList, err4 := mysql.GetTopGoodsCateWithGoodsCateList()
+	oTopGoodsCateWithGoodsCateList, err4 := mysql2.GetTopGoodsCateWithGoodsCateList()
 	if err4 != nil {
 		return nil, err4
 	}
 
 	// 查询所有 商品颜色
-	oGoodsColorList, err5 := mysql.GetGoodsColorList()
+	oGoodsColorList, err5 := mysql2.GetGoodsColorList()
 	if err5 != nil {
 		return nil, err5
 	}
 
 	// 查询所有 商品类型
-	oGoodsTypeList, err6 := mysql.GetGoodsTypeList()
+	oGoodsTypeList, err6 := mysql2.GetGoodsTypeList()
 	if err6 != nil {
 		return nil, err6
 	}
@@ -341,7 +341,7 @@ func (GoodsLogic) ShowEditPageLogic(goodsId int) (data *models.GoodsEditPageData
 
 func (GoodsLogic) EditGoodsLogic(p *models.EditGoodsParams, goodsImageList, attrIdList, attrValueList []string) (err error) {
 	// 根据 goodsId 修改商品 信息
-	err1 := mysql.EditGoods(p)
+	err1 := mysql2.EditGoods(p)
 	if err1 != nil {
 		return err1
 	}
@@ -358,7 +358,7 @@ func (GoodsLogic) EditGoodsLogic(p *models.EditGoodsParams, goodsImageList, attr
 				Status:  1,
 				ImgUrl:  goodsImageUrl,
 			}
-			if err2 := mysql.AddGoodsImage(&goodsImageObj); err2 != nil {
+			if err2 := mysql2.AddGoodsImage(&goodsImageObj); err2 != nil {
 				return err2
 			}
 		}
@@ -370,14 +370,14 @@ func (GoodsLogic) EditGoodsLogic(p *models.EditGoodsParams, goodsImageList, attr
 	wg.Add(1)
 	go func() error {
 		// 删除原有的规格包装
-		if err := mysql.DeleteGoodsAttr(p.Id); err != nil {
+		if err := mysql2.DeleteGoodsAttr(p.Id); err != nil {
 			return err
 		}
 
 		for i, l := 0, len(attrIdList); i < l; i++ {
 			// 获取商品类型属性 信息
 			goodsTypeAttributeId, _ := strconv.Atoi(attrIdList[i])
-			oGoodsTypeAttribute, err3 := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
+			oGoodsTypeAttribute, err3 := mysql2.GetGoodsTypeAttributeById(goodsTypeAttributeId)
 			if err3 != nil {
 				return err3
 			}
@@ -393,7 +393,7 @@ func (GoodsLogic) EditGoodsLogic(p *models.EditGoodsParams, goodsImageList, attr
 				AttributeValue:  attrValueList[i],
 				Sort:            10,
 			}
-			if err4 := mysql.AddGoodsAttr(&goodsAttrObj); err4 != nil {
+			if err4 := mysql2.AddGoodsAttr(&goodsAttrObj); err4 != nil {
 				return err4
 			}
 		}
@@ -408,11 +408,11 @@ func (GoodsLogic) EditGoodsLogic(p *models.EditGoodsParams, goodsImageList, attr
 
 func (GoodsLogic) AjaxChangeGoodsImageLogic(goodsImageId, colorId int) (err error) {
 	// 根据 goodsImageId 修改colorId
-	return mysql.EditColorByGoodsImageId(goodsImageId, colorId)
+	return mysql2.EditColorByGoodsImageId(goodsImageId, colorId)
 }
 
 func (GoodsLogic) AjaxRemoveGoodsImageLogic(goodsImageId int) (err error) {
-	imgSrc, err1 := mysql.AjaxRemoveGoodsImageByGoodsImageId(goodsImageId)
+	imgSrc, err1 := mysql2.AjaxRemoveGoodsImageByGoodsImageId(goodsImageId)
 	if err1 != nil {
 		return err1
 	}
@@ -424,19 +424,19 @@ func (GoodsLogic) AjaxRemoveGoodsImageLogic(goodsImageId int) (err error) {
 
 func (GoodsLogic) DeleteGoodsLogic(goodsId int) error {
 	// 逻辑删除 goods
-	imgSrc1, err1 := mysql.DeleteGoods(goodsId)
+	imgSrc1, err1 := mysql2.DeleteGoods(goodsId)
 	if err1 != nil {
 		return err1
 	}
 
 	// 逻辑删除 goodsAttr
-	err2 := mysql.DeleteGoodsAttr(goodsId)
+	err2 := mysql2.DeleteGoodsAttr(goodsId)
 	if err2 != nil {
 		return err2
 	}
 
 	// 逻辑删除 goodsImage
-	imgSrc2List, err3 := mysql.DeleteGoodsImageList(goodsId)
+	imgSrc2List, err3 := mysql2.DeleteGoodsImageList(goodsId)
 	if err3 != nil {
 		return err3
 	}

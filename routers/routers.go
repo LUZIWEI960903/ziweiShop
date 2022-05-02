@@ -30,5 +30,8 @@ func Init(cfgMode string) *gin.Engine {
 	// 后台管理相关路由
 	adminRoutersInit(r)
 
+	// 商品前台相关路由
+	shopRoutersInit(r)
+
 	return r
 }

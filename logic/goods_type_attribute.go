@@ -1,7 +1,7 @@
 package logic
 
 import (
-	mysql "ziweiShop/dao/mysql/admin"
+	mysql2 "ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 )
@@ -11,13 +11,13 @@ type GoodsTypeAttributeLogic struct {
 
 func (GoodsTypeAttributeLogic) ShowAddPageLogic(cateId int) (data *models.GoodsTypeAttributeAddPageData, err error) {
 	// 查询 cateId 是否存在
-	_, err = mysql.GetGoodsCateById(cateId)
+	_, err = mysql2.GetGoodsCateById(cateId)
 	if err != nil {
 		return nil, err
 	}
 
 	// 查询所有 商品类型
-	oGoodsTypeList, err := mysql.GetGoodsTypeList()
+	oGoodsTypeList, err := mysql2.GetGoodsTypeList()
 	if err != nil {
 		return nil, err
 	}
@@ -49,22 +49,22 @@ func (GoodsTypeAttributeLogic) ShowAddPageLogic(cateId int) (data *models.GoodsT
 
 func (GoodsTypeAttributeLogic) DoAddGoodsTypeAttributeLogic(p *models.AddGoodsTypeAttributeParams) (err error) {
 	// 查看 cateId 是否存在
-	_, err = mysql.GetGoodsTypeById(p.CateId)
+	_, err = mysql2.GetGoodsTypeById(p.CateId)
 	if err != nil {
 		return err
 	}
-	return mysql.AddGoodsTypeAttribute(p)
+	return mysql2.AddGoodsTypeAttribute(p)
 }
 
 func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data *models.GoodsTypeAttributeIndexPageData, err error) {
 	// 查看 cateId 是否存在
-	oGoodTypeInfo, err := mysql.GetGoodsTypeById(cateId)
+	oGoodTypeInfo, err := mysql2.GetGoodsTypeById(cateId)
 	if err != nil {
 		return nil, err
 	}
 
 	// 根据 cateId 查询其所有 商品类型属性
-	oGoodsTypeAttributeList, err := mysql.GetGoodsTypeAttributeList(cateId)
+	oGoodsTypeAttributeList, err := mysql2.GetGoodsTypeAttributeList(cateId)
 	if err != nil {
 		return nil, err
 	}
@@ -93,13 +93,13 @@ func (GoodsTypeAttributeLogic) ShowIndexPageLogic(cateId int) (data *models.Good
 
 func (GoodsTypeAttributeLogic) ShowEditPageLogic(goodsTypeAttributeId int) (data *models.GoodsTypeAttributeEditPageData, err error) {
 	// 查询 goodsTypeAttribute 是否存在
-	oGoodsTypeAttribute, err := mysql.GetGoodsTypeAttributeById(goodsTypeAttributeId)
+	oGoodsTypeAttribute, err := mysql2.GetGoodsTypeAttributeById(goodsTypeAttributeId)
 	if err != nil {
 		return nil, err
 	}
 
 	// 查询 所有商品类型
-	oGoodsTypeList, err := mysql.GetGoodsTypeList()
+	oGoodsTypeList, err := mysql2.GetGoodsTypeList()
 	if err != nil {
 		return nil, err
 	}
@@ -134,9 +134,9 @@ func (GoodsTypeAttributeLogic) ShowEditPageLogic(goodsTypeAttributeId int) (data
 }
 
 func (GoodsTypeAttributeLogic) DoEditGoodsTypeAttributeLogic(p *models.EditGoodsTypeAttributeParams) (err error) {
-	return mysql.EditGoodsTypeAttribute(p)
+	return mysql2.EditGoodsTypeAttribute(p)
 }
 
 func (GoodsTypeAttributeLogic) DeleteLogic(goodsTypeAttributeId int) (err error) {
-	return mysql.DeleteGoodsTypeAttribute(goodsTypeAttributeId)
+	return mysql2.DeleteGoodsTypeAttribute(goodsTypeAttributeId)
 }

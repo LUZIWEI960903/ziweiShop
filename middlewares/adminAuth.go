@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"ziweiShop/controllers/admin"
-	admin2 "ziweiShop/dao/mysql/admin"
+	"ziweiShop/dao/mysql"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -31,7 +31,7 @@ func InitAdminAuthMiddleware(c *gin.Context) {
 		fmt.Printf("Welcome %s~~\n", username)
 
 		// 查询所有url，并存入urlMap
-		accessUrlList := admin2.GetAllAccessUrl()
+		accessUrlList := mysql.GetAllAccessUrl()
 		urlMap := make(map[string]bool, len(accessUrlList))
 		if accessUrlList != nil {
 			for _, accessUrl := range accessUrlList {
@@ -42,7 +42,7 @@ func InitAdminAuthMiddleware(c *gin.Context) {
 		url := strings.Replace(pathname, "/admin", "", 1)
 		if _, ok := urlMap[url]; ok && isSuper != 1 {
 			// 根据 roleId 查询该 manager 对应的 role 其下的所有 access
-			accessList, err := admin2.GetAccessListByRoleId(roleId)
+			accessList, err := mysql.GetAccessListByRoleId(roleId)
 			if err != nil {
 				c.JSON(http.StatusOK, gin.H{
 					"errcode": admin.CodeGetAccessErr,
@@ -56,7 +56,7 @@ func InitAdminAuthMiddleware(c *gin.Context) {
 				accessListMap[access.AccessId] = access.AccessId
 			}
 			// 根据 url 在access表中查询 accessId
-			accessId := admin2.GetAccessIdByUrl(url)
+			accessId := mysql.GetAccessIdByUrl(url)
 			if accessId == -1 {
 				c.JSON(http.StatusOK, gin.H{
 					"errcode": admin.CodeGetAccessErr,

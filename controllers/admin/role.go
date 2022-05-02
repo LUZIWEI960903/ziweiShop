@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	logic "ziweiShop/logic/admin"
+	logic2 "ziweiShop/logic"
 	"ziweiShop/models"
 
 	"go.uber.org/zap"
@@ -18,7 +18,7 @@ type RoleController struct {
 
 // Index 显示管理员角色页面的接口
 func (con RoleController) Index(c *gin.Context) {
-	var roleService = logic.RoleLogic{}
+	var roleService = logic2.RoleLogic{}
 	roleList, err := roleService.GetRoleList()
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con RoleController) Index(c *gin.Context)] [roleService.GetRoleList()] failed, err:", zap.Error(err))
@@ -49,14 +49,14 @@ func (con RoleController) DoAdd(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	err := logic.RoleLogic{}.DoAdd(p)
+	err := logic2.RoleLogic{}.DoAdd(p)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con RoleController) DoAdd(c *gin.Context)] [logic.RoleLogic{}.DoAdd(p)] failed, err:", zap.Error(err))
-		if errors.Is(err, logic.ErrorRoleExist) {
+		if errors.Is(err, logic2.ErrorRoleExist) {
 			con.error(c, CodeRoleExist)
 			return
 		}
-		if errors.Is(err, logic.ErrorAddRole) {
+		if errors.Is(err, logic2.ErrorAddRole) {
 			con.error(c, CodeAddRoleErr)
 			return
 		}
@@ -76,7 +76,7 @@ func (con RoleController) Edit(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	var roleService = logic.RoleLogic{}
+	var roleService = logic2.RoleLogic{}
 	data, err := roleService.GetRoleById(roleId)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con RoleController) Edit(c *gin.Context)] [roleService.GetRoleById(roleId)] failed, err:", zap.Error(err))
@@ -102,14 +102,14 @@ func (con RoleController) DoEdit(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	err := logic.RoleLogic{}.DoEdit(p)
+	err := logic2.RoleLogic{}.DoEdit(p)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con RoleController) DoEdit(c *gin.Context)] [logic.RoleLogic{}.DoEdit(p)] failed, err:", zap.Error(err))
-		if errors.Is(err, logic.ErrorRoleExist) {
+		if errors.Is(err, logic2.ErrorRoleExist) {
 			con.error(c, CodeRoleExist)
 			return
 		}
-		if errors.Is(err, logic.ErrorEditRole) {
+		if errors.Is(err, logic2.ErrorEditRole) {
 			con.error(c, CodeEditRoleErr)
 			return
 		}
@@ -129,7 +129,7 @@ func (con RoleController) Delete(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	err = logic.RoleLogic{}.DeleteRoleById(roleId)
+	err = logic2.RoleLogic{}.DeleteRoleById(roleId)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con RoleController) Delete(c *gin.Context)] [logic.RoleLogic{}.DeleteRoleById(roleId)] failed, err:", zap.Error(err))
 		con.error(c, CodeDeleteRoleErr)
@@ -149,7 +149,7 @@ func (con RoleController) Auth(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	data, err := logic.RoleLogic{}.Auth(roleId)
+	data, err := logic2.RoleLogic{}.Auth(roleId)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con RoleController) Auth(c *gin.Context)] [logic.RoleLogic{}.Auth(roleId)] failed, err:", zap.Error(err))
 		con.error(c, CodeRoleAuthAccessErr)
@@ -169,7 +169,7 @@ func (con RoleController) DoAuth(c *gin.Context) {
 	}
 	fmt.Println(p)
 	// 业务逻辑
-	err := logic.RoleLogic{}.DoAuth(p)
+	err := logic2.RoleLogic{}.DoAuth(p)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con RoleController) DoAuth(c *gin.Context)] [logic.RoleLogic{}.DoAuth(p)] failed, err:", zap.Error(err))
 		con.error(c, CodeRoleAuthAccessErr)

@@ -3,7 +3,7 @@ package admin
 import (
 	"errors"
 	"strconv"
-	logic "ziweiShop/logic/admin"
+	logic2 "ziweiShop/logic"
 	"ziweiShop/models"
 
 	"go.uber.org/zap"
@@ -18,7 +18,7 @@ type ManagerController struct {
 // Index 显示管理员列表页面的接口
 func (con ManagerController) Index(c *gin.Context) {
 	// 业务逻辑
-	indexManagerList, err := logic.ManagerLogic{}.GetIndexManagerList()
+	indexManagerList, err := logic2.ManagerLogic{}.GetIndexManagerList()
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con ManagerController) Index(c *gin.Context)] [logic.ManagerLogic{}.GetIndexManagerList()] failed, err:", zap.Error(err))
 		con.error(c, CodeGetIndexManagerListErr)
@@ -30,7 +30,7 @@ func (con ManagerController) Index(c *gin.Context) {
 // Add 显示增加管理员页面的接口
 func (con ManagerController) Add(c *gin.Context) {
 	// 返回roleList
-	var managerService = logic.ManagerLogic{}
+	var managerService = logic2.ManagerLogic{}
 	roleList, err := managerService.GetRoleList()
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con ManagerController) Add(c *gin.Context)] [managerService.GetRoleList()] failed, err:", zap.Error(err))
@@ -50,14 +50,14 @@ func (con ManagerController) DoAdd(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	err := logic.ManagerLogic{}.DoAdd(p)
+	err := logic2.ManagerLogic{}.DoAdd(p)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con ManagerController) DoAdd(c *gin.Context)] [logic.ManagerLogic{}.DoAdd(p)] failed, err:", zap.Error(err))
-		if errors.Is(err, logic.ErrorManagerExist) {
+		if errors.Is(err, logic2.ErrorManagerExist) {
 			con.error(c, CodeManagerExistErr)
 			return
 		}
-		if errors.Is(err, logic.ErrorRoleNotExist) {
+		if errors.Is(err, logic2.ErrorRoleNotExist) {
 			con.error(c, CodeRoleNotExistErr)
 			return
 		}
@@ -78,7 +78,7 @@ func (con ManagerController) Edit(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	var editManagerService = logic.ManagerLogic{}
+	var editManagerService = logic2.ManagerLogic{}
 	editManagerInfo, err := editManagerService.GetEditManagerInfo(managerId)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con ManagerController) Edit(c *gin.Context)] [editManagerService.GetEditManagerList(managerId)] failed, err:", zap.Error(err))
@@ -98,15 +98,15 @@ func (con ManagerController) DoEdit(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	err := logic.ManagerLogic{}.DoEdit(p)
+	err := logic2.ManagerLogic{}.DoEdit(p)
 	if err != nil {
 		zap.L().Error("[pkg: admin] [func: (con ManagerController) DoEdit(c *gin.Context)] [logic.ManagerLogic{}.DoEdit(p) ] failed, err:", zap.Error(err))
-		if errors.Is(err, logic.ErrorManagerNotExist) {
+		if errors.Is(err, logic2.ErrorManagerNotExist) {
 			// 输入的id不存在
 			con.error(c, CodeManagerNotExist)
 			return
 		}
-		if errors.Is(err, logic.ErrorManagerExist) {
+		if errors.Is(err, logic2.ErrorManagerExist) {
 			// 输入的roleId不存在
 			con.error(c, CodeRoleNotExistErr)
 			return
@@ -128,7 +128,7 @@ func (con ManagerController) Delete(c *gin.Context) {
 		return
 	}
 	// 业务逻辑
-	err1 := logic.ManagerLogic{}.DeleteManager(managerId)
+	err1 := logic2.ManagerLogic{}.DeleteManager(managerId)
 	if err1 != nil {
 		zap.L().Error("[pkg: admin] [func: (con ManagerController) Delete(c *gin.Context)] [logic.ManagerLogic{}.DeleteManager(managerId)] failed, err:", zap.Error(err))
 		con.error(c, CodeDeleteManagerErr)

@@ -1,7 +1,7 @@
 package logic
 
 import (
-	mysql "ziweiShop/dao/mysql/admin"
+	mysql2 "ziweiShop/dao/mysql"
 	"ziweiShop/models"
 
 	"github.com/gin-gonic/gin"
@@ -12,19 +12,19 @@ type MainPageLogic struct {
 
 func (MainPageLogic) GetAdminIndexPageInfo(managerId int) (data interface{}, err error) {
 	// 查询所有 顶级模块 + 子模块
-	TopAccessListWithAccessList, err := mysql.GetTopAccessListWithAccessList()
+	TopAccessListWithAccessList, err := mysql2.GetTopAccessListWithAccessList()
 	if err != nil {
 		return nil, ErrorGetTopAccessListWithAccessList
 	}
 
 	// 根据ManagerId 查询 其roleId
-	managerInfo, err := mysql.GetManagerInfoById(managerId)
+	managerInfo, err := mysql2.GetManagerInfoById(managerId)
 	if err != nil {
 		return nil, err
 	}
 
 	// 根据roleId 查询 其拥有的 access
-	accessList, err := mysql.GetAccessListByRoleId(managerInfo.RoleId)
+	accessList, err := mysql2.GetAccessListByRoleId(managerInfo.RoleId)
 	if err != nil {
 		return nil, ErrorGetAccessByRoleId
 	}

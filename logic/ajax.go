@@ -1,6 +1,8 @@
 package logic
 
-import mysql "ziweiShop/dao/mysql/admin"
+import (
+	"ziweiShop/dao/mysql"
+)
 
 type AjaxLogic struct {
 }

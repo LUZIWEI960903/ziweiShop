@@ -1,7 +1,7 @@
 package logic
 
 import (
-	mysql "ziweiShop/dao/mysql/admin"
+	mysql2 "ziweiShop/dao/mysql"
 	"ziweiShop/models"
 
 	"github.com/gin-gonic/gin"
@@ -12,12 +12,12 @@ type RoleLogic struct {
 
 func (RoleLogic) DoAdd(p *models.AddRoleParams) (err error) {
 	// 判断是否已存在该role类型
-	err = mysql.IsRoleExist(p.Title)
+	err = mysql2.IsRoleExist(p.Title)
 	if err != nil {
 		return ErrorRoleExist
 	}
 	// 增加新role
-	err = mysql.AddRole(p)
+	err = mysql2.AddRole(p)
 	if err != nil {
 		return ErrorAddRole
 	}
@@ -25,12 +25,12 @@ func (RoleLogic) DoAdd(p *models.AddRoleParams) (err error) {
 }
 
 func (RoleLogic) GetRoleList() (roleList []*models.Role, err error) {
-	return mysql.GetRoleList()
+	return mysql2.GetRoleList()
 }
 
 func (RoleLogic) GetRoleById(roleId int) (data interface{}, err error) {
 	// 根据id去查询role信息
-	roleInfo, err := mysql.GetRoleById(roleId)
+	roleInfo, err := mysql2.GetRoleById(roleId)
 	if err != nil {
 		return nil, ErrorGetRole
 	}
@@ -42,12 +42,12 @@ func (RoleLogic) GetRoleById(roleId int) (data interface{}, err error) {
 
 func (RoleLogic) DoEdit(p *models.EditRoleParams) (err error) {
 	// 判断是否已存在该role类型
-	err = mysql.IsRoleExist(p.Title)
+	err = mysql2.IsRoleExist(p.Title)
 	if err != nil {
 		return ErrorRoleExist
 	}
 	// 修改role title，description
-	err = mysql.EditRole(p)
+	err = mysql2.EditRole(p)
 	if err != nil {
 		return ErrorEditRole
 	}
@@ -55,24 +55,24 @@ func (RoleLogic) DoEdit(p *models.EditRoleParams) (err error) {
 }
 
 func (RoleLogic) DeleteRoleById(roleId int) (err error) {
-	return mysql.DeleteRoleById(roleId)
+	return mysql2.DeleteRoleById(roleId)
 }
 
 func (RoleLogic) Auth(roleId int) (data []models.ResponseTopAccessItemAuth, err error) {
 	// 查询该roleId是否存在
-	_, err = mysql.GetRoleById(roleId)
+	_, err = mysql2.GetRoleById(roleId)
 	if err != nil {
 		return nil, ErrorRoleNotExist
 	}
 
 	// 获取所有的access (所有的 顶级模块+其子模块)
-	TopAccessListWithAccessList, err := mysql.GetTopAccessListWithAccessList()
+	TopAccessListWithAccessList, err := mysql2.GetTopAccessListWithAccessList()
 	if err != nil {
 		return nil, ErrorGetTopAccessListWithAccessList
 	}
 
 	// 根据roleId 查询其所有access
-	accessList, err := mysql.GetAccessListByRoleId(roleId)
+	accessList, err := mysql2.GetAccessListByRoleId(roleId)
 	if err != nil {
 		return nil, ErrorGetAccessByRoleId
 	}
@@ -117,7 +117,7 @@ func (RoleLogic) Auth(roleId int) (data []models.ResponseTopAccessItemAuth, err 
 
 func (RoleLogic) DoAuth(p *models.DoAuthParams) (err error) {
 	// 校验 roleId是否存在
-	_, err = mysql.GetRoleById(p.Id)
+	_, err = mysql2.GetRoleById(p.Id)
 	if err != nil {
 		return ErrorRoleNotExist
 	}
@@ -125,12 +125,12 @@ func (RoleLogic) DoAuth(p *models.DoAuthParams) (err error) {
 	// 校验 顶级模块 + 子模块 是否存在
 	accessIdList := make([]int, 0)
 	for _, topAccessList := range p.AccessItem {
-		if _, err := mysql.GetAccessById(topAccessList.AccessId); err != nil {
+		if _, err := mysql2.GetAccessById(topAccessList.AccessId); err != nil {
 			return err
 		}
 		accessIdList = append(accessIdList, topAccessList.AccessId)
 		for _, accessList := range topAccessList.AccessItem {
-			if _, err := mysql.GetAccessById(accessList.AccessId); err != nil {
+			if _, err := mysql2.GetAccessById(accessList.AccessId); err != nil {
 				return err
 			}
 			accessIdList = append(accessIdList, accessList.AccessId)
@@ -138,11 +138,11 @@ func (RoleLogic) DoAuth(p *models.DoAuthParams) (err error) {
 	}
 
 	// 清空 该 roleId 下的所有 access
-	err = mysql.DeleteAccessByRoleId(p.Id)
+	err = mysql2.DeleteAccessByRoleId(p.Id)
 	if err != nil {
 		return ErrorDeleteAccessByRoleId
 	}
 
 	// 根据accessId 插入数据
-	return mysql.CreateRoleAccess(p.Id, accessIdList)
+	return mysql2.CreateRoleAccess(p.Id, accessIdList)
 }
