@@ -16,6 +16,8 @@ type Setting struct {
 	AppSecret       string `json:"app_secret" form:"app_secret"`             // 网站的app密钥
 	EndPoint        string `json:"end_point" form:"end_point"`               // 网站的endpoint
 	BucketName      string `json:"bucket_name" form:"bucket_name"`           // 网站的bucketname
+	OssDomain       string `json:"oss_domain" form:"oss_domain"`             // 网站的域名
+	ThumbnailSize   string `json:"thumbnail_size" form:"thumbnail_size"`     // 网站的缩略图像素
 }
 
 func (Setting) TableName() string {

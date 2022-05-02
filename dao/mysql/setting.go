@@ -1,8 +1,14 @@
 package mysql
 
 import (
+	"fmt"
+	"path"
 	"reflect"
+	"strconv"
+	"strings"
 	"ziweiShop/models"
+
+	. "github.com/hunterhug/go_image"
 )
 
 // GetSetting 获取 系统设置信息  --- setting 表
@@ -47,4 +53,24 @@ func GetSettingFromColumn(columnName string) string {
 	// 通过反射来获取
 	v := reflect.ValueOf(setting)
 	return v.FieldByName(columnName).String()
+}
+
+// ResizeGoodsImage 根据setting 的ThumbnailSize 生成商品缩放图  --- setting 表
+func ResizeGoodsImage(filename string) {
+	// 获取后缀名
+	extname := path.Ext(filename)
+
+	thumbnailSize := GetSettingFromColumn("ThumbnailSize")
+	thumbnailSizeSlice := strings.Split(thumbnailSize, ",")
+	for i, l := 0, len(thumbnailSizeSlice); i < l; i++ {
+		w := thumbnailSizeSlice[i]
+		wInt, _ := strconv.Atoi(w)
+		savepath := "static/upload/resize/" + filename + "_" + w + "x" + w + extname
+		err := ThumbnailF2F(filename, savepath, wInt, wInt)
+		if err != nil {
+			fmt.Printf("生成按宽度高度缩放图:%s\n", err.Error())
+		} else {
+			fmt.Printf("生成按宽度高度缩放图:%s\n", savepath)
+		}
+	}
 }
