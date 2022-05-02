@@ -2,7 +2,7 @@ package logic
 
 import (
 	"os"
-	"ziweiShop/dao/mysql"
+	mysql "ziweiShop/dao/mysql/admin"
 	"ziweiShop/models"
 )
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"ziweiShop/logic"
+	logic "ziweiShop/logic/admin"
 	"ziweiShop/models"
 
 	"go.uber.org/zap"

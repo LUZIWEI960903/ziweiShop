@@ -2,7 +2,7 @@ package admin
 
 import (
 	"fmt"
-	"ziweiShop/logic"
+	logic "ziweiShop/logic/admin"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

@@ -2,7 +2,7 @@ package admin
 
 import (
 	"errors"
-	"ziweiShop/logic"
+	logic "ziweiShop/logic/admin"
 	"ziweiShop/models"
 
 	"go.uber.org/zap"
@@ -31,7 +31,7 @@ func (con LoginController) DoLogin(c *gin.Context) {
 	// 登录业务逻辑
 	err := logic.LoginLogic{}.DoLogin(c, p)
 	if err != nil {
-		zap.L().Error("[pkg: admin] [func: (con LoginController) DoLogin(c *gin.Context)] [logicAdmin.LoginService{}.DoLogin(p)] failed, err:", zap.Error(err))
+		zap.L().Error("[pkg: admin] [func: (con LoginController) DoLogin(c *gin.Context)] [logiclogic.LoginService{}.DoLogin(p)] failed, err:", zap.Error(err))
 		// 用户不存在
 		if errors.Is(err, logic.ErrorManagerNotExist) {
 			con.error(c, CodeManagerNotExist)

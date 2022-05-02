@@ -2,7 +2,7 @@ package admin
 
 import (
 	"strconv"
-	"ziweiShop/logic"
+	logic "ziweiShop/logic/admin"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 

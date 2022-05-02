@@ -3,7 +3,7 @@ package admin
 import (
 	"errors"
 	"strconv"
-	"ziweiShop/logic"
+	logic "ziweiShop/logic/admin"
 	"ziweiShop/models"
 
 	"go.uber.org/zap"

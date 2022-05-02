@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"ziweiShop/dao/mysql"
+	mysql "ziweiShop/dao/mysql/admin"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 )
