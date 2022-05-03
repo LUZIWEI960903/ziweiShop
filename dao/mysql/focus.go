@@ -27,6 +27,13 @@ func GetFocusList() (focusList []models.Focus, err error) {
 	return focusList, err
 }
 
+// GetType1FocusList 获取 focus_type=1 的 focusList --- focus 表
+func GetType1FocusList() (focusList []models.Focus, err error) {
+	focusList = []models.Focus{}
+	err = db.Where("is_deleted=0 AND focus_type=1").Find(&focusList).Error
+	return focusList, err
+}
+
 // GetFocusById 根据 focusId 获取 focus  --- focus 表
 func GetFocusById(focusId int) (focus *models.Focus, err error) {
 	focus = &models.Focus{}

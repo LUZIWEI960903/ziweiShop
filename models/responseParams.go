@@ -367,3 +367,32 @@ type Nav1 struct {
 type NavEditPageData struct {
 	NavInfo Nav1 `json:"nav_info"` // 导航栏列表
 }
+
+type TopNav struct {
+	Id        int    `json:"id"`         // 导航栏id
+	IsOpennew int    `json:"is_opennew"` // 是否打开新窗口
+	Sort      int    `json:"sort"`       // 导航栏排序
+	Status    int    `json:"status"`     // 导航栏状态
+	Title     string `json:"title"`      // 导航栏名
+	Link      string `json:"link"`       // 导航栏跳转链接
+	Relation  string `json:"relation"`   // 相关联的商品id列表
+}
+
+type MiddleNav struct {
+	Id         int     `json:"id"`          // 导航栏id
+	IsOpennew  int     `json:"is_opennew"`  // 是否打开新窗口
+	Sort       int     `json:"sort"`        // 导航栏排序
+	Status     int     `json:"status"`      // 导航栏状态
+	Title      string  `json:"title"`       // 导航栏名
+	Link       string  `json:"link"`        // 导航栏跳转链接
+	Relation   string  `json:"relation"`    // 相关联的商品id列表
+	GoodsItems []Goods `json:"goods_items"` // 关联的商品列表
+}
+
+type ShopIndexPageData struct {
+	TopNavList                 []TopNav                 `json:"top_nav_list"`         // 顶部导航列表
+	FocusList                  []ResponseFocus          `json:"focus_list"`           // 轮播图列表
+	GoodsCateWithGoodsCateList []GoodsCateWithGoodsCate `json:"goods_cate_list"`      // 商品分类
+	MiddleNavList              []MiddleNav              `json:"middle_nav_list"`      // 中间导航列表
+	CateId1GoodsList           []Goods                  `json:"cate_id_1_goods_list"` // cateid=1的商品列表
+}

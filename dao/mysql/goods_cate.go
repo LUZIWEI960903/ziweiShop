@@ -3,6 +3,8 @@ package mysql
 import (
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
+
+	"gorm.io/gorm"
 )
 
 // AddGoodsCate 增加商品分类 --- goods_cate 表
@@ -34,7 +36,9 @@ func GetTopGoodsCateList() (oTopGoodsCateList []models.GoodsCate, err error) {
 // GetTopGoodsCateWithGoodsCateList 查询所有 顶级商品分类+子商品分类  --- goods_cate 表
 func GetTopGoodsCateWithGoodsCateList() (oTopGoodsCateWithGoodsCateList []models.GoodsCate, err error) {
 	oTopGoodsCateWithGoodsCateList = []models.GoodsCate{}
-	err = db.Where("pid=0 AND is_deleted=0").Preload("GoodsCateItems", "is_deleted=0").Find(&oTopGoodsCateWithGoodsCateList).Error
+	err = db.Where("pid=0 AND is_deleted=0").Order("sort DESC").Preload("GoodsCateItems", "is_deleted=0", func(db *gorm.DB) *gorm.DB {
+		return db.Order("sort DESC")
+	}).Find(&oTopGoodsCateWithGoodsCateList).Error
 	return oTopGoodsCateWithGoodsCateList, err
 }
 

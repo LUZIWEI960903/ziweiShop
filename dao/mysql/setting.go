@@ -61,6 +61,7 @@ func ResizeGoodsImage(filename string) {
 	extname := path.Ext(filename)
 
 	thumbnailSize := GetSettingFromColumn("ThumbnailSize")
+	thumbnailSize = strings.ReplaceAll(thumbnailSize, "，", ",")
 	thumbnailSizeSlice := strings.Split(thumbnailSize, ",")
 	for i, l := 0, len(thumbnailSizeSlice); i < l; i++ {
 		w := thumbnailSizeSlice[i]
