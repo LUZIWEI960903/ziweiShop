@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"ziweiShop/dao/redis"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 
@@ -35,11 +36,17 @@ func GetTopGoodsCateList() (oTopGoodsCateList []models.GoodsCate, err error) {
 
 // GetTopGoodsCateWithGoodsCateList 查询所有 顶级商品分类+子商品分类  --- goods_cate 表
 func GetTopGoodsCateWithGoodsCateList() (oTopGoodsCateWithGoodsCateList []models.GoodsCate, err error) {
-	oTopGoodsCateWithGoodsCateList = []models.GoodsCate{}
+	if redis.CacheTopGoodsCateWithGoodsCateList(&oTopGoodsCateWithGoodsCateList) {
+		return oTopGoodsCateWithGoodsCateList, nil
+	}
 	err = db.Where("pid=0 AND is_deleted=0").Order("sort DESC").Preload("GoodsCateItems", "is_deleted=0", func(db *gorm.DB) *gorm.DB {
 		return db.Order("sort DESC")
 	}).Find(&oTopGoodsCateWithGoodsCateList).Error
-	return oTopGoodsCateWithGoodsCateList, err
+	if err != nil {
+		return nil, err
+	}
+	redis.SetCacheTopGoodsCateWithGoodsCateList(&oTopGoodsCateWithGoodsCateList)
+	return oTopGoodsCateWithGoodsCateList, nil
 }
 
 // GetGoodsCateById 根据 goodsCateId 查询该商品分类信息  --- goods_cate 表

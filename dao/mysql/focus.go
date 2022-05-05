@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"ziweiShop/dao/redis"
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
 )
@@ -29,9 +30,15 @@ func GetFocusList() (focusList []models.Focus, err error) {
 
 // GetType1FocusList 获取 focus_type=1 的 focusList --- focus 表
 func GetType1FocusList() (focusList []models.Focus, err error) {
-	focusList = []models.Focus{}
+	if redis.CacheFocusList(&focusList) {
+		return focusList, nil
+	}
 	err = db.Where("is_deleted=0 AND focus_type=1").Find(&focusList).Error
-	return focusList, err
+	if err != nil {
+		return nil, err
+	}
+	redis.SetCacheFocusList(&focusList)
+	return focusList, nil
 }
 
 // GetFocusById 根据 focusId 获取 focus  --- focus 表
