@@ -402,5 +402,8 @@ type ShopBaseData struct {
 }
 
 type SearchProductsByKeywordData struct {
-	*ShopBaseData `json:"shop_base_data"`
+	*ShopBaseData `json:"shop_base_data"` // 商城界面的基础数据
+	GoodsList     []Goods                 `json:"goods_list"`   // 商品列表
+	PageNum       float64                 `json:"page_num"`     // 总页码数量
+	CurrentPage   int                     `json:"current_page"` // 当前页码
 }
