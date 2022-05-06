@@ -16,6 +16,7 @@ const (
 	CodeDoEditLogicErr
 	CodeDeleteLogicErr
 	CodeAjaxErr
+	CodeGetDataErr
 )
 
 var CodeMsgMap = map[ResCode]string{
@@ -31,6 +32,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeDoEditLogicErr:      "Do edit logic error",
 	CodeDeleteLogicErr:      "Delete logic error",
 	CodeAjaxErr:             "Ajax error",
+	CodeGetDataErr:          "Get data error",
 }
 
 func (code ResCode) Msg() string {

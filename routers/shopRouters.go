@@ -11,5 +11,9 @@ func shopRoutersInit(r *gin.Engine) {
 	{
 		// 商城主页面
 		shopRouters.GET("/", shop.IndexController{}.Index)
+
+		// 商品分类页面
+		shopRouters.GET("/category:id", shop.ProductController{}.Category)
+
 	}
 }

@@ -82,6 +82,8 @@ func adminRoutersInit(r *gin.Engine) {
 		adminRouters.PUT("/changeStatus", admin.AJAXController{}.ChangeStatus)
 		// Ajax更新 指定表的 指定id的 sort
 		adminRouters.PUT("/changeSort", admin.AJAXController{}.ChangeSort)
+		// 清除缓存
+		adminRouters.GET("/flushAll", admin.AJAXController{}.FlushAll)
 
 		// 商品分类页面
 		adminRouters.GET("/goodsCate", admin.GoodsCateController{}.Index)

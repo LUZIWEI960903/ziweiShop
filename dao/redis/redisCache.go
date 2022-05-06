@@ -29,3 +29,7 @@ func (c cacheDB) Get(key string, obj interface{}) bool {
 	}
 	return false
 }
+
+func (c cacheDB) FlushAll() {
+	rdb.FlushAll(ctx)
+}

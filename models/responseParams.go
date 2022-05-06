@@ -390,9 +390,17 @@ type MiddleNav struct {
 }
 
 type ShopIndexPageData struct {
-	TopNavList                 []TopNav                 `json:"top_nav_list"`         // 顶部导航列表
-	FocusList                  []ResponseFocus          `json:"focus_list"`           // 轮播图列表
-	GoodsCateWithGoodsCateList []GoodsCateWithGoodsCate `json:"goods_cate_list"`      // 商品分类
-	MiddleNavList              []MiddleNav              `json:"middle_nav_list"`      // 中间导航列表
-	CateId1GoodsList           []Goods                  `json:"cate_id_1_goods_list"` // cateid=1的商品列表
+	*ShopBaseData    `json:"shop_base_data"`
+	FocusList        []ResponseFocus `json:"focus_list"`           // 轮播图列表
+	CateId1GoodsList []Goods         `json:"cate_id_1_goods_list"` // cateid=1的商品列表
+}
+
+type ShopBaseData struct {
+	TopNavList                 []TopNav                 `json:"top_nav_list"`    // 顶部导航列表
+	GoodsCateWithGoodsCateList []GoodsCateWithGoodsCate `json:"goods_cate_list"` // 商品分类
+	MiddleNavList              []MiddleNav              `json:"middle_nav_list"` // 中间导航列表
+}
+
+type SearchProductsByKeywordData struct {
+	*ShopBaseData `json:"shop_base_data"`
 }

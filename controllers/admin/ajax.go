@@ -45,3 +45,10 @@ func (con AJAXController) ChangeSort(c *gin.Context) {
 	}
 	con.success(c, true)
 }
+
+// FlushAll 清除缓存的接口
+func (con AJAXController) FlushAll(c *gin.Context) {
+	// 业务逻辑
+	logic.AjaxLogic{}.FlushAll()
+	con.success(c, true)
+}
