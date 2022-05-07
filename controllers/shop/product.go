@@ -37,3 +37,23 @@ func (con ProductController) Category(c *gin.Context) {
 
 	con.success(c, data)
 }
+
+// Detail 商品详情页面的接口
+func (con ProductController) Detail(c *gin.Context) {
+	// 解析参数
+	goodsId, err1 := strconv.Atoi(c.Query("id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: shop] [func: (con ProductController) Detail(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	data, err2 := logic.ProductLogic{}.GetGoodsInfoData(goodsId)
+	if err2 != nil {
+		zap.L().Error("[pkg: shop] [func: (con ProductController) Detail(c *gin.Context)] [logic.ProductLogic{}.GetGoodsInfoData(goodsId)] failed, ", zap.Error(err2))
+		con.error(c, CodeGetDataErr)
+		return
+	}
+	con.success(c, data)
+}

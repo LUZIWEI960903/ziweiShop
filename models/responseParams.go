@@ -407,3 +407,14 @@ type SearchProductsByKeywordData struct {
 	PageNum       float64                 `json:"page_num"`     // 总页码数量
 	CurrentPage   int                     `json:"current_page"` // 当前页码
 }
+
+type GoodsInforData struct {
+	*ShopBaseData     `json:"shop_base_data"` // 商城界面的基础数据
+	GoodsInfo         Goods                   `json:"goods_info"`          // 商品详细信息
+	RelationGoodsList []Goods                 `json:"relation_goods_list"` // 关联商品的列表
+	GoodsGiftList     []Goods                 `json:"goods_gift_list"`     // 商品赠品的列表
+	GoodsColorList    []GoodsColor            `json:"goods_color_list"`    // 商品颜色的列表
+	GoodsFittingList  []Goods                 `json:"goods_fitting_list"`  // 商品配件的列表
+	GoodsImageList    []GoodsImage            `json:"goods_image_list"`    // 商品的相关图片列表
+	GoodsAttrList     []GoodsAttr             `json:"goods_attr_list"`     // 商品的规格包装列表
+}

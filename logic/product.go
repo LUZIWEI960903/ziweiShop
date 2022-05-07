@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"strings"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 )
@@ -27,5 +28,74 @@ func (l ProductLogic) SearchProductsById(cateId, page, pageSize int) (*models.Se
 		GoodsList:    goodsList,
 		PageNum:      pageNum,
 		CurrentPage:  page,
+	}, nil
+}
+
+func (l ProductLogic) GetGoodsInfoData(goodsId int) (*models.GoodsInforData, error) {
+	// 获取基础数据
+	baseData, err1 := l.getBaseData()
+	if err1 != nil {
+		return nil, err1
+	}
+
+	// 获取商品信息
+	goodsInfo, err2 := mysql.GetGoodsInfoById(goodsId)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	// 获取关联商品
+	relationGoodsIdsStr := strings.ReplaceAll(goodsInfo.RelationGoods, "，", ",")
+	relationGoodsIds := strings.Split(relationGoodsIdsStr, ",")
+	relationGoodsList, err3 := mysql.GetRelationGoodsList(relationGoodsIds)
+	if err3 != nil {
+		return nil, err3
+	}
+
+	// 获取关联赠品
+	goodsGiftIdsStr := strings.ReplaceAll(goodsInfo.GoodsGift, "，", ",")
+	goodsGiftIds := strings.Split(goodsGiftIdsStr, ",")
+	goodsGiftList, err4 := mysql.GetGoodsGiftList(goodsGiftIds)
+	if err4 != nil {
+		return nil, err4
+	}
+
+	// 获取关联颜色
+	goodsColorIdsStr := strings.ReplaceAll(goodsInfo.GoodsColor, "，", ",")
+	goodsColorIds := strings.Split(goodsColorIdsStr, ",")
+	goodsColorList, err5 := mysql.GetGoodsColorList1(goodsColorIds)
+	if err5 != nil {
+		return nil, err5
+	}
+
+	// 获取关联配件
+	goodsFittingIdsStr := strings.ReplaceAll(goodsInfo.GoodsFitting, "，", ",")
+	goodsFittingIds := strings.Split(goodsFittingIdsStr, ",")
+	goodsFittingList, err6 := mysql.GetGoodsFittingList(goodsFittingIds)
+	if err6 != nil {
+		return nil, err6
+	}
+
+	// 获取商品关联的图片
+	goodsImageList, err7 := mysql.GetGoodsImageList(goodsId)
+	if err7 != nil {
+		return nil, err7
+	}
+
+	// 获取规格参数
+	goodsAttrList, err8 := mysql.GetGoodsAttrList(goodsId)
+	if err8 != nil {
+		return nil, err8
+	}
+
+	return &models.GoodsInforData{
+		ShopBaseData:      baseData,
+		GoodsInfo:         goodsInfo,
+		RelationGoodsList: relationGoodsList,
+		GoodsGiftList:     goodsGiftList,
+		GoodsColorList:    goodsColorList,
+		GoodsFittingList:  goodsFittingList,
+		GoodsImageList:    goodsImageList,
+		GoodsAttrList:     goodsAttrList,
 	}, nil
 }
