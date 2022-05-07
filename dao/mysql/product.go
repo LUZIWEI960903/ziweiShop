@@ -73,3 +73,8 @@ func GetGoodsAttrList(goodsId int) (goodsAttrList []models.GoodsAttr, err error)
 func GetImgListByGoodsIdAndColorId(goodsId, colorId int) (imgList []models.GoodsImage, err error) {
 	return imgList, db.Where("is_deleted=0 AND goods_id = ? AND color_id = ?", goodsId, colorId).Select("id,img_url").Find(&imgList).Error
 }
+
+// GetGoodsImageListById 根据 goodsId获取 商品对应的图片列表  --- goods_image 表
+func GetGoodsImageListById(goodsId int) (imgList []models.GoodsImage, err error) {
+	return imgList, db.Where("is_deleted=0 AND goods_id = ?", goodsId).Select("id,img_url").Find(&imgList).Error
+}

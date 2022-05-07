@@ -106,6 +106,14 @@ func (l ProductLogic) GetImgList(goodsId, colorId int) (*models.GetImgListData, 
 		return nil, err1
 	}
 
+	// 如果imgList没有数据，需要返回所有图片
+	if len(imgList) < 1 {
+		imgList, err1 = mysql.GetGoodsImageListById(goodsId)
+		if err1 != nil {
+			return nil, err1
+		}
+	}
+
 	return &models.GetImgListData{
 		ImgList: imgList,
 	}, nil
