@@ -418,3 +418,7 @@ type GoodsInforData struct {
 	GoodsImageList    []GoodsImage            `json:"goods_image_list"`    // 商品的相关图片列表
 	GoodsAttrList     []GoodsAttr             `json:"goods_attr_list"`     // 商品的规格包装列表
 }
+
+type GetImgListData struct {
+	ImgList []GoodsImage `json:"img_list"` // 商品的相关图片列表
+}

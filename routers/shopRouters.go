@@ -18,5 +18,8 @@ func shopRoutersInit(r *gin.Engine) {
 		// 商品详情页面
 		shopRouters.GET("/detail", shop.ProductController{}.Detail)
 
+		// Ajax点击颜色获取对应商品的图片
+		shopRouters.GET("/product/getImgList", shop.ProductController{}.GetImgList)
+
 	}
 }

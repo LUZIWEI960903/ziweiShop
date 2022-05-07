@@ -99,3 +99,14 @@ func (l ProductLogic) GetGoodsInfoData(goodsId int) (*models.GoodsInforData, err
 		GoodsAttrList:     goodsAttrList,
 	}, nil
 }
+
+func (l ProductLogic) GetImgList(goodsId, colorId int) (*models.GetImgListData, error) {
+	imgList, err1 := mysql.GetImgListByGoodsIdAndColorId(goodsId, colorId)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	return &models.GetImgListData{
+		ImgList: imgList,
+	}, nil
+}

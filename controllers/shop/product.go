@@ -57,3 +57,30 @@ func (con ProductController) Detail(c *gin.Context) {
 	}
 	con.success(c, data)
 }
+
+// GetImgList Ajax点击颜色获取对应商品图片的接口
+func (con ProductController) GetImgList(c *gin.Context) {
+	// 解析参数
+	colorId, err1 := strconv.Atoi(c.Query("color_id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: shop] [func: (con ProductController) GetImgList(c *gin.Context)] [strconv.Atoi(c.Query(\"color_id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	goodsId, err2 := strconv.Atoi(c.Query("goods_id"))
+	if err2 != nil {
+		zap.L().Error("[pkg: shop] [func: (con ProductController) GetImgList(c *gin.Context)] [strconv.Atoi(c.Query(\"goods_id\"))] failed, ", zap.Error(err2))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	data, err3 := logic.ProductLogic{}.GetImgList(goodsId, colorId)
+	if err3 != nil {
+		zap.L().Error("[pkg: shop] [func: (con ProductController) GetImgList(c *gin.Context)] [logic.ProductLogic{}.GetImgList(goodsId, colorId)] failed, ", zap.Error(err3))
+		con.error(c, CodeAjaxErr)
+		return
+	}
+
+	con.success(c, data)
+}
