@@ -88,6 +88,27 @@ func (l ProductLogic) GetGoodsInfoData(goodsId int) (*models.GoodsInforData, err
 		return nil, err8
 	}
 
+	// 获取更多属性
+	/*
+		颜色:xxx,xxx,xxx | 尺码:xxx,xxx,xxx
+	*/
+	goodsItemAttr := "颜色:xxx,xxx，xxx | 尺码:xxx,xxx,xxx"
+	goodsItemAttr = strings.ReplaceAll(goodsItemAttr, " ", "")
+	goodsItemAttr = strings.ReplaceAll(goodsItemAttr, "，", ",")
+	goodsItemAttr = strings.ReplaceAll(goodsItemAttr, "：", ":")
+	goodsItemAttrSlice := strings.Split(goodsItemAttr, "|")
+	goodsItemAttrList := make([]models.GoodsItemAttr, 0)
+	for _, goodsItemAttrStr := range goodsItemAttrSlice {
+		if strings.Contains(goodsItemAttrStr, ":") {
+			goodsItemAttrStrSlice := strings.Split(goodsItemAttrStr, ":")
+			newGoodsItemAttr := models.GoodsItemAttr{
+				Cate: goodsItemAttrStrSlice[0],
+				List: strings.Split(goodsItemAttrStrSlice[1], ","),
+			}
+			goodsItemAttrList = append(goodsItemAttrList, newGoodsItemAttr)
+		}
+	}
+
 	return &models.GoodsInforData{
 		ShopBaseData:      baseData,
 		GoodsInfo:         goodsInfo,
@@ -97,6 +118,7 @@ func (l ProductLogic) GetGoodsInfoData(goodsId int) (*models.GoodsInforData, err
 		GoodsFittingList:  goodsFittingList,
 		GoodsImageList:    goodsImageList,
 		GoodsAttrList:     goodsAttrList,
+		GoodsItemAttrList: goodsItemAttrList,
 	}, nil
 }
 
