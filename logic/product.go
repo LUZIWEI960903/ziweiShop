@@ -92,7 +92,7 @@ func (l ProductLogic) GetGoodsInfoData(goodsId int) (*models.GoodsInforData, err
 	/*
 		颜色:xxx,xxx,xxx | 尺码:xxx,xxx,xxx
 	*/
-	goodsItemAttr := "颜色:xxx,xxx，xxx | 尺码:xxx,xxx,xxx"
+	goodsItemAttr := goodsInfo.GoodsAttr
 	goodsItemAttr = strings.ReplaceAll(goodsItemAttr, " ", "")
 	goodsItemAttr = strings.ReplaceAll(goodsItemAttr, "，", ",")
 	goodsItemAttr = strings.ReplaceAll(goodsItemAttr, "：", ":")
