@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"fmt"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/cookie"
@@ -51,6 +52,7 @@ func (CartLogic) AddCart(c *gin.Context, goodsId, colorId int) error {
 	// 判断购物车有没有数据
 	cartList := []models.Cart{}
 	cookie.Cookie.Get(c, "cartList", &cartList)
+	fmt.Println(cartList)
 	if len(cartList) > 0 { // 购物车有数据
 		// 判断当前购物车是否有该数据
 		if HasCartData(cartList, currentData) {
@@ -59,7 +61,6 @@ func (CartLogic) AddCart(c *gin.Context, goodsId, colorId int) error {
 					cartList[i].Num += 1
 				}
 			}
-			currentData.Num += 1
 		} else {
 			cartList = append(cartList, currentData)
 		}
@@ -68,6 +69,7 @@ func (CartLogic) AddCart(c *gin.Context, goodsId, colorId int) error {
 		cartList = append(cartList, currentData)
 		cookie.Cookie.Set(c, "cartList", &cartList)
 	}
+	fmt.Println(cartList)
 	return nil
 }
 

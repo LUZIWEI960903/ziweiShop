@@ -11,7 +11,7 @@ type ginCookie struct {
 
 func (cookie ginCookie) Set(c *gin.Context, key string, value interface{}) {
 	bytes, _ := json.Marshal(value)
-	c.SetCookie(key, string(bytes), 3600, "/", "localhost", false, true)
+	c.SetCookie(key, string(bytes), 3600, "/", "127.0.0.1:8080", false, true)
 }
 
 func (cookie ginCookie) Get(c *gin.Context, key string, obj interface{}) bool {
