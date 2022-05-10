@@ -66,6 +66,11 @@ func GetGoodsById(goodsId int) (oGoodsInfo *models.Goods, err error) {
 	return &goodsList[0], nil
 }
 
+// GetGoodsById2  // 根据 goodId 查询 商品详情   --- goods 表
+func GetGoodsById2(goodsId int) (goodsInfo *models.Goods, err error) {
+	return goodsInfo, db.Where("id=? AND is_deleted=0", goodsId).Select("id,title,price,goods_version,goods_img,goods_attr").First(&goodsInfo).Error
+}
+
 // EditGoods  修改 goods 信息   --- goods 表
 func EditGoods(p *models.EditGoodsParams) (err error) {
 	goodsList := []models.Goods{}

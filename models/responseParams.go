@@ -428,3 +428,7 @@ type GoodsInforData struct {
 type GetImgListData struct {
 	ImgList []GoodsImage `json:"img_list"` // 商品的相关图片列表
 }
+
+type CartData struct {
+	CartList []Cart `json:"cart_list"` // 购物车列表
+}

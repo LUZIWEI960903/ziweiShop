@@ -21,5 +21,10 @@ func shopRoutersInit(r *gin.Engine) {
 		// Ajax点击颜色获取对应商品的图片
 		shopRouters.GET("/product/getImgList", shop.ProductController{}.GetImgList)
 
+		// 获取购物车数据
+		shopRouters.GET("/cart", shop.CartController{}.Get)
+		// 添加购物车
+		shopRouters.GET("/cart/addCart", shop.CartController{}.AddCart)
+
 	}
 }

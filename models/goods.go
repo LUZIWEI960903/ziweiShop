@@ -19,7 +19,7 @@ type Goods struct {
 	SubTitle      string  `json:"sub_title,omitempty"`      // 商品的二级标题
 	GoodsSn       string  `json:"goods_sn,omitempty"`       // 商品的sn号
 	RelationGoods string  `json:"relation_goods,omitempty"` // 关联商品
-	GoodsAttr     string  `json:"goods_attr,omitempty"`     // 商品属性
+	GoodsAttr     string  `json:"goods_attr,omitempty"`     // 商品更多的属性
 	GoodsVersion  string  `json:"goods_version,omitempty"`  // 商品版本
 	GoodsImg      string  `json:"goods_img,omitempty"`      // 商品图片
 	GoodsGift     string  `json:"goods_gift,omitempty"`     // 商品赠品

@@ -29,6 +29,11 @@ func GetGoodsColorById(goodsColorId int) (oGoodsColor *models.GoodsColor, err er
 	return &oGoodsColorList[0], nil
 }
 
+// GetGoodsColorById2 根据 goodsColorId 获取 商品颜色id  --- goods_color 表
+func GetGoodsColorById2(goodsColorId int) (goodsColor *models.GoodsColor, err error) {
+	return goodsColor, db.Where("id=? AND is_deleted=0", goodsColorId).Select("id,color_name").First(&goodsColor).Error
+}
+
 // EditGoodsColor 根据 goodsColorId 修改 商品颜色  --- goods_color 表
 func EditGoodsColor(p *models.EditGoodsColorParams) (err error) {
 	goodsColorList := []models.GoodsColor{}
