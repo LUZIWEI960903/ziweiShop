@@ -127,6 +127,40 @@ func (CartLogic) IncCart(c *gin.Context, goodsId int, goodsColor string) (*model
 	return nil, false
 }
 
+func (CartLogic) DecCart(c *gin.Context, goodsId int, goodsColor string) (*models.DecCartData, bool) {
+	// 获取当前购物车信息
+	cartList := []models.Cart{}
+	cookie.Cookie.Get(c, "cartList", &cartList)
+	var (
+		num          int
+		currentPrice float64
+		totalPrice   float64
+	)
+	if len(cartList) > 0 {
+		for i, l := 0, len(cartList); i < l; i++ {
+			if cartList[i].Id == goodsId && cartList[i].GoodsColor == goodsColor {
+				if cartList[i].Num > 1 {
+					cartList[i].Num -= 1
+				}
+				num += cartList[i].Num
+				currentPrice += float64(cartList[i].Num) * cartList[i].Price
+
+			}
+			if cartList[i].Checked {
+				totalPrice += float64(cartList[i].Num) * cartList[i].Price
+			}
+		}
+		cookie.Cookie.Set(c, "cartList", cartList)
+		return &models.DecCartData{
+			Num:          num,
+			CurrentPrice: currentPrice,
+			TotalPrice:   totalPrice,
+		}, true
+	}
+
+	return nil, false
+}
+
 // HasCartData 判断当前购物车是否有该数据
 func HasCartData(cartList []models.Cart, currentData models.Cart) bool {
 	for i, l := 0, len(cartList); i < l; i++ {

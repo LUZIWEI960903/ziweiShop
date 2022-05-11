@@ -444,3 +444,9 @@ type IncCartData struct {
 	CurrentPrice float64 `json:"current_price"` // 当前商品价格
 	TotalPrice   float64 `json:"total_price"`   // 总价格
 }
+
+type DecCartData struct {
+	Num          int     `json:"num"`           // 当前商品数量
+	CurrentPrice float64 `json:"current_price"` // 当前商品价格
+	TotalPrice   float64 `json:"total_price"`   // 总价格
+}
