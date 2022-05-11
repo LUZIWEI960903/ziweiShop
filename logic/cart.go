@@ -97,7 +97,7 @@ func (CartLogic) AddCartSuccess(goodsId int) (*models.AddCartSuccessData, error)
 	}, nil
 }
 
-func (CartLogic) IncCart(c *gin.Context, goodsId int, goodsColor string) (*models.IncCartData, bool) {
+func (CartLogic) IncCart(c *gin.Context, goodsId int, goodsColor string) *models.IncCartData {
 	// 获取购物车信息
 	cartList := []models.Cart{}
 	cookie.Cookie.Get(c, "cartList", &cartList)
@@ -118,16 +118,16 @@ func (CartLogic) IncCart(c *gin.Context, goodsId int, goodsColor string) (*model
 			}
 		}
 		cookie.Cookie.Set(c, "cartList", cartList)
-		return &models.IncCartData{
-			Num:          num,
-			CurrentPrice: currentPrice,
-			TotalPrice:   TotalPrice,
-		}, true
 	}
-	return nil, false
+	return &models.IncCartData{
+		Num:          num,
+		CurrentPrice: currentPrice,
+		TotalPrice:   TotalPrice,
+	}
+
 }
 
-func (CartLogic) DecCart(c *gin.Context, goodsId int, goodsColor string) (*models.DecCartData, bool) {
+func (CartLogic) DecCart(c *gin.Context, goodsId int, goodsColor string) *models.DecCartData {
 	// 获取当前购物车信息
 	cartList := []models.Cart{}
 	cookie.Cookie.Get(c, "cartList", &cartList)
@@ -151,14 +151,34 @@ func (CartLogic) DecCart(c *gin.Context, goodsId int, goodsColor string) (*model
 			}
 		}
 		cookie.Cookie.Set(c, "cartList", cartList)
-		return &models.DecCartData{
-			Num:          num,
-			CurrentPrice: currentPrice,
-			TotalPrice:   totalPrice,
-		}, true
 	}
+	return &models.DecCartData{
+		Num:          num,
+		CurrentPrice: currentPrice,
+		TotalPrice:   totalPrice,
+	}
+}
 
-	return nil, false
+func (CartLogic) ChangeOneCart(c *gin.Context, goodsId int, goodsColor string) *models.ChangeOneCartData {
+	// 获取当前购物车数据
+	cartList := []models.Cart{}
+	cookie.Cookie.Get(c, "cartList", &cartList)
+	var totalPrice float64
+	if len(cartList) > 0 {
+		for i, l := 0, len(cartList); i < l; i++ {
+			if cartList[i].Id == goodsId && cartList[i].GoodsColor == goodsColor {
+				cartList[i].Checked = !cartList[i].Checked
+			}
+			if cartList[i].Checked {
+				totalPrice += float64(cartList[i].Num) * cartList[i].Price
+			}
+		}
+		cookie.Cookie.Set(c, "cartList", cartList)
+	}
+	return &models.ChangeOneCartData{
+		CartList:   cartList,
+		TotalPrice: totalPrice,
+	}
 }
 
 // HasCartData 判断当前购物车是否有该数据

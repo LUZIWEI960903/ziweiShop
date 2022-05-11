@@ -12,5 +12,5 @@ type Cart struct {
 	GoodsColor   string  `json:"goods_color,omitempty"`   // 商品颜色
 	GoodsImg     string  `json:"goods_img,omitempty"`     // 商品图片
 	GoodsAttr    string  `json:"goods_attr,omitempty"`    // 商品的更多属性
-	Checked      bool    `json:"checked,omitempty"`       // 是否选中
+	Checked      bool    `json:"checked"`                 // 是否选中
 }

@@ -450,3 +450,8 @@ type DecCartData struct {
 	CurrentPrice float64 `json:"current_price"` // 当前商品价格
 	TotalPrice   float64 `json:"total_price"`   // 总价格
 }
+
+type ChangeOneCartData struct {
+	CartList   []Cart  `json:"cart_list"`   // 购物车列表
+	TotalPrice float64 `json:"total_price"` // 总价格
+}

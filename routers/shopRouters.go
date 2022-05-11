@@ -31,6 +31,8 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.GET("/cart/incCart", shop.CartController{}.IncCart)
 		// 减少购物车商品数量
 		shopRouters.GET("/cart/decCart", shop.CartController{}.DecCart)
+		// 改变一个购物车选择的状态
+		shopRouters.GET("/cart/changeOneCart", shop.CartController{}.ChangeOneCart)
 
 	}
 }

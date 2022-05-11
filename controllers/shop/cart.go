@@ -74,12 +74,7 @@ func (con CartController) IncCart(c *gin.Context) {
 	goodsColor := c.Query("goods_color")
 
 	// 业务逻辑
-	data, ok := logic.CartLogic{}.IncCart(c, goodsId, goodsColor)
-	if !ok {
-		zap.L().Error("[pkg: shop] [func: (con CartController) IncCart(c *gin.Context)] [logic.CartLogic{}.IncCart(c, goodsId, goodsColor)] failed")
-		con.error(c, CodeAjaxErr)
-		return
-	}
+	data := logic.CartLogic{}.IncCart(c, goodsId, goodsColor)
 	con.success(c, data)
 }
 
@@ -95,12 +90,22 @@ func (con CartController) DecCart(c *gin.Context) {
 
 	goodsColor := c.Query("goods_color")
 	// 业务逻辑
-	data, ok := logic.CartLogic{}.DecCart(c, goodsId, goodsColor)
-	if !ok {
-		zap.L().Error("[pkg: shop] [func: (con CartController) DecCart(c *gin.Context)] [logic.CartLogic{}.DecCart(c,goodsId, goodsColor)] failed")
-		con.error(c, CodeAjaxErr)
+	data := logic.CartLogic{}.DecCart(c, goodsId, goodsColor)
+	con.success(c, data)
+}
+
+// ChangeOneCart ajax改变一个购物车选择的状态的接口
+func (con CartController) ChangeOneCart(c *gin.Context) {
+	// 解析参数
+	goodsId, err1 := strconv.Atoi(c.Query("goods_id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: shop] [func: (con CartController) ChangeOneCart(c *gin.Context)] [strconv.Atoi(c.Query(\"goods_id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
 		return
 	}
 
+	goodsColor := c.Query("goods_color")
+	// 业务逻辑
+	data := logic.CartLogic{}.ChangeOneCart(c, goodsId, goodsColor)
 	con.success(c, data)
 }
