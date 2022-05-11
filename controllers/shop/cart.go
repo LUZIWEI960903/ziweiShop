@@ -94,7 +94,7 @@ func (con CartController) DecCart(c *gin.Context) {
 	con.success(c, data)
 }
 
-// ChangeOneCart ajax改变一个购物车选择的状态的接口
+// ChangeOneCart ajax改变购物车指定商品选择的状态的接口
 func (con CartController) ChangeOneCart(c *gin.Context) {
 	// 解析参数
 	goodsId, err1 := strconv.Atoi(c.Query("goods_id"))
@@ -107,5 +107,19 @@ func (con CartController) ChangeOneCart(c *gin.Context) {
 	goodsColor := c.Query("goods_color")
 	// 业务逻辑
 	data := logic.CartLogic{}.ChangeOneCart(c, goodsId, goodsColor)
+	con.success(c, data)
+}
+
+// ChangeAllCart ajax改变购物车所有商品选择的状态的接口
+func (con CartController) ChangeAllCart(c *gin.Context) {
+	// 解析参数
+	flag := c.Query("flag")
+	if !(flag == "1" || flag == "0") {
+		zap.L().Error("[pkg: shop] [func: (con CartController) ChangeAllCart(c *gin.Context)] [c.Query(\"flag\")] failed")
+		con.error(c, CodeInValidParams)
+		return
+	}
+	// 业务逻辑
+	data := logic.CartLogic{}.ChangeAllCart(c, flag)
 	con.success(c, data)
 }

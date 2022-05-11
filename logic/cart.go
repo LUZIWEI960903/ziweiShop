@@ -181,6 +181,30 @@ func (CartLogic) ChangeOneCart(c *gin.Context, goodsId int, goodsColor string) *
 	}
 }
 
+func (CartLogic) ChangeAllCart(c *gin.Context, flag string) *models.ChangeAllCartData {
+	// 获取购物车信息
+	cartList := []models.Cart{}
+	cookie.Cookie.Get(c, "cartList", &cartList)
+	var totalPrice float64
+	if len(cartList) > 0 {
+		for i, l := 0, len(cartList); i < l; i++ {
+			if flag == "1" {
+				cartList[i].Checked = true
+			} else {
+				cartList[i].Checked = false
+			}
+			if cartList[i].Checked {
+				totalPrice += float64(cartList[i].Num) * cartList[i].Price
+			}
+		}
+		cookie.Cookie.Set(c, "cartList", cartList)
+	}
+	return &models.ChangeAllCartData{
+		CartList:   cartList,
+		TotalPrice: totalPrice,
+	}
+}
+
 // HasCartData 判断当前购物车是否有该数据
 func HasCartData(cartList []models.Cart, currentData models.Cart) bool {
 	for i, l := 0, len(cartList); i < l; i++ {
