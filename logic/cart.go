@@ -18,9 +18,18 @@ func (l CartLogic) GetCart(c *gin.Context) *models.CartData {
 	baseData, _ := l.getBaseData()
 	cartList := []models.Cart{}
 	cookie.Cookie.Get(c, "cartList", &cartList)
+
+	// 计算总消费
+	var totalPrice float64
+	for i, l := 0, len(cartList); i < l; i++ {
+		if cartList[i].Checked {
+			totalPrice += float64(cartList[i].Num) * cartList[i].Price
+		}
+	}
 	return &models.CartData{
 		CartList:     cartList,
 		ShopBaseData: baseData,
+		TotalPrice:   totalPrice,
 	}
 }
 
@@ -86,6 +95,36 @@ func (CartLogic) AddCartSuccess(goodsId int) (*models.AddCartSuccessData, error)
 	return &models.AddCartSuccessData{
 		GoodsInfo: *goodsInfo,
 	}, nil
+}
+
+func (CartLogic) IncCart(c *gin.Context, goodsId int, goodsColor string) (*models.IncCartData, bool) {
+	// 获取购物车信息
+	cartList := []models.Cart{}
+	cookie.Cookie.Get(c, "cartList", &cartList)
+	var (
+		num          int
+		currentPrice float64
+		TotalPrice   float64
+	)
+	if len(cartList) > 0 {
+		for i, l := 0, len(cartList); i < l; i++ {
+			if cartList[i].Id == goodsId && cartList[i].GoodsColor == goodsColor {
+				cartList[i].Num += 1
+				num = cartList[i].Num
+				currentPrice += float64(cartList[i].Num) * cartList[i].Price
+			}
+			if cartList[i].Checked {
+				TotalPrice += float64(cartList[i].Num) * cartList[i].Price
+			}
+		}
+		cookie.Cookie.Set(c, "cartList", cartList)
+		return &models.IncCartData{
+			Num:          num,
+			CurrentPrice: currentPrice,
+			TotalPrice:   TotalPrice,
+		}, true
+	}
+	return nil, false
 }
 
 // HasCartData 判断当前购物车是否有该数据

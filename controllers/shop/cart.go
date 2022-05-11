@@ -61,3 +61,29 @@ func (con CartController) AddCartSuccess(c *gin.Context) {
 
 	con.success(c, data)
 }
+
+// IncCart ajax增加购物车商品数量的接口
+func (con CartController) IncCart(c *gin.Context) {
+	// 解析参数
+	goodsId, err1 := strconv.Atoi(c.Query("goods_id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: shop] [func: (con CartController) IncCart(c *gin.Context)] [strconv.Atoi(c.Query(\"goods_id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	goodsColor := c.Query("goods_color")
+
+	// 业务逻辑
+	data, ok := logic.CartLogic{}.IncCart(c, goodsId, goodsColor)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con CartController) IncCart(c *gin.Context)] [logic.CartLogic{}.IncCart(c, goodsId, goodsColor)] failed")
+		con.error(c, CodeAjaxErr)
+		return
+	}
+	con.success(c, data)
+}
+
+// DecCart ajax减少购物车商品数量的接口
+func (con CartController) DecCart(c *gin.Context) {
+
+}

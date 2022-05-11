@@ -432,8 +432,15 @@ type GetImgListData struct {
 type CartData struct {
 	CartList      []Cart                  `json:"cart_list"` // 购物车列表
 	*ShopBaseData `json:"shop_base_data"` // 商城界面的基础数据
+	TotalPrice    float64                 `json:"total_price"` // 总价格
 }
 
 type AddCartSuccessData struct {
 	GoodsInfo Goods `json:"goods_info"` // 商品信息
+}
+
+type IncCartData struct {
+	Num          int     `json:"num"`           // 当前商品数量
+	CurrentPrice float64 `json:"current_price"` // 当前商品价格
+	TotalPrice   float64 `json:"total_price"`   // 总价格
 }
