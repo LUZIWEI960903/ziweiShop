@@ -430,5 +430,10 @@ type GetImgListData struct {
 }
 
 type CartData struct {
-	CartList []Cart `json:"cart_list"` // 购物车列表
+	CartList      []Cart                  `json:"cart_list"` // 购物车列表
+	*ShopBaseData `json:"shop_base_data"` // 商城界面的基础数据
+}
+
+type AddCartSuccessData struct {
+	GoodsInfo Goods `json:"goods_info"` // 商品信息
 }

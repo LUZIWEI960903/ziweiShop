@@ -40,3 +40,24 @@ func (con CartController) AddCart(c *gin.Context) {
 
 	con.success(c, true)
 }
+
+// AddCartSuccess 增加购物车成功的页面
+func (con CartController) AddCartSuccess(c *gin.Context) {
+	// 解析参数
+	goodsId, err1 := strconv.Atoi(c.Query("id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: shop] [func: (con CartController) AddCartSuccess(c *gin.Context)] [strconv.Atoi(c.Query(\"goods_id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	data, err2 := logic.CartLogic{}.AddCartSuccess(goodsId)
+	if err2 != nil {
+		zap.L().Error("[pkg: shop] [func: (con CartController) AddCartSuccess(c *gin.Context)] [logic.CartLogic{}.AddCartSuccess(goodsId)] failed, ", zap.Error(err2))
+		con.error(c, CodeGetDataErr)
+		return
+	}
+
+	con.success(c, data)
+}

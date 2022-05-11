@@ -25,6 +25,8 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.GET("/cart", shop.CartController{}.Get)
 		// 添加购物车
 		shopRouters.GET("/cart/addCart", shop.CartController{}.AddCart)
+		// 添加购物车成功
+		shopRouters.GET("/cart/addCartSuccess", shop.CartController{}.AddCartSuccess)
 
 	}
 }

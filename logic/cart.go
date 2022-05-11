@@ -10,13 +10,17 @@ import (
 )
 
 type CartLogic struct {
+	BaseLogic
 }
 
-func (CartLogic) GetCart(c *gin.Context) *models.CartData {
+func (l CartLogic) GetCart(c *gin.Context) *models.CartData {
+	// 获取基础信息
+	baseData, _ := l.getBaseData()
 	cartList := []models.Cart{}
 	cookie.Cookie.Get(c, "cartList", &cartList)
 	return &models.CartData{
-		CartList: cartList,
+		CartList:     cartList,
+		ShopBaseData: baseData,
 	}
 }
 
@@ -71,6 +75,17 @@ func (CartLogic) AddCart(c *gin.Context, goodsId, colorId int) error {
 	}
 	fmt.Println(cartList)
 	return nil
+}
+
+func (CartLogic) AddCartSuccess(goodsId int) (*models.AddCartSuccessData, error) {
+	goodsInfo, err1 := mysql.GetGoodsById2(goodsId)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	return &models.AddCartSuccessData{
+		GoodsInfo: *goodsInfo,
+	}, nil
 }
 
 // HasCartData 判断当前购物车是否有该数据
