@@ -460,3 +460,8 @@ type ChangeAllCartData struct {
 	CartList   []Cart  `json:"cart_list"`   // 购物车列表
 	TotalPrice float64 `json:"total_price"` // 总价格
 }
+
+type DeleteCartData struct {
+	CartList   []Cart  `json:"cart_list"`   // 购物车列表
+	TotalPrice float64 `json:"total_price"` // 总价格
+}

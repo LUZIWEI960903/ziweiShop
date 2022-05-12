@@ -123,3 +123,19 @@ func (con CartController) ChangeAllCart(c *gin.Context) {
 	data := logic.CartLogic{}.ChangeAllCart(c, flag)
 	con.success(c, data)
 }
+
+// DeleteCart 删除购物车指定商品的接口
+func (con CartController) DeleteCart(c *gin.Context) {
+	// 解析参数
+	goodsId, err1 := strconv.Atoi(c.Query("goods_id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: shop] [func: (con CartController) DeleteCart(c *gin.Context)] [strconv.Atoi(c.Query(\"goods_id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+	goodsColor := c.Query("goods_color")
+
+	// 业务逻辑
+	data := logic.CartLogic{}.DeleteCart(c, goodsId, goodsColor)
+	con.success(c, data)
+}
