@@ -220,3 +220,9 @@ type EditNavParams struct {
 	Link      string `json:"link"`       // 导航栏跳转链接
 	Relation  string `json:"relation"`   // 相关联的商品id列表
 }
+
+type Register1Params struct {
+	Email        string `json:"email"`         // 注册邮箱
+	CaptchaId    string `json:"captcha_id"`    // 验证码id
+	CaptchaValue string `json:"captcha_value"` // 验证码的值
+}

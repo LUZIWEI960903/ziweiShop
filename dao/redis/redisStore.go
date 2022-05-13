@@ -9,7 +9,7 @@ import (
 	实现captcha的Store接口，将验证码保存至redis
 */
 
-const CAPTCHA = "ziweiShop:admin:captcha_id:"
+const CAPTCHA = "ziweiShop:captcha_id:"
 
 type RedisStore struct {
 }

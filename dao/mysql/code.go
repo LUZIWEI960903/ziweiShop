@@ -32,4 +32,6 @@ var (
 	ErrGetGoodsImage = errors.New("Get goods image error~~")
 
 	ErrGetNav = errors.New("Get nav error~~")
+
+	ErrEmailExist = errors.New("Email exist~~")
 )

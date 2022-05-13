@@ -51,9 +51,9 @@ func (LoginLogic) Logout(c *gin.Context) (err error) {
 	return session.Save()
 }
 
-func (LoginLogic) GenCaptcha() (map[string]string, error) {
+func (LoginLogic) GenCaptcha() (gin.H, error) {
 	id, b64s, err := captcha.GenCaptcha()
-	data := map[string]string{
+	data := gin.H{
 		"captcha_id":  id,
 		"captcha_url": b64s,
 	}
