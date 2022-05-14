@@ -37,10 +37,11 @@ func (con PassController) DoRegister1(c *gin.Context) {
 		con.error(c, CodeInValidParams)
 		return
 	}
+
 	// 业务逻辑
-	ok := logic.PassLogic{}.Register1(p)
+	ok := logic.PassLogic{}.DoRegister1(c, p)
 	if !ok {
-		zap.L().Error("[pkg: shop] [func: (con PassController) Register1(c *gin.Context)] [logic.PassLogic{}.Register1(p)] failed")
+		zap.L().Error("[pkg: shop] [func: (con PassController) Register1(c *gin.Context)] [logic.PassLogic{}.Register1(c,p)] failed")
 		con.error(c, CodeRegisterErr)
 		return
 	}
