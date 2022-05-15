@@ -41,6 +41,8 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.GET("/pass/register1", shop.PassController{}.Register1)
 		// 用户注册页面1过程
 		shopRouters.POST("/pass/register1", shop.PassController{}.DoRegister1)
+		// 用户注册页面2
+		shopRouters.GET("/pass/register2", shop.PassController{}.Register2)
 
 	}
 }

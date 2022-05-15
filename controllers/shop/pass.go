@@ -39,10 +39,26 @@ func (con PassController) DoRegister1(c *gin.Context) {
 	}
 
 	// 业务逻辑
-	ok := logic.PassLogic{}.DoRegister1(c, p)
-	if !ok {
+	data, ok := logic.PassLogic{}.DoRegister1(c, p)
+	if !ok || data == "" {
 		zap.L().Error("[pkg: shop] [func: (con PassController) Register1(c *gin.Context)] [logic.PassLogic{}.Register1(c,p)] failed")
 		con.error(c, CodeRegisterErr)
+		return
+	}
+	con.success(c, data)
+}
+
+// Register2 用户注册第二步页面的接口
+func (con PassController) Register2(c *gin.Context) {
+	// 解析参数
+	sign := c.Query("sign")
+	verifyCode := c.Query("verifyCode") // 注册第一步输入的captchaValue
+
+	// 业务逻辑
+	ok := logic.PassLogic{}.Register2(c, sign, verifyCode)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con PassController) Register2(c *gin.Context)] [logic.PassLogic{}.Register2(c, sign, verifyCode)] failed")
+		con.error(c, CodeInValidParams)
 		return
 	}
 	con.success(c, true)

@@ -57,3 +57,13 @@ func UpdateMsgCount(userTemp *models.UserTemp) error {
 	userTemp.SendCount += 1
 	return db.Save(&userTemp).Error
 }
+
+// GetUserTempBySign 根据 sign 获取 userTemp  --- user_temp 表
+func GetUserTempBySign(sign string) (*models.UserTemp, bool) {
+	userTempList := []models.UserTemp{}
+	db.Where("sign=?", sign).Find(&userTempList)
+	if len(userTempList) > 0 {
+		return &userTempList[0], true
+	}
+	return nil, false
+}
