@@ -63,3 +63,19 @@ func (con PassController) Register2(c *gin.Context) {
 	}
 	con.success(c, true)
 }
+
+// DoRegister2 用户注册第二步的接口
+func (con PassController) DoRegister2(c *gin.Context) {
+	// 解析参数
+	sign := c.Query("sign")
+	msgCode := c.Query("msgCode")
+
+	// 业务逻辑
+	ok := logic.PassLogic{}.DoRegister2(c, sign, msgCode)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con PassController) DoRegister2(c *gin.Context)] [logic.PassLogic{}.DoRegister2(c, sign, msgCode)] failed")
+		con.error(c, CodeInValidParams)
+		return
+	}
+	con.success(c, true)
+}

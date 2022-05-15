@@ -55,6 +55,7 @@ func GetUserTempInfo(email, currentDay string) (models.UserTemp, error) {
 func UpdateMsgCount(userTemp *models.UserTemp) error {
 	db.Where("id=?", userTemp.Id)
 	userTemp.SendCount += 1
+	userTemp.AddTime = int(tools.GetUnix())
 	return db.Save(&userTemp).Error
 }
 

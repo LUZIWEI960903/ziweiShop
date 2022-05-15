@@ -98,3 +98,25 @@ func (PassLogic) Register2(c *gin.Context, sign, verifyCode string) bool {
 	}
 	return true
 }
+
+func (PassLogic) DoRegister2(c *gin.Context, sign, smsCode string) bool {
+	// 校验smsCode
+	session := sessions.Default(c)
+	sessionSmsCode, ok1 := session.Get("msgCode").(string)
+	if !ok1 || sessionSmsCode != smsCode {
+		return false
+	}
+
+	// 校验sign
+	userTemp, ok := mysql.GetUserTempBySign(sign)
+	if !ok {
+		return false
+	}
+
+	// 校验验证码是否过期
+	nowTime := tools.GetUnix()
+	if (nowTime - int64(userTemp.AddTime)) > 15*60 {
+		return false
+	}
+	return true
+}
