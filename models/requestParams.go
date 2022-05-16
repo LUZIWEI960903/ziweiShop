@@ -226,3 +226,11 @@ type Register1Params struct {
 	CaptchaId    string `json:"captcha_id"`    // 验证码id
 	CaptchaValue string `json:"captcha_value"` // 验证码的值
 }
+
+type Register3Params struct {
+	Sign       string `json:"sign"`        // 签名认证
+	MsgCode    string `json:"msg_code"`    // 邮箱验证码
+	Password   string `json:"password"`    // 密码
+	RePassword string `json:"re_password"` // 重复密码
+
+}

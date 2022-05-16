@@ -5,6 +5,7 @@ import (
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/captcha"
+	"ziweiShop/pkg/cookie"
 	"ziweiShop/pkg/email"
 	"ziweiShop/pkg/tools"
 
@@ -121,7 +122,7 @@ func (PassLogic) DoRegister2(c *gin.Context, sign, msgCode string) bool {
 	return true
 }
 
-func (LoginLogic) Register3(c *gin.Context, sign, msgCode string) bool {
+func (PassLogic) Register3(c *gin.Context, sign, msgCode string) bool {
 	// 校验验证码
 	session := sessions.Default(c)
 	sessionMsgCode, ok := session.Get("msgCode").(string)
@@ -134,5 +135,35 @@ func (LoginLogic) Register3(c *gin.Context, sign, msgCode string) bool {
 	if !ok1 {
 		return false
 	}
+	return true
+}
+
+func (PassLogic) DoRegister3(c *gin.Context, p *models.Register3Params) bool {
+	// 校验验证码
+	session := sessions.Default(c)
+	sessionMsgCode, ok := session.Get("msgCode").(string)
+	if !ok || sessionMsgCode != p.MsgCode {
+		return false
+	}
+
+	// 验证密码
+	if p.RePassword != p.Password {
+		return false
+	}
+
+	// 校验sign
+	userTemp, ok1 := mysql.GetUserTempBySign(p.Sign)
+	if !ok1 {
+		return false
+	}
+
+	// 创建用户
+	userInfo, err := mysql.CreateUser(c, userTemp.Email, p.Password)
+	if err != nil {
+		return false
+	}
+
+	// 执行登录
+	cookie.Cookie.Set(c, "userInfo", userInfo)
 	return true
 }

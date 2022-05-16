@@ -3,6 +3,8 @@ package mysql
 import (
 	"ziweiShop/models"
 	"ziweiShop/pkg/tools"
+
+	"github.com/gin-gonic/gin"
 )
 
 // IsEmailExist 查询 email是否已存在  --- user 表
@@ -67,4 +69,18 @@ func GetUserTempBySign(sign string) (*models.UserTemp, bool) {
 		return &userTempList[0], true
 	}
 	return nil, false
+}
+
+// CreateUser 创建用户   --- user 表
+func CreateUser(c *gin.Context, email, password string) (models.User, error) {
+	user := models.User{
+		AddTime:   int(tools.GetUnix()),
+		Status:    1,
+		IsDeleted: 0,
+		Phone:     "",
+		Password:  tools.MD5(password),
+		LastIp:    c.ClientIP(),
+		Email:     email,
+	}
+	return user, db.Create(&user).Error
 }

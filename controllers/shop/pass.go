@@ -96,3 +96,24 @@ func (con PassController) Register3(c *gin.Context) {
 
 	con.success(c, true)
 }
+
+// DoRegister3 用户注册第三步的接口
+func (con PassController) DoRegister3(c *gin.Context) {
+	// 解析参数
+	p := new(models.Register3Params)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: shop] [func: (con PassController) DoRegister3(c *gin.Context)] [c.ShouldBindJSON(p)] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	ok := logic.PassLogic{}.DoRegister3(c, p)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con PassController) DoRegister3(c *gin.Context)] [logic.PassLogic{}.DoRegister3(c,p)] failed")
+		con.error(c, CodeRegisterErr)
+		return
+	}
+
+	con.success(c, true)
+}
