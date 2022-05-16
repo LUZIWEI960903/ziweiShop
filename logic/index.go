@@ -3,15 +3,17 @@ package logic
 import (
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ShopIndexLogic struct {
 	BaseLogic
 }
 
-func (l ShopIndexLogic) ShowIndexPageDataLogic() (*models.ShopIndexPageData, error) {
+func (l ShopIndexLogic) ShowIndexPageDataLogic(c *gin.Context) (*models.ShopIndexPageData, error) {
 	// 获取基础数据
-	baseData, err := l.getBaseData()
+	baseData, err := l.getBaseData(c)
 	if err != nil {
 		return nil, err
 	}

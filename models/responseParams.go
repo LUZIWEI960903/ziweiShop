@@ -399,6 +399,7 @@ type ShopBaseData struct {
 	TopNavList                 []TopNav                 `json:"top_nav_list"`    // 顶部导航列表
 	GoodsCateWithGoodsCateList []GoodsCateWithGoodsCate `json:"goods_cate_list"` // 商品分类
 	MiddleNavList              []MiddleNav              `json:"middle_nav_list"` // 中间导航列表
+	UserInfo                   User                     `json:"user_info"`       // 用户信息
 }
 
 type SearchProductsByKeywordData struct {

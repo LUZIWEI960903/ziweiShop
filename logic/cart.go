@@ -15,7 +15,7 @@ type CartLogic struct {
 
 func (l CartLogic) GetCart(c *gin.Context) *models.CartData {
 	// 获取基础信息
-	baseData, _ := l.getBaseData()
+	baseData, _ := l.getBaseData(c)
 	cartList := []models.Cart{}
 	cookie.Cookie.Get(c, "cartList", &cartList)
 

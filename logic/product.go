@@ -4,15 +4,17 @@ import (
 	"strings"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ProductLogic struct {
 	BaseLogic
 }
 
-func (l ProductLogic) SearchProductsById(cateId, page, pageSize int) (*models.SearchProductsByKeywordData, error) {
+func (l ProductLogic) SearchProductsById(c *gin.Context, cateId, page, pageSize int) (*models.SearchProductsByKeywordData, error) {
 	// 获取基础数据
-	baseData, err1 := l.getBaseData()
+	baseData, err1 := l.getBaseData(c)
 	if err1 != nil {
 		return nil, err1
 	}
@@ -31,9 +33,9 @@ func (l ProductLogic) SearchProductsById(cateId, page, pageSize int) (*models.Se
 	}, nil
 }
 
-func (l ProductLogic) GetGoodsInfoData(goodsId int) (*models.GoodsInforData, error) {
+func (l ProductLogic) GetGoodsInfoData(c *gin.Context, goodsId int) (*models.GoodsInforData, error) {
 	// 获取基础数据
-	baseData, err1 := l.getBaseData()
+	baseData, err1 := l.getBaseData(c)
 	if err1 != nil {
 		return nil, err1
 	}

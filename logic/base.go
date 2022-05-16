@@ -4,12 +4,15 @@ import (
 	"strings"
 	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
+	"ziweiShop/pkg/cookie"
+
+	"github.com/gin-gonic/gin"
 )
 
 type BaseLogic struct {
 }
 
-func (l BaseLogic) getBaseData() (*models.ShopBaseData, error) {
+func (l BaseLogic) getBaseData(c *gin.Context) (*models.ShopBaseData, error) {
 	// 获取顶部导航
 	oTopNavList, err1 := mysql.GetTopNavList()
 	if err1 != nil {
@@ -101,9 +104,15 @@ func (l BaseLogic) getBaseData() (*models.ShopBaseData, error) {
 
 		MiddleNavList = append(MiddleNavList, newMiddleNav)
 	}
+
+	// 获取用户信息
+	userInfo := models.User{}
+	cookie.Cookie.Get(c, "userInfo", &userInfo)
+
 	return &models.ShopBaseData{
 		TopNavList:                 TopNavList,
 		GoodsCateWithGoodsCateList: TopGoodsCateWithGoodsCateList,
 		MiddleNavList:              MiddleNavList,
+		UserInfo:                   userInfo,
 	}, nil
 }

@@ -14,9 +14,9 @@ type IndexController struct {
 // Index 商城主页面的接口
 func (con IndexController) Index(c *gin.Context) {
 	// 业务逻辑
-	data, err := logic.ShopIndexLogic{}.ShowIndexPageDataLogic()
+	data, err := logic.ShopIndexLogic{}.ShowIndexPageDataLogic(c)
 	if err != nil {
-		zap.L().Error("[pkg: shop] [func: (con IndexController) Index(c *gin.Context)] [logic.ShopIndexLogic{}.ShowIndexPageDataLogic()] failed, ", zap.Error(err))
+		zap.L().Error("[pkg: shop] [func: (con IndexController) Index(c *gin.Context)] [logic.ShopIndexLogic{}.ShowIndexPageDataLogic(c)] failed, ", zap.Error(err))
 		con.error(c, CodeGetIndexPageDataErr)
 		return
 	}

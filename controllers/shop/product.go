@@ -28,7 +28,7 @@ func (con ProductController) Category(c *gin.Context) {
 		con.error(c, CodeInValidParams)
 		return
 	}
-	data, err3 := logic.ProductLogic{}.SearchProductsById(cateId, page, pageSize)
+	data, err3 := logic.ProductLogic{}.SearchProductsById(c, cateId, page, pageSize)
 	if err2 != nil {
 		zap.L().Error("[pkg: shop] [func: (con ProductController) Category(c *gin.Context)] [logic.ProductLogic{}.SearchProductsById(cateId, page, pageSize)] failed, ", zap.Error(err3))
 		con.error(c, CodeGetDataErr)
@@ -49,9 +49,9 @@ func (con ProductController) Detail(c *gin.Context) {
 	}
 
 	// 业务逻辑
-	data, err2 := logic.ProductLogic{}.GetGoodsInfoData(goodsId)
+	data, err2 := logic.ProductLogic{}.GetGoodsInfoData(c, goodsId)
 	if err2 != nil {
-		zap.L().Error("[pkg: shop] [func: (con ProductController) Detail(c *gin.Context)] [logic.ProductLogic{}.GetGoodsInfoData(goodsId)] failed, ", zap.Error(err2))
+		zap.L().Error("[pkg: shop] [func: (con ProductController) Detail(c *gin.Context)] [logic.ProductLogic{}.GetGoodsInfoData(c, goodsId)] failed, ", zap.Error(err2))
 		con.error(c, CodeGetDataErr)
 		return
 	}
