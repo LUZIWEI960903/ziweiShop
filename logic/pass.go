@@ -99,11 +99,11 @@ func (PassLogic) Register2(c *gin.Context, sign, verifyCode string) bool {
 	return true
 }
 
-func (PassLogic) DoRegister2(c *gin.Context, sign, smsCode string) bool {
+func (PassLogic) DoRegister2(c *gin.Context, sign, msgCode string) bool {
 	// 校验smsCode
 	session := sessions.Default(c)
-	sessionSmsCode, ok1 := session.Get("msgCode").(string)
-	if !ok1 || sessionSmsCode != smsCode {
+	sessionMsgCode, ok1 := session.Get("msgCode").(string)
+	if !ok1 || sessionMsgCode != msgCode {
 		return false
 	}
 
@@ -116,6 +116,22 @@ func (PassLogic) DoRegister2(c *gin.Context, sign, smsCode string) bool {
 	// 校验验证码是否过期
 	nowTime := tools.GetUnix()
 	if (nowTime - int64(userTemp.AddTime)) > 15*60 {
+		return false
+	}
+	return true
+}
+
+func (LoginLogic) Register3(c *gin.Context, sign, msgCode string) bool {
+	// 校验验证码
+	session := sessions.Default(c)
+	sessionMsgCode, ok := session.Get("msgCode").(string)
+	if !ok || sessionMsgCode != msgCode {
+		return false
+	}
+
+	// 校验sign
+	_, ok1 := mysql.GetUserTempBySign(sign)
+	if !ok1 {
 		return false
 	}
 	return true

@@ -79,3 +79,20 @@ func (con PassController) DoRegister2(c *gin.Context) {
 	}
 	con.success(c, true)
 }
+
+// Register3 用户注册第三步页面的接口
+func (con PassController) Register3(c *gin.Context) {
+	// 解析参数
+	sign := c.Query("sign")
+	msgCode := c.Query("msgCode")
+
+	// 业务逻辑
+	ok := logic.PassLogic{}.Register3(c, sign, msgCode)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con PassController) Register3(c *gin.Context)] [logic.PassLogic{}.Register3(c, sign, msgCode)] failed")
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	con.success(c, true)
+}
