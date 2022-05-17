@@ -21,6 +21,7 @@ const (
 	CodeGenCaptchaError
 	CodeRegisterErr
 	CodeDoLoginErr
+	CodeDoLogoutErr
 )
 
 var CodeMsgMap = map[ResCode]string{
@@ -41,6 +42,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeGenCaptchaError:     "Gen captcha error",
 	CodeRegisterErr:         "Register error",
 	CodeDoLoginErr:          "Do login error",
+	CodeDoLogoutErr:         "Do logout error",
 }
 
 func (code ResCode) Msg() string {

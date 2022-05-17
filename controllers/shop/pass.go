@@ -142,3 +142,14 @@ func (con PassController) DoLogin(c *gin.Context) {
 	}
 	con.success(c, true)
 }
+
+// Logout 用户退出登录的接口
+func (con PassController) Logout(c *gin.Context) {
+	ok := logic.PassLogic{}.Logout(c)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con PassController) Logout(c *gin.Context)] [logic.PassLogic{}.Logout(c)] failed")
+		con.error(c, CodeDoLogoutErr)
+		return
+	}
+	con.success(c, true)
+}

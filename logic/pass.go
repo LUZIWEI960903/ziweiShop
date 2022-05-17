@@ -196,3 +196,7 @@ func (PassLogic) DoLogin(c *gin.Context, p *models.UserLoginParam) bool {
 	cookie.Cookie.Set(c, "userInfo", user)
 	return true
 }
+
+func (PassLogic) Logout(c *gin.Context) bool {
+	return cookie.Cookie.Remove(c, "userInfo")
+}

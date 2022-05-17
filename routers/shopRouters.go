@@ -54,6 +54,8 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.GET("/pass/login", shop.PassController{}.Login)
 		// 执行登录
 		shopRouters.POST("/pass/login", shop.PassController{}.DoLogin)
+		// 执行登出
+		shopRouters.GET("/pass/logout", shop.PassController{}.Logout)
 
 	}
 }
