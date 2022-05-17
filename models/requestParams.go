@@ -234,3 +234,10 @@ type Register3Params struct {
 	RePassword string `json:"re_password"` // 重复密码
 
 }
+
+type UserLoginParam struct {
+	Email        string `json:"email"`         // 注册邮箱
+	Password     string `json:"password"`      // 密码
+	CaptchaId    string `json:"captcha_id"`    // 验证码id
+	CaptchaValue string `json:"captcha_value"` // 验证码的值
+}

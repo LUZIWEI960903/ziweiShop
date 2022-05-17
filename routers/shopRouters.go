@@ -50,5 +50,10 @@ func shopRoutersInit(r *gin.Engine) {
 		// 用户注册页面3过程
 		shopRouters.POST("/pass/register3", shop.PassController{}.DoRegister3)
 
+		// 登录界面
+		shopRouters.GET("/pass/login", shop.PassController{}.Login)
+		// 执行登录
+		shopRouters.POST("/pass/login", shop.PassController{}.DoLogin)
+
 	}
 }

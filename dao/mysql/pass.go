@@ -84,3 +84,13 @@ func CreateUser(c *gin.Context, email, password string) (models.User, error) {
 	}
 	return user, db.Create(&user).Error
 }
+
+// IsUserExist 查询用户是否存在   --- user 表
+func IsUserExist(p *models.UserLoginParam) (*models.User, bool) {
+	userList := []models.User{}
+	db.Where("is_deleted=0 AND email=?", p.Email).First(&userList)
+	if len(userList) < 1 {
+		return nil, false
+	}
+	return &userList[0], true
+}

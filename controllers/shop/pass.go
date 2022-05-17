@@ -117,3 +117,28 @@ func (con PassController) DoRegister3(c *gin.Context) {
 
 	con.success(c, true)
 }
+
+// Login 用户登录页面的接口
+func (con PassController) Login(c *gin.Context) {
+	con.success(c, true)
+}
+
+// DoLogin 用户登录的接口
+func (con PassController) DoLogin(c *gin.Context) {
+	// 解析参数
+	p := new(models.UserLoginParam)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("[pkg: shop] [func: (con PassController) DoLogin(c *gin.Context)] [c.ShouldBindJSON(p)] failed, ", zap.Error(err))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	// 业务逻辑
+	ok := logic.PassLogic{}.DoLogin(c, p)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con PassController) DoLogin(c *gin.Context)] [logic.PassLogic{}.DoLogin(c, p)] failed")
+		con.error(c, CodeDoLoginErr)
+		return
+	}
+	con.success(c, true)
+}

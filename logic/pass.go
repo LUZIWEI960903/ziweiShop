@@ -167,3 +167,32 @@ func (PassLogic) DoRegister3(c *gin.Context, p *models.Register3Params) bool {
 	cookie.Cookie.Set(c, "userInfo", userInfo)
 	return true
 }
+
+func (PassLogic) DoLogin(c *gin.Context, p *models.UserLoginParam) bool {
+	// 校验邮箱
+	pattern := `.*?@.*?`
+	reg := regexp.MustCompile(pattern)
+	if !reg.MatchString(p.Email) {
+		return false
+	}
+
+	// 校验验证码
+	if !captcha.VerifyCaptcha(p.CaptchaId, p.CaptchaValue) {
+		return false
+	}
+
+	// 查询账号是否存在
+	user, ok1 := mysql.IsUserExist(p)
+	if !ok1 {
+		return false
+	}
+
+	// 校验账号密码
+	if tools.MD5(p.Password) != user.Password {
+		return false
+	}
+
+	// 写入cookie
+	cookie.Cookie.Set(c, "userInfo", user)
+	return true
+}

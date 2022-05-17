@@ -20,6 +20,7 @@ const (
 	CodeAddCartErr
 	CodeGenCaptchaError
 	CodeRegisterErr
+	CodeDoLoginErr
 )
 
 var CodeMsgMap = map[ResCode]string{
@@ -39,6 +40,7 @@ var CodeMsgMap = map[ResCode]string{
 	CodeAddCartErr:          "Add cart logic error",
 	CodeGenCaptchaError:     "Gen captcha error",
 	CodeRegisterErr:         "Register error",
+	CodeDoLoginErr:          "Do login error",
 }
 
 func (code ResCode) Msg() string {
