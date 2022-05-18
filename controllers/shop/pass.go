@@ -133,6 +133,9 @@ func (con PassController) DoLogin(c *gin.Context) {
 		return
 	}
 
+	// 获取上一个url地址
+	prePage := c.Request.Referer()
+
 	// 业务逻辑
 	ok := logic.PassLogic{}.DoLogin(c, p)
 	if !ok {
@@ -140,7 +143,7 @@ func (con PassController) DoLogin(c *gin.Context) {
 		con.error(c, CodeDoLoginErr)
 		return
 	}
-	con.success(c, true)
+	con.success(c, prePage)
 }
 
 // Logout 用户退出登录的接口
@@ -152,4 +155,9 @@ func (con PassController) Logout(c *gin.Context) {
 		return
 	}
 	con.success(c, true)
+}
+
+// Checkout 确认订单信息页面的接口
+func (con PassController) Checkout(c *gin.Context) {
+
 }

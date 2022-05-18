@@ -2,6 +2,7 @@ package routers
 
 import (
 	"ziweiShop/controllers/shop"
+	"ziweiShop/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,6 +57,9 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.POST("/pass/login", shop.PassController{}.DoLogin)
 		// 执行登出
 		shopRouters.GET("/pass/logout", shop.PassController{}.Logout)
+
+		// 确认订单信息
+		shopRouters.GET("/buy/checkout", middlewares.InitUserAuthMiddleware, shop.PassController{}.Checkout)
 
 	}
 }
