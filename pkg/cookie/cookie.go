@@ -2,6 +2,7 @@ package cookie
 
 import (
 	"encoding/json"
+	"ziweiShop/pkg/tools"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,14 +12,18 @@ type ginCookie struct {
 
 func (cookie ginCookie) Set(c *gin.Context, key string, value interface{}) {
 	bytes, _ := json.Marshal(value)
-	c.SetCookie(key, string(bytes), 3600, "/", c.Request.Host, false, true)
+	// des加密
+	encData, _ := tools.DesEncrypt(bytes)
+	c.SetCookie(key, string(encData), 3600, "/", c.Request.Host, false, true)
 }
 
 func (cookie ginCookie) Get(c *gin.Context, key string, obj interface{}) bool {
 	valueStr, err1 := c.Cookie(key)
 	if err1 == nil && valueStr != "" && valueStr != "[]" {
-		err2 := json.Unmarshal([]byte(valueStr), obj)
-		return err2 == nil
+		// dec解密
+		decData, err2 := tools.DesDecrypt([]byte(valueStr))
+		err3 := json.Unmarshal(decData, obj)
+		return err2 == nil && err3 == nil
 	}
 	return false
 }
