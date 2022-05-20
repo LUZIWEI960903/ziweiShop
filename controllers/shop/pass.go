@@ -156,16 +156,3 @@ func (con PassController) Logout(c *gin.Context) {
 	}
 	con.success(c, true)
 }
-
-// Checkout 确认订单信息页面的接口
-func (con PassController) Checkout(c *gin.Context) {
-	// 业务逻辑
-	data, ok := logic.PassLogic{}.Checkout(c)
-	if !ok {
-		zap.L().Error("[pkg: shop] [func: (con PassController) Checkout(c *gin.Context)] [logic.PassLogic{}.Checkout(c)] failed")
-		con.error(c, CodeGetDataErr)
-		return
-	}
-
-	con.success(c, data)
-}

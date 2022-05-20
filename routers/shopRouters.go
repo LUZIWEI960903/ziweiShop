@@ -59,7 +59,7 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.GET("/pass/logout", shop.PassController{}.Logout)
 
 		// 确认订单信息
-		shopRouters.GET("/buy/checkout", middlewares.InitUserAuthMiddleware, shop.PassController{}.Checkout)
+		shopRouters.GET("/buy/checkout", middlewares.InitUserAuthMiddleware, shop.BuyController{}.Checkout)
 
 	}
 }
