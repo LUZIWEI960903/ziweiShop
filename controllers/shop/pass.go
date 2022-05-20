@@ -1,10 +1,8 @@
 package shop
 
 import (
-	"fmt"
 	"ziweiShop/logic"
 	"ziweiShop/models"
-	"ziweiShop/pkg/cookie"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -161,7 +159,13 @@ func (con PassController) Logout(c *gin.Context) {
 
 // Checkout 确认订单信息页面的接口
 func (con PassController) Checkout(c *gin.Context) {
-	user := models.User{}
-	cookie.Cookie.Get(c, "userInfo", &user)
-	fmt.Printf("%#v\n", user)
+	// 业务逻辑
+	data, ok := logic.PassLogic{}.Checkout(c)
+	if !ok {
+		zap.L().Error("[pkg: shop] [func: (con PassController) Checkout(c *gin.Context)] [logic.PassLogic{}.Checkout(c)] failed")
+		con.error(c, CodeGetDataErr)
+		return
+	}
+
+	con.success(c, data)
 }
