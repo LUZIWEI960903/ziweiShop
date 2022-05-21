@@ -7,7 +7,7 @@ import (
 
 // GetAddressByUid 根据用户id 获取 地址列表 --- address 表
 func GetAddressByUid(uid int) (addressList []models.Address, err error) {
-	return addressList, db.Where("is_deleted=0 AND uid=?", uid).Find(&addressList).Error
+	return addressList, db.Where("is_deleted=0 AND uid=?", uid).Order("id DESC").Find(&addressList).Error
 }
 
 // UpdateDefaultAddress 把当前用户下的所有 default_address 设置为0  --- address 表
