@@ -471,6 +471,7 @@ type PassCheckoutData struct {
 	OrderList     []Cart                  `json:"order_list"`  // 购物清单
 	TotalPrice    float64                 `json:"total_price"` // 总价格
 	*ShopBaseData `json:"shop_base_data"` // 商城界面的基础数据
+	AddressList   []Address               `json:"address_list"` // 收货地址列表
 }
 
 type AddAddressData struct {

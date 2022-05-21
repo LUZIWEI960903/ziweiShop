@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
 	"ziweiShop/pkg/cookie"
 
@@ -35,9 +36,21 @@ func (l BuyLogic) Checkout(c *gin.Context) (*models.PassCheckoutData, bool) {
 		}
 	}
 
+	// 获取收货地址
+	user := models.User{}
+	if !cookie.Cookie.Get(c, "userInfo", &user) {
+		return nil, false
+	}
+
+	addressList, err2 := mysql.GetAddressByUid(user.Id)
+	if err2 != nil {
+		return nil, false
+	}
+
 	return &models.PassCheckoutData{
 		OrderList:    orderList,
 		TotalPrice:   totalPrice,
 		ShopBaseData: baseData,
+		AddressList:  addressList,
 	}, true
 }

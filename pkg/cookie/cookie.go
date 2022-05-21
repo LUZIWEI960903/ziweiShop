@@ -14,7 +14,7 @@ func (cookie ginCookie) Set(c *gin.Context, key string, value interface{}) {
 	bytes, _ := json.Marshal(value)
 	// des加密
 	encData, _ := tools.DesEncrypt(bytes)
-	c.SetCookie(key, string(encData), 3600, "/", c.Request.Host, false, true)
+	c.SetCookie(key, string(encData), 3600*24, "/", c.Request.Host, false, true)
 }
 
 func (cookie ginCookie) Get(c *gin.Context, key string, obj interface{}) bool {
