@@ -241,3 +241,9 @@ type UserLoginParam struct {
 	CaptchaId    string `json:"captcha_id"`    // 验证码id
 	CaptchaValue string `json:"captcha_value"` // 验证码的值
 }
+
+type AddAddressParams struct {
+	Name    string `json:"name"`    // 地址名
+	Phone   string `json:"phone"`   // 手机号码
+	Address string `json:"address"` // 详情地址
+}
