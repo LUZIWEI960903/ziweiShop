@@ -22,4 +22,6 @@ var (
 	ErrorDeleteAccess                   = errors.New("Delete access error~~")
 
 	ErrorDeleteGoodsCate = errors.New("Delete goods cate error~~")
+
+	ErrorInvalidParams = errors.New("Invalid params")
 )

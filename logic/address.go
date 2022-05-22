@@ -44,3 +44,57 @@ func (AddressLogic) AddAddress(c *gin.Context, p *models.AddAddressParams) (*mod
 		AddressList: newAddressList,
 	}, nil
 }
+
+func (AddressLogic) GetOneAddress(c *gin.Context, addressId int) (*models.GetOneAddressData, error) {
+	// 获取用户信息
+	user := models.User{}
+	cookie.Cookie.Get(c, "userInfo", &user)
+
+	// 根据 address id查询
+	address, err1 := mysql.GetAddressById(addressId)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	// 校验address uid 与 user 的id
+	if user.Id != address.Uid {
+		return nil, ErrorInvalidParams
+	}
+
+	return &models.GetOneAddressData{
+		AddressInfo: *address,
+	}, nil
+}
+
+func (AddressLogic) EditAddress(c *gin.Context, p *models.EditAddressParams) (*models.EditAddressData, error) {
+	// 获取用户信息
+	user := models.User{}
+	cookie.Cookie.Get(c, "userInfo", &user)
+
+	// 根据 address id查询
+	address, err1 := mysql.GetAddressById(p.Id)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	// 校验address uid 与 user 的id
+	if user.Id != address.Uid {
+		return nil, ErrorInvalidParams
+	}
+
+	// 修改 address 信息
+	_, err2 := mysql.UpdateAddress(p)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	// 查询 address 列表
+	addressList, err3 := mysql.GetAddressByUid(user.Id)
+	if err3 != nil {
+		return nil, err3
+	}
+
+	return &models.EditAddressData{
+		AddressList: addressList,
+	}, nil
+}

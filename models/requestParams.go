@@ -247,3 +247,10 @@ type AddAddressParams struct {
 	Phone   string `json:"phone"`   // 手机号码
 	Address string `json:"address"` // 详情地址
 }
+
+type EditAddressParams struct {
+	Id      int    `json:"id"`      // 地址id
+	Name    string `json:"name"`    // 地址名
+	Phone   string `json:"phone"`   // 手机号码
+	Address string `json:"address"` // 详情地址
+}

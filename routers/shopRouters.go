@@ -63,6 +63,10 @@ func shopRoutersInit(r *gin.Engine) {
 
 		// 增加收货地址
 		shopRouters.POST("/address/addAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.AddAddress)
+		// 获取要修改的收货地址信息
+		shopRouters.GET("/address/getOneAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.GetOneAddress)
+		// 修改收货地址
+		shopRouters.PUT("/address/editAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.EditAddress)
 
 	}
 }

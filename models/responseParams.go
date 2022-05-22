@@ -477,3 +477,11 @@ type PassCheckoutData struct {
 type AddAddressData struct {
 	AddressList []Address `json:"address_list"` // 收货地址列表
 }
+
+type GetOneAddressData struct {
+	AddressInfo Address `json:"address_info"` // 地址信息
+}
+
+type EditAddressData struct {
+	AddressList []Address `json:"address_list"` // 收货地址列表
+}
