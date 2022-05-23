@@ -44,3 +44,23 @@ func UpdateAddress(p *models.EditAddressParams) (address *models.Address, err er
 	address.Name = p.Name
 	return address, db.Save(&address).Error
 }
+
+// UpdateDefaultAddress1  将所有 该用户的 address 设为非默认地址 并把 当前 address 设置为默认地址  --- address 表
+func UpdateDefaultAddress1(uid, addressId int) ([]models.Address, error) {
+	err1 := db.Table("address").Where("is_deleted=0 AND uid=?", uid).Updates(map[string]interface{}{"default_address": 0}).Error
+	if err1 != nil {
+		return nil, err1
+	}
+	address := models.Address{}
+	err2 := db.Where("is_deleted=0 AND id=?", addressId).First(&address).Error
+	if err2 != nil {
+		return nil, err2
+	}
+	address.DefaultAddress = 1
+	err3 := db.Save(&address).Error
+	if err3 != nil {
+		return nil, err3
+	}
+	addressList := []models.Address{}
+	return addressList, db.Where("is_deleted=0 AND uid=?", uid).Find(&addressList).Error
+}

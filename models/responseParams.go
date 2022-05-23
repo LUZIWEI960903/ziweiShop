@@ -485,3 +485,7 @@ type GetOneAddressData struct {
 type EditAddressData struct {
 	AddressList []Address `json:"address_list"` // 收货地址列表
 }
+
+type ChangeDefaultAddressData struct {
+	AddressList []Address `json:"address_list"` // 收货地址列表
+}

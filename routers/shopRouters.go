@@ -67,6 +67,8 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.GET("/address/getOneAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.GetOneAddress)
 		// 修改收货地址
 		shopRouters.PUT("/address/editAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.EditAddress)
+		// 修改默认的收货地址
+		shopRouters.PUT("/address/changeDefaultAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.ChangeDefaultAddress)
 
 	}
 }

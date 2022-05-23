@@ -75,3 +75,22 @@ func (con AddressController) EditAddress(c *gin.Context) {
 
 	con.success(c, data)
 }
+
+// ChangeDefaultAddress 修改默认的收货地址的接口
+func (con AddressController) ChangeDefaultAddress(c *gin.Context) {
+	addressId, err1 := strconv.Atoi(c.Query("id"))
+	if err1 != nil {
+		zap.L().Error("[pkg: shop] [func: (con AddressController) ChangeDefaultAddress(c *gin.Context)] [strconv.Atoi(c.Query(\"id\"))] failed, ", zap.Error(err1))
+		con.error(c, CodeInValidParams)
+		return
+	}
+
+	data, err2 := logic.AddressLogic{}.ChangeDefaultAddress(c, addressId)
+	if err2 != nil {
+		zap.L().Error("[pkg: shop] [func: (con AddressController) ChangeDefaultAddress(c *gin.Context)] [logic.AddressLogic{}.ChangeDefaultAddress(c, addressId)] failed, ", zap.Error(err2))
+		con.error(c, CodeGetDataErr)
+		return
+	}
+
+	con.success(c, data)
+}

@@ -98,3 +98,30 @@ func (AddressLogic) EditAddress(c *gin.Context, p *models.EditAddressParams) (*m
 		AddressList: addressList,
 	}, nil
 }
+
+func (AddressLogic) ChangeDefaultAddress(c *gin.Context, addressId int) (*models.ChangeDefaultAddressData, error) {
+	// 获取当前用户信息
+	user := models.User{}
+	cookie.Cookie.Get(c, "userInfo", &user)
+
+	// 根据address id 查询 address 信息
+	address, err1 := mysql.GetAddressById(addressId)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	// 校验 当前address 是否属于该用户的
+	if address.Uid != user.Id {
+		return nil, ErrorInvalidParams
+	}
+
+	// 将所有 该用户的 address 设为非默认地址 并把 当前 address 设置为默认地址
+	addressList, err2 := mysql.UpdateDefaultAddress1(user.Id, addressId)
+	if err2 != nil {
+		return nil, err2
+	}
+
+	return &models.ChangeDefaultAddressData{
+		AddressList: addressList,
+	}, nil
+}
