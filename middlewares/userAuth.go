@@ -20,6 +20,6 @@ func InitUserAuthMiddleware(c *gin.Context) {
 			"errcode": admin.CodeGetAccessErr,
 			"errmsg":  admin.CodeGetAccessErr.Msg(),
 		})
-		return
+		c.Abort()
 	}
 }

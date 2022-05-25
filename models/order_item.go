@@ -11,6 +11,7 @@ type OrderItem struct {
 	ProductTitle string  `json:"product_title,omitempty"` // 商品名字
 	GoodsVersion string  `json:"goods_version,omitempty"` // 商品版本
 	GoodsColor   string  `json:"goods_color,omitempty"`   // 商品颜色
+	ProductImg   string  `json:"product_img,omitempty"`   // 商品图片
 	ProductPrice float64 `json:"product_price,omitempty"` // 商品价格
 }
 

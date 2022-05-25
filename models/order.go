@@ -2,7 +2,7 @@ package models
 
 type Order struct {
 	Id          int     `json:"id,omitempty"`           // 订单id
-	OrderId     string  `json:"order_id,omitempty"`     // 订单列表
+	OrderId     string  `json:"order_id,omitempty"`     // 订单号码
 	Uid         int     `json:"uid,omitempty"`          // 用户id
 	AllPrice    float64 `json:"all_price,omitempty"`    // 总价
 	Phone       string  `json:"phone,omitempty"`        // 用户手机

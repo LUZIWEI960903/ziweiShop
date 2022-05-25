@@ -64,3 +64,8 @@ func UpdateDefaultAddress1(uid, addressId int) ([]models.Address, error) {
 	addressList := []models.Address{}
 	return addressList, db.Where("is_deleted=0 AND uid=?", uid).Find(&addressList).Error
 }
+
+// GetDefaultAddressByUid  根据uid 获取默认地址  --- address 表
+func GetDefaultAddressByUid(uid int) (address models.Address, err error) {
+	return address, db.Where("is_deleted=0 AND uid=? AND default_address=1", uid).First(&address).Error
+}

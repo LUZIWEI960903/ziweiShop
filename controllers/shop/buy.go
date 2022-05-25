@@ -23,3 +23,14 @@ func (con BuyController) Checkout(c *gin.Context) {
 
 	con.success(c, data)
 }
+
+// DoCheckout 提交订单执行结算的接口
+func (con BuyController) DoCheckout(c *gin.Context) {
+	err := logic.BuyLogic{}.DoCheckout(c)
+	if err != nil {
+		zap.L().Error("[pkg: shop] [func: (con BuyController) DoCheckout(c *gin.Context)] [logic.BuyLogic{}.DoCheckout(c)] failed, ", zap.Error(err))
+		con.error(c, CodeServerBusy)
+		return
+	}
+	con.success(c, true)
+}
