@@ -7,6 +7,8 @@ import (
 	"ziweiShop/pkg/cookie"
 	"ziweiShop/pkg/tools"
 
+	"github.com/gin-contrib/sessions"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -49,11 +51,18 @@ func (l BuyLogic) Checkout(c *gin.Context) (*models.PassCheckoutData, bool) {
 		return nil, false
 	}
 
+	// 生成签名 用于校验防止订单重复提交
+	orderSign := tools.MD5(strconv.Itoa(int(tools.GetUnixN())))
+	session := sessions.Default(c)
+	session.Set("orderSign", orderSign)
+	session.Save()
+
 	return &models.PassCheckoutData{
 		OrderList:    orderList,
 		TotalPrice:   totalPrice,
 		ShopBaseData: baseData,
 		AddressList:  addressList,
+		OrderSign:    orderSign,
 	}, true
 }
 
