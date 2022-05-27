@@ -66,7 +66,16 @@ func (l BuyLogic) Checkout(c *gin.Context) (*models.PassCheckoutData, bool) {
 	}, true
 }
 
-func (BuyLogic) DoCheckout(c *gin.Context) error {
+func (BuyLogic) DoCheckout(sign string, c *gin.Context) error {
+	// 校验orderSign，防止订单重复提交
+	session := sessions.Default(c)
+	orderSign, ok := session.Get("orderSign").(string)
+	if !ok || orderSign != sign {
+		return ErrorInvalidParams
+	}
+	session.Delete("orderSign")
+	session.Save()
+
 	// 获取用户信息
 	user := models.User{}
 	cookie.Cookie.Get(c, "userInfo", &user)
