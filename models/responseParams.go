@@ -490,3 +490,12 @@ type EditAddressData struct {
 type ChangeDefaultAddressData struct {
 	AddressList []Address `json:"address_list"` // 收货地址列表
 }
+
+type DoCheckoutData struct {
+	OrderId int `json:"order_id"` // 订单id
+}
+
+type PayData struct {
+	Order     Order       `json:"order"`      // 订单信息
+	OrderItem []OrderItem `json:"order_item"` // 具体订单商品信息
+}

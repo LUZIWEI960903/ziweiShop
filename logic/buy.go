@@ -66,12 +66,12 @@ func (l BuyLogic) Checkout(c *gin.Context) (*models.PassCheckoutData, bool) {
 	}, true
 }
 
-func (BuyLogic) DoCheckout(sign string, c *gin.Context) error {
+func (BuyLogic) DoCheckout(sign string, c *gin.Context) (*models.DoCheckoutData, error) {
 	// 校验orderSign，防止订单重复提交
 	session := sessions.Default(c)
 	orderSign, ok := session.Get("orderSign").(string)
 	if !ok || orderSign != sign {
-		return ErrorInvalidParams
+		return nil, ErrorInvalidParams
 	}
 	session.Delete("orderSign")
 	session.Save()
@@ -83,7 +83,7 @@ func (BuyLogic) DoCheckout(sign string, c *gin.Context) error {
 	// 获取收货地址
 	addressInfo, err1 := mysql.GetDefaultAddressByUid(user.Id)
 	if err1 != nil {
-		return err1
+		return nil, err1
 	}
 
 	// 获取购物信息 + 创建结算清单
@@ -116,7 +116,7 @@ func (BuyLogic) DoCheckout(sign string, c *gin.Context) error {
 	}
 	orderInfo, err2 := mysql.CreateOrder(&order)
 	if err2 != nil {
-		return err2
+		return nil, err2
 	}
 
 	for i, l := 0, len(orderList); i < l; i++ {
@@ -143,5 +143,34 @@ func (BuyLogic) DoCheckout(sign string, c *gin.Context) error {
 		}
 	}
 	cookie.Cookie.Set(c, "cartList", &newCartList)
-	return nil
+	return &models.DoCheckoutData{
+		OrderId: order.Id,
+	}, nil
+}
+
+func (BuyLogic) Pay(c *gin.Context, orderId int) (*models.PayData, error) {
+	// 获取用户信息
+	user := models.User{}
+	cookie.Cookie.Get(c, "userInfo", &user)
+
+	// 根据orderId 查询order
+	order, err1 := mysql.GetOrderById(orderId)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	// 校验order uid 与 user id
+	if order.Uid != user.Id {
+		return nil, ErrorInvalidParams
+	}
+
+	// 根据 orderId 查询 order item
+	orderItemList, err2 := mysql.GetOrderItemByOrderId(orderId)
+	if err2 != nil {
+		return nil, err2
+	}
+	return &models.PayData{
+		Order:     *order,
+		OrderItem: orderItemList,
+	}, nil
 }

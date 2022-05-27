@@ -62,6 +62,8 @@ func shopRoutersInit(r *gin.Engine) {
 		shopRouters.GET("/buy/checkout", middlewares.InitUserAuthMiddleware, shop.BuyController{}.Checkout)
 		// 提交订单执行结算
 		shopRouters.POST("/buy/doCheckout", middlewares.InitUserAuthMiddleware, shop.BuyController{}.DoCheckout)
+		// 支付页面
+		shopRouters.GET("/pay", middlewares.InitUserAuthMiddleware, shop.BuyController{}.Pay)
 
 		// 增加收货地址
 		shopRouters.POST("/address/addAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.AddAddress)
