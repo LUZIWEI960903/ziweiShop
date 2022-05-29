@@ -4,9 +4,7 @@ import (
 	"fmt"
 	"time"
 	"ziweiShop/config"
-	"ziweiShop/dao/mysql"
 	"ziweiShop/models"
-	"ziweiShop/pkg/cookie"
 
 	"github.com/smartwalle/alipay/v3"
 
@@ -14,6 +12,7 @@ import (
 )
 
 type AlipayLogic struct {
+	BaseLogic
 }
 
 var (
@@ -21,20 +20,11 @@ var (
 	appId      = "xxx"
 )
 
-func (AlipayLogic) Alipay(c *gin.Context, orderId int) (*models.AlipayData, error) {
-	// 获取用户信息
-	user := models.User{}
-	cookie.Cookie.Get(c, "userInfo", &user)
-
-	// 根据 orderId 查询 uid
-	order, err1 := mysql.GetOrderById(orderId)
+func (l AlipayLogic) Alipay(c *gin.Context, orderId int) (*models.AlipayData, error) {
+	// 校验该订单是否属于该用户
+	order, err1 := l.verifyOrder(c, orderId)
 	if err1 != nil {
 		return nil, err1
-	}
-
-	// 校验 该order是否属于该用户
-	if user.Id != order.Uid {
-		return nil, ErrorInvalidParams
 	}
 
 	// 调用支付宝接口
@@ -53,10 +43,10 @@ func (AlipayLogic) Alipay(c *gin.Context, orderId int) (*models.AlipayData, erro
 	var p = alipay.TradePagePay{}
 	p.NotifyURL = fmt.Sprintf("%v%v/v3/alipayNotify", config.Conf.Host, config.Conf.Port)
 	p.ReturnURL = fmt.Sprintf("%v%v/v3/alipayReturn", config.Conf.Host, config.Conf.Port)
-	p.Subject = "订单支付"
+	p.Subject = order.Name
 	template := "2006-01-02 15:04:05"
 	p.OutTradeNo = time.Now().Format(template) // 传递一个唯一单号
-	p.TotalAmount = "10.00"
+	p.TotalAmount = fmt.Sprintf("%v", order.AllPrice)
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY" // https://opendocs.alipay.com/open/028r8t?scene=22
 
 	var url, err4 = client.TradePagePay(p)

@@ -116,3 +116,21 @@ func (l BaseLogic) getBaseData(c *gin.Context) (*models.ShopBaseData, error) {
 		UserInfo:                   userInfo,
 	}, nil
 }
+
+func (BaseLogic) verifyOrder(c *gin.Context, orderId int) (*models.Order, error) {
+	// 获取用户信息
+	user := models.User{}
+	cookie.Cookie.Get(c, "userInfo", &user)
+
+	// 根据 orderId 查询 uid
+	order, err1 := mysql.GetOrderById(orderId)
+	if err1 != nil {
+		return nil, err1
+	}
+
+	// 校验 该order是否属于该用户
+	if user.Id != order.Uid {
+		return nil, ErrorInvalidParams
+	}
+	return order, nil
+}
