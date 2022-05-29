@@ -499,3 +499,7 @@ type PayData struct {
 	Order     Order       `json:"order"`      // 订单信息
 	OrderItem []OrderItem `json:"order_item"` // 具体订单商品信息
 }
+
+type AlipayData struct {
+	PayUrl string `json:"pay_url"` // 扫描链接
+}

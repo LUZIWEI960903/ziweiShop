@@ -74,5 +74,11 @@ func shopRoutersInit(r *gin.Engine) {
 		// 修改默认的收货地址
 		shopRouters.PUT("/address/changeDefaultAddress", middlewares.InitUserAuthMiddleware, shop.AddressController{}.ChangeDefaultAddress)
 
+		// 支付宝支付
+		shopRouters.GET("/alipay", middlewares.InitUserAuthMiddleware, shop.AlipayController{}.Alipay)
+		// 支付宝异步订单
+		shopRouters.POST("/v3/alipayNotify", shop.AlipayController{}.AlipayNotify)
+		// 支付宝支付返回
+		shopRouters.GET("/v3/alipayReturn", middlewares.InitUserAuthMiddleware, shop.AlipayController{}.AlipayReturn)
 	}
 }
